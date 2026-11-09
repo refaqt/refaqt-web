@@ -1,0 +1,237 @@
+{
+ "status": "Design targets from the SysML requirements. Not yet measured.",
+ "variants": [
+  {
+   "model": "CS-220",
+   "travel_mm": 220,
+   "length_mm": 440,
+   "width_mm": 210,
+   "height_mm": 60,
+   "rail_length_mm": 418,
+   "encoder_measuring_length_mm": 240,
+   "magnet_track_mm": 360,
+   "magnet_track_segments": {
+    "180": 2
+   },
+   "base_holes_per_row": 6,
+   "base_screws": 12,
+   "base_hole_span_mm": 400,
+   "moving_mass_kg": 4.2,
+   "total_mass_kg": 10.8
+  },
+  {
+   "model": "CS-280",
+   "travel_mm": 280,
+   "length_mm": 500,
+   "width_mm": 210,
+   "height_mm": 60,
+   "rail_length_mm": 478,
+   "encoder_measuring_length_mm": 300,
+   "magnet_track_mm": 420,
+   "magnet_track_segments": {
+    "120": 1,
+    "300": 1
+   },
+   "base_holes_per_row": 6,
+   "base_screws": 12,
+   "base_hole_span_mm": 400,
+   "moving_mass_kg": 4.2,
+   "total_mass_kg": 11.7
+  },
+  {
+   "model": "CS-360",
+   "travel_mm": 360,
+   "length_mm": 580,
+   "width_mm": 210,
+   "height_mm": 60,
+   "rail_length_mm": 558,
+   "encoder_measuring_length_mm": 380,
+   "magnet_track_mm": 540,
+   "magnet_track_segments": {
+    "180": 3
+   },
+   "base_holes_per_row": 7,
+   "base_screws": 14,
+   "base_hole_span_mm": 480,
+   "moving_mass_kg": 4.2,
+   "total_mass_kg": 13.2
+  },
+  {
+   "model": "CS-440",
+   "travel_mm": 440,
+   "length_mm": 660,
+   "width_mm": 210,
+   "height_mm": 60,
+   "rail_length_mm": 638,
+   "encoder_measuring_length_mm": 460,
+   "magnet_track_mm": 600,
+   "magnet_track_segments": {
+    "300": 2
+   },
+   "base_holes_per_row": 8,
+   "base_screws": 16,
+   "base_hole_span_mm": 560,
+   "moving_mass_kg": 4.2,
+   "total_mass_kg": 14.4
+  },
+  {
+   "model": "CS-520",
+   "travel_mm": 520,
+   "length_mm": 740,
+   "width_mm": 210,
+   "height_mm": 60,
+   "rail_length_mm": 718,
+   "encoder_measuring_length_mm": 540,
+   "magnet_track_mm": 660,
+   "magnet_track_segments": {
+    "180": 2,
+    "300": 1
+   },
+   "base_holes_per_row": 9,
+   "base_screws": 18,
+   "base_hole_span_mm": 640,
+   "moving_mass_kg": 4.2,
+   "total_mass_kg": 15.5
+  },
+  {
+   "model": "CS-600",
+   "travel_mm": 600,
+   "length_mm": 820,
+   "width_mm": 210,
+   "height_mm": 60,
+   "rail_length_mm": 798,
+   "encoder_measuring_length_mm": 620,
+   "magnet_track_mm": 780,
+   "magnet_track_segments": {
+    "180": 1,
+    "300": 2
+   },
+   "base_holes_per_row": 10,
+   "base_screws": 20,
+   "base_hole_span_mm": 720,
+   "moving_mass_kg": 4.2,
+   "total_mass_kg": 17.0
+  }
+ ],
+ "common": [
+  {
+   "id": "STG-04",
+   "label": "Positioning accuracy (no mapping)",
+   "value": "±5",
+   "unit": "µm",
+   "group": "Accuracy"
+  },
+  {
+   "id": "STG-07",
+   "label": "Unidirectional repeatability",
+   "value": "±0.1",
+   "unit": "µm",
+   "group": "Accuracy"
+  },
+  {
+   "id": "STG-08",
+   "label": "Bidirectional repeatability",
+   "value": "±0.3",
+   "unit": "µm",
+   "group": "Accuracy"
+  },
+  {
+   "id": "STG-05",
+   "label": "Straightness / flatness",
+   "value": "±2",
+   "unit": "µm",
+   "group": "Accuracy"
+  },
+  {
+   "id": "STG-06",
+   "label": "Pitch / yaw / roll",
+   "value": "±20",
+   "unit": "µrad",
+   "group": "Accuracy"
+  },
+  {
+   "id": "ENC",
+   "label": "Encoder",
+   "value": "Absolute, 0.1 µm step, BiSS C",
+   "unit": "",
+   "group": "Accuracy"
+  },
+  {
+   "id": "STG-09",
+   "label": "Maximum speed",
+   "value": "3",
+   "unit": "m/s",
+   "group": "Dynamics"
+  },
+  {
+   "id": "STG-10",
+   "label": "Continuous force",
+   "value": "180",
+   "unit": "N",
+   "group": "Dynamics"
+  },
+  {
+   "id": "STG-11",
+   "label": "Peak force",
+   "value": "500",
+   "unit": "N",
+   "group": "Dynamics"
+  },
+  {
+   "id": "STG-12",
+   "label": "Mechanical output power",
+   "value": "≥100",
+   "unit": "W",
+   "group": "Dynamics"
+  },
+  {
+   "id": "ACC",
+   "label": "Acceleration, no payload",
+   "value": "≈120",
+   "unit": "m/s²",
+   "group": "Dynamics"
+  },
+  {
+   "id": "STG-13",
+   "label": "Lateral load at carriage centre",
+   "value": "500",
+   "unit": "N",
+   "group": "Load"
+  },
+  {
+   "id": "STG-14",
+   "label": "Mounting grid (base and carriage)",
+   "value": "80",
+   "unit": "mm",
+   "group": "Load"
+  },
+  {
+   "id": "STG-15",
+   "label": "End stops",
+   "value": "4 hydraulic dampers, 18 J emergency",
+   "unit": "",
+   "group": "Load"
+  },
+  {
+   "id": "MOT",
+   "label": "Motor",
+   "value": "Iron-core linear motor, water cooled",
+   "unit": "",
+   "group": "Drive"
+  },
+  {
+   "id": "GUI",
+   "label": "Guides",
+   "value": "2 profile rails, 4 recirculating ball blocks",
+   "unit": "",
+   "group": "Drive"
+  },
+  {
+   "id": "SEAL",
+   "label": "Slot seal",
+   "value": "Stainless strip, magnetic hold-down, 8 rollers",
+   "unit": "",
+   "group": "Drive"
+  }
+ ]
+}
