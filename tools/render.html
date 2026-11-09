@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- Render page for still images. Used by tools/render_stills.cjs, not by the site. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AQTUATOR CS render</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+</script>
+<style>
+  html, body { margin: 0; background: transparent; }
+  #v { position: relative; width: 1600px; height: 1000px; }
+  body.og { width: 1200px; height: 630px; background: #1b1c1d; overflow: hidden; font-family: Outfit, sans-serif; color: #f0f0f0; }
+  body.og #v { position: absolute; right: -90px; top: 40px; width: 860px; height: 600px; }
+  .og-copy { position: absolute; left: 64px; top: 64px; width: 560px; }
+  .og-copy img { width: 150px; }
+  .og-copy h1 { font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; margin: 56px 0 18px; font-weight: 600; }
+  .og-copy h1 span { background: linear-gradient(100deg,#00c175,#00ac99 40%,#009cb6 75%,#0094c6); -webkit-background-clip: text; color: transparent; }
+  .og-copy p { font-size: 24px; color: #a4a9ad; margin: 0; }
+  .og-copy .fig { margin-top: 40px; font-family: "JetBrains Mono", monospace; font-size: 20px; color: #f0f0f0; letter-spacing: .02em; }
+  .og-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(240,240,240,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(240,240,240,.06) 1px, transparent 1px); background-size: 60px 60px; -webkit-mask-image: radial-gradient(ellipse at 75% 55%, #000, transparent 60%); }
+  body:not(.og) .og-copy, body:not(.og) .og-grid { display: none; }
+</style>
+</head>
+<body>
+<div class="og-grid"></div>
+<div class="og-copy">
+  <img src="../assets/img/refaqt-logo.png" alt="">
+  <h1>AQTUATOR CS<br><span>Linear-motor stage</span></h1>
+  <p>60 mm high · sealed · stacks into XY</p>
+  <p class="fig">0.1 µm · 3 m/s · 500 N · 220–600 mm</p>
+</div>
+<div id="v"></div>
+<script type="module">
+  import { Viewer } from '../assets/js/viewer.js';
+  const og = location.hash === '#og';
+  document.body.classList.toggle('og', og);
+  const v = new Viewer(document.getElementById('v'), { controls: false, running: false, autoRotate: false, camera: og ? [0.55, 0.34, 0.6] : [0.6, 0.34, 0.6], target: [0, 0.025, 0] });
+  v.load().then(() => {
+    v.stages[0].setOffset(-0.06);
+    v.stages[0].update();
+    v._tick();
+    setTimeout(() => { document.body.dataset.ready = '1'; }, 1500);
+  });
+</script>
+</body>
+</html>

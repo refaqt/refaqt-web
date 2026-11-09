@@ -1,0 +1,16 @@
+name = "aqtuator-leads"
+main = "src/index.js"
+compatibility_date = "2025-06-01"
+
+[vars]
+# Private repository that holds the leads. The token below needs
+# "Contents: Read and write" on this repository only.
+GITHUB_REPO = "refaqt/refaqt-business"
+GITHUB_BRANCH = "main"
+CSV_PATH = "leads/aqtuator-cs.csv"
+# Comma-separated. Add http://localhost:8765 while testing locally.
+ALLOWED_ORIGINS = "https://refaqt.github.io"
+
+# Secrets (not in this file):
+#   npx wrangler secret put GITHUB_TOKEN
+#   npx wrangler secret put TURNSTILE_SECRET
