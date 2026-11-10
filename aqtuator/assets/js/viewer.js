@@ -40,7 +40,7 @@ function categoryOf(name) {
 }
 
 // Anodised finish of the aluminium parts.
-const FINISH = [['base', 'alu_black'], ['carriage_top', 'alu_black'], ['carriage_bottom', 'alu_green']];
+const FINISH = [['base', 'alu_black'], ['carriage_top', 'alu_black'], ['carriage_bottom', 'alu_black']];
 
 // Better-looking materials than the plain PBR values in the GLB.
 function upgradeMaterial(m) {
@@ -49,7 +49,6 @@ function upgradeMaterial(m) {
     color: m.color, metalness: m.metalness, roughness: m.roughness, envMapIntensity: 1.0,
   });
   if (n === 'alu_black') { mat.color.setHex(0x0b0c0d); mat.metalness = 0.6; mat.roughness = 0.38; mat.clearcoat = 0.35; mat.clearcoatRoughness = 0.4; }
-  if (n === 'alu_green') { mat.color.setHex(0x0b6b45); mat.metalness = 0.6; mat.roughness = 0.36; mat.clearcoat = 0.35; mat.clearcoatRoughness = 0.4; }
   if (n === 'alu_clear') { mat.color.setHex(0xb9bec2); mat.metalness = 1.0; mat.roughness = 0.32; }
   if (n === 'strip') { mat.color.setHex(0xd8dbde); mat.metalness = 1.0; mat.roughness = 0.12; }
   if (n === 'steel') { mat.color.setHex(0xc4c8cc); mat.metalness = 1.0; mat.roughness = 0.2; }
