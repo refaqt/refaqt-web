@@ -14,6 +14,7 @@ address under the site, for example `/aqtuator/`.
 | ---- | ---- |
 | `index.html`, `assets/` | REFAQT home page |
 | `aqtuator/index.html`, `aqtuator/assets/` | AQTUATOR CS product site (published) |
+| `aqtuator/assets/vendor/three/` | Copy of three.js 0.160.0, the 3D library. Served from our own site, not from a CDN |
 | `aqtuator/tools/` | Scripts that make the 3D model, the specifications and the images (not published) |
 | `aqtuator/worker/` | Cloudflare Worker for the early-access form (not published) |
 | `.github/workflows/pages.yml` | Copies the public pages to `_site/` and deploys them to GitHub Pages |

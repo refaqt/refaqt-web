@@ -26,6 +26,17 @@ loadVariants().then(data => {
 function webgl() {
   try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; }
 }
+// A view that cannot start says so, instead of showing the loading bar for ever.
+function failed(el, err) {
+  if (err) console.error(err);
+  if (el.classList.contains('is-failed')) return;
+  el.classList.add('is-failed');
+  if (el.querySelector('.viewer__poster')) return;
+  const p = document.createElement('p');
+  p.className = 'viewer__error';
+  p.textContent = 'The 3D view could not load. Reload the page to try again.';
+  el.append(p);
+}
 function whenNear(el, fn) {
   const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { o.disconnect(); fn(); } }, { rootMargin: '600px' });
   o.observe(el);
@@ -36,7 +47,7 @@ if (webgl()) {
     // Hero
     const heroEl = $('#hero-viewer');
     const hero = new Viewer(heroEl, { camera: [0.6, 0.34, 0.6], target: [0, 0.025, 0] });
-    hero.load().catch(e => console.error(e));
+    hero.load().catch(e => failed(heroEl, e));
     const runChip = document.querySelector('[data-action=run]');
     runChip.classList.toggle('is-active', hero.running);
     runChip.setAttribute('aria-pressed', hero.running);
@@ -52,7 +63,7 @@ if (webgl()) {
     const insideEl = $('#inside-viewer');
     whenNear(insideEl, () => {
       const v = new Viewer(insideEl, { controls: false, running: false, autoRotate: false, camera: [0.6, 0.46, 0.74], target: [0, 0.1, 0], pixelRatio: 1.5 });
-      v.load().then(() => setupInside(v)).catch(e => console.error(e));
+      v.load().then(() => setupInside(v)).catch(e => failed(insideEl, e));
     });
 
     // XY
@@ -60,9 +71,11 @@ if (webgl()) {
     whenNear(xyEl, () => {
       const v = new Viewer(xyEl, { camera: [0.62, 0.5, 0.62], target: [0, 0.05, 0], xy: true, pixelRatio: 1.5 });
       v.controls.minDistance = 0.4;
-      v.load().catch(e => console.error(e));
+      v.load().catch(e => failed(xyEl, e));
     });
-  });
+  }).catch(e => document.querySelectorAll('.viewer').forEach(el => failed(el, e)));
+} else {
+  document.querySelectorAll('.viewer').forEach(el => failed(el));
 }
 
 function setupInside(v) {

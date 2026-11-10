@@ -13,7 +13,7 @@ All paths below start in this folder (`aqtuator/`).
 
 | Path | What |
 | --- | --- |
-| `index.html`, `assets/css/`, `assets/js/` | The site. Plain HTML, CSS and ES modules. No build step. three.js comes from jsDelivr (pinned to 0.160.0). |
+| `index.html`, `assets/css/`, `assets/js/` | The site. Plain HTML, CSS and ES modules. No build step. three.js 0.160.0 is copied into `assets/vendor/three/`, so the site does not need a CDN (content delivery network). |
 | `assets/models/aqtuator-cs.glb` | The 3D model, exported from the real FreeCAD assembly. |
 | `assets/data/variants.json` | Specifications of the six travels. The configurator and the tables read it. |
 | `assets/img/` | Logo, favicon, hero poster and social image (rendered from the model). |
