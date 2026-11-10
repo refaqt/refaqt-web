@@ -3,6 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The import map must come before every module script and every modulepreload link.
+     Firefox ignores an import map that comes later, and then the 3D views cannot load three.js. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./assets/vendor/three/three.module.min.js",
+    "three/addons/": "./assets/vendor/three/addons/"
+  }
+}
+</script>
 <title>AQTUATOR CS · Linear-motor stage by REFAQT</title>
 <meta name="description" content="AQTUATOR CS: a 60 mm high, sealed linear-motor stage with 0.1 µm absolute feedback, 3 m/s and 500 N peak force. Six travels from 220 to 600 mm. Open hardware by REFAQT.">
 <meta name="theme-color" content="#1c1d1e">
@@ -18,14 +28,6 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="modulepreload" href="assets/js/main.js">
 <link rel="preload" href="assets/models/aqtuator-cs.glb" as="fetch" type="model/gltf-binary" crossorigin>
-<script type="importmap">
-{
-  "imports": {
-    "three": "./assets/vendor/three/three.module.min.js",
-    "three/addons/": "./assets/vendor/three/addons/"
-  }
-}
-</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>

@@ -7,3 +7,4 @@ Write entries in B2 English. Follow `.agents/rules/communication.md`.
 | ---- | ----- | ------- | -----: |
 | 2026-11-10 | [Repository renamed to refaqt-web](2026-11-10_repo-renamed-to-refaqt-web.md) | software, marketing |  |
 | 2026-11-10 | [3D views now load without a CDN](2026-11-10_3d-views-self-hosted.md) | software |  |
+| 2026-11-10 | [3D views now work in Firefox](2026-11-10_3d-views-firefox.md) | software |  |
