@@ -42,12 +42,12 @@ CSV columns: `timestamp,email,variant,message,country,user_agent`.
    Wrangler prints the Worker URL, for example
    `https://aqtuator-leads.<subdomain>.workers.dev`.
 4. **Connect the site.** Put the Worker URL and the Turnstile site key in
-   `assets/js/config.js`, commit and push to `main`.
+   `aqtuator/assets/js/config.js`, commit and push to `main`.
 
 ## Test
 
 ```bash
-node worker/test.mjs
+node aqtuator/worker/test.mjs
 ```
 
 The test uses a fake GitHub API. It checks the CSV escaping (quotes, line

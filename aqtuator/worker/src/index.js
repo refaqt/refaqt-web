@@ -92,7 +92,7 @@ export async function appendRow(env, row, attempts = 4) {
     Authorization: `Bearer ${env.GITHUB_TOKEN}`,
     Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
-    'User-Agent': 'aqtuator-web-leads',
+    'User-Agent': 'refaqt-web-leads',
   };
   for (let i = 0; i < attempts; i++) {
     const get = await fetch(`${api}?ref=${encodeURIComponent(branch)}`, { headers });

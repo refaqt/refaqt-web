@@ -167,7 +167,7 @@ def write_glb(path, objects):
         nodes.append({"name": name, "mesh": len(meshes) - 1})
 
     gltf = {
-        "asset": {"version": "2.0", "generator": "aqtuator-web tools/export_glb.py"},
+        "asset": {"version": "2.0", "generator": "refaqt-web aqtuator/tools/export_glb.py"},
         "scene": 0,
         "scenes": [{"nodes": list(range(len(nodes)))}],
         "nodes": nodes, "meshes": meshes, "materials": materials,

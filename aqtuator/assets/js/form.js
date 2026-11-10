@@ -1,4 +1,4 @@
-// Early-access form. Posts JSON to the Worker in worker/, which appends a row
+// Early-access form. Posts JSON to the Worker in aqtuator/worker/, which appends a row
 // to a CSV file in a private repository. The site itself never sees a token.
 import { CONFIG } from './config.js';
 

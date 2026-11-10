@@ -1,0 +1,7 @@
+[submodule ".agents"]
+	path = .agents
+	url = https://github.com/refaqt/refaqt-agents.git
+	branch = main
+	# Tracks main, so every session moves it ahead of the recorded pin.
+	# "ignore = all" keeps that expected move out of "git status". See AGENTS.md.
+	ignore = all

@@ -1,0 +1,8 @@
+---
+description: Shared living-docs rule from refaqt-agents
+alwaysApply: true
+---
+
+# living-docs
+
+Follow [`.agents/rules/living-docs.md`](../../.agents/rules/living-docs.md).

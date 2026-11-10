@@ -1,0 +1,8 @@
+---
+description: Shared communication rule from refaqt-agents
+alwaysApply: true
+---
+
+# communication
+
+Follow [`.agents/rules/communication.md`](../../.agents/rules/communication.md).
