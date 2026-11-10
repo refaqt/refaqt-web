@@ -141,6 +141,8 @@ p { margin: 0; }
 .viewer__loading span { position: absolute; inset: 0; width: 40%; background: var(--grad); animation: load 1.2s ease-in-out infinite; }
 @keyframes load { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
 .viewer.is-ready .viewer__loading { opacity: 0; }
+.viewer.is-failed .viewer__loading { display: none; }
+.viewer__error { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; padding: 24px; text-align: center; font-size: 14px; color: var(--faint); }
 .viewer__controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; justify-content: flex-end; }
 .viewer__hint { font-size: 13px; color: var(--faint); margin-left: 8px; }
 @media (max-width: 600px) { .viewer__hint { display: none; } .viewer__controls { justify-content: flex-start; } }
