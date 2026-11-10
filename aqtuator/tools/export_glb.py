@@ -24,6 +24,7 @@ ANGULAR_DEFLECTION = math.radians(12)
 # name -> (base colour RGBA, metallic, roughness)
 MATERIALS = {
     "alu_black": ((0.035, 0.037, 0.040, 1.0), 0.55, 0.42),   # black anodised aluminium
+    "alu_green": ((0.02, 0.30, 0.15, 1.0), 0.55, 0.40),   # green anodised aluminium
     "alu_clear": ((0.62, 0.64, 0.66, 1.0), 0.95, 0.30),      # clear anodised aluminium
     "steel": ((0.70, 0.71, 0.72, 1.0), 1.0, 0.22),          # ground rail steel
     "steel_dark": ((0.22, 0.23, 0.24, 1.0), 1.0, 0.38),     # blackened steel / screws
@@ -44,9 +45,9 @@ def material_for(name):
     if n == "base":
         return "alu_black"
     if n.startswith("carriage_top"):
-        return "alu_clear"
-    if n.startswith("carriage_bottom"):
         return "alu_black"
+    if n.startswith("carriage_bottom"):
+        return "alu_green"
     if n.startswith("sealing_strip"):
         return "strip"
     if n.startswith("egr"):

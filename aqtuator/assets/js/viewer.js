@@ -39,6 +39,9 @@ function categoryOf(name) {
   return CATEGORIES[0];
 }
 
+// Anodised finish of the aluminium parts.
+const FINISH = [['base', 'alu_black'], ['carriage_top', 'alu_black'], ['carriage_bottom', 'alu_green']];
+
 // Better-looking materials than the plain PBR values in the GLB.
 function upgradeMaterial(m) {
   const n = m.name;
@@ -46,6 +49,7 @@ function upgradeMaterial(m) {
     color: m.color, metalness: m.metalness, roughness: m.roughness, envMapIntensity: 1.0,
   });
   if (n === 'alu_black') { mat.color.setHex(0x0b0c0d); mat.metalness = 0.6; mat.roughness = 0.38; mat.clearcoat = 0.35; mat.clearcoatRoughness = 0.4; }
+  if (n === 'alu_green') { mat.color.setHex(0x0b6b45); mat.metalness = 0.6; mat.roughness = 0.36; mat.clearcoat = 0.35; mat.clearcoatRoughness = 0.4; }
   if (n === 'alu_clear') { mat.color.setHex(0xb9bec2); mat.metalness = 1.0; mat.roughness = 0.32; }
   if (n === 'strip') { mat.color.setHex(0xd8dbde); mat.metalness = 1.0; mat.roughness = 0.12; }
   if (n === 'steel') { mat.color.setHex(0xc4c8cc); mat.metalness = 1.0; mat.roughness = 0.2; }
@@ -84,8 +88,10 @@ export function loadTemplate(onProgress) {
       g.setIndex(o.geometry.index ? o.geometry.index.clone() : null);
       g.applyMatrix4(o.matrixWorld);
       g.computeBoundingBox();
-      if (!mats.has(o.material)) mats.set(o.material, upgradeMaterial(o.material));
-      parts.push({ name, geometry: g, material: mats.get(o.material) });
+      // Finish by part name, so the colours do not depend on an old export.
+      const finish = FINISH.find(f => name.startsWith(f[0]))?.[1] || o.material.name;
+      if (!mats.has(finish)) mats.set(finish, upgradeMaterial(Object.assign(o.material.clone(), { name: finish })));
+      parts.push({ name, geometry: g, material: mats.get(finish) });
     });
     // The seal strip lifts over the rollers inside the carriage. When the carriage
     // moves, that lift must move with it: a flat copy stays on the base, and the
@@ -127,6 +133,7 @@ export class Stage {
         const flat = new THREE.Mesh(p.flat, p.material.clone());
         const lift = new THREE.Mesh(p.geometry, p.material.clone());
         lift.material.clippingPlanes = this.clip;
+        lift.material.clipShadows = true;   // else the cut-off ends still cast a shadow
         this._add(flat, this.model, cat, p.name);
         this._add(lift, this.carriage, cat, p.name + '_lift');
         continue;
