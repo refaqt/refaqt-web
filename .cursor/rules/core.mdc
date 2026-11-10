@@ -1,0 +1,8 @@
+---
+description: Shared core rule from refaqt-agents
+alwaysApply: true
+---
+
+# core
+
+Follow [`.agents/rules/core.md`](../../.agents/rules/core.md).

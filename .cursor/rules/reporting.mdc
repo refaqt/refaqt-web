@@ -1,0 +1,8 @@
+---
+description: Shared reporting rule from refaqt-agents
+alwaysApply: true
+---
+
+# reporting
+
+Follow [`.agents/rules/reporting.md`](../../.agents/rules/reporting.md).

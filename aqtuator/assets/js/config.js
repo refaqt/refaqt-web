@@ -1,4 +1,4 @@
-// Site settings. Fill these in after deploying the Worker (see worker/README.md).
+// Site settings. Fill these in after deploying the Worker (see aqtuator/worker/README.md).
 export const CONFIG = {
   // URL of the Cloudflare Worker that stores early-access requests,
   // for example 'https://aqtuator-leads.<your-subdomain>.workers.dev'.

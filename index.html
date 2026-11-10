@@ -3,356 +3,44 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AQTUATOR CS · Linear-motor stage by REFAQT</title>
-<meta name="description" content="AQTUATOR CS: a 60 mm high, sealed linear-motor stage with 0.1 µm absolute feedback, 3 m/s and 500 N peak force. Six travels from 220 to 600 mm. Open hardware by REFAQT.">
+<title>REFAQT · Open hardware for machine builders</title>
+<meta name="description" content="REFAQT designs open hardware for precision machines. Our first product is AQTUATOR CS, a sealed linear-motor stage.">
 <meta name="theme-color" content="#1c1d1e">
-<meta property="og:title" content="AQTUATOR CS · Linear-motor stage by REFAQT">
-<meta property="og:description" content="60 mm high. Sealed. 0.1 µm absolute feedback, 3 m/s, 500 N peak. Travels 220–600 mm.">
-<meta property="og:image" content="assets/img/og.png">
+<meta property="og:title" content="REFAQT · Open hardware for machine builders">
+<meta property="og:description" content="Open hardware for precision machines. First product: AQTUATOR CS, a sealed linear-motor stage.">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="modulepreload" href="assets/js/main.js">
-<link rel="preload" href="assets/models/aqtuator-cs.glb" as="fetch" type="model/gltf-binary" crossorigin>
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
-
-<header class="nav" id="nav">
-  <div class="nav__inner">
-    <a class="brand" href="#top" aria-label="AQTUATOR CS by REFAQT, back to top">
-      <img src="assets/img/refaqt-logo.png" alt="REFAQT" width="120" height="30">
-      <span class="brand__product">AQTUATOR <b>CS</b></span>
-    </a>
-    <nav class="nav__links" aria-label="Sections">
-      <a href="#why">Why</a>
-      <a href="#inside">Inside</a>
-      <a href="#configure">Configure</a>
-      <a href="#specs">Specs</a>
-      <a href="#xy">XY</a>
-      <a href="#open">Open</a>
-    </nav>
-    <a class="btn btn--primary btn--sm" href="#early-access">Early access</a>
-  </div>
+<header class="top">
+  <a href="./" aria-label="REFAQT home"><img src="assets/img/refaqt-logo.png" alt="REFAQT" width="128" height="32"></a>
+  <nav aria-label="Main"><a href="aqtuator/">AQTUATOR</a><a href="https://github.com/refaqt" rel="noopener">GitHub</a></nav>
 </header>
 
-<main id="main">
+<main>
+  <section class="hero">
+    <p class="eyebrow">Open hardware</p>
+    <h1>Precision machine parts,<br><span class="grad">open by design.</span></h1>
+    <p class="lead">REFAQT designs motion hardware for machine builders. Every drawing, model and requirement is public, so you can check it, build it and improve it.</p>
+  </section>
 
-<!-- ============================== HERO ============================== -->
-<section class="hero" id="top">
-  <div class="hero__glow" aria-hidden="true"></div>
-  <div class="hero__grid" aria-hidden="true"></div>
-  <div class="hero__copy">
-    <p class="eyebrow"><span class="dot"></span> Linear-motor stage · Early access open</p>
-    <h1>Direct drive.<br><span class="grad">Sub-micron.</span><br>60&nbsp;mm high.</h1>
-    <p class="lead">AQTUATOR CS puts an iron-core linear motor, an absolute 0.1&nbsp;µm encoder and a sealed slot into a stage you can stack into an XY table. No screw, no belt, no backlash, nothing to wear out in the drive.</p>
-    <div class="hero__cta">
-      <a class="btn btn--primary" href="#early-access">Join early access</a>
-      <a class="btn btn--ghost" href="#configure">Configure your travel →</a>
-    </div>
-  </div>
-
-  <div class="hero__stage">
-    <div class="viewer" id="hero-viewer" data-mode="hero">
-      <img class="viewer__poster" src="assets/img/hero.png" alt="Render of the AQTUATOR CS linear stage: black anodised base, clear aluminium carriage, stainless seal strip" width="1600" height="1000">
-      <div class="viewer__loading" aria-hidden="true"><span></span></div>
-    </div>
-    <div class="viewer__controls" role="group" aria-label="3D view controls">
-      <button class="chip is-active" data-action="run" aria-pressed="true">Run</button>
-      <button class="chip" data-action="explode" aria-pressed="false">Explode</button>
-      <button class="chip" data-action="reset">Reset view</button>
-      <span class="viewer__hint">Drag to orbit · scroll to zoom</span>
-    </div>
-  </div>
-
-  <dl class="figures">
-    <div><dt>Encoder step</dt><dd><span class="num">0.1</span><span class="unit">µm</span></dd></div>
-    <div><dt>Repeatability</dt><dd><span class="num">±0.1</span><span class="unit">µm</span></dd></div>
-    <div><dt>Speed</dt><dd><span class="num">3</span><span class="unit">m/s</span></dd></div>
-    <div><dt>Peak force</dt><dd><span class="num">500</span><span class="unit">N</span></dd></div>
-    <div><dt>Height</dt><dd><span class="num">60</span><span class="unit">mm</span></dd></div>
-  </dl>
-</section>
-
-<!-- ============================== WHY ============================== -->
-<section class="section" id="why">
-  <div class="section__head">
-    <p class="eyebrow">Why AQTUATOR CS</p>
-    <h2>The performance of a big linear-motor stage. <span class="grad">The size of a compact one.</span></h2>
-    <p class="section__lead">Most fast, accurate stages are tall, open or closed-source. Most compact stages use a screw or a belt. We wanted all of the good parts in one 210&nbsp;×&nbsp;60&nbsp;mm section.</p>
-  </div>
-
-  <div class="pillars">
-    <article class="pillar">
-      <svg class="pillar__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 30h36M6 30l6-12h24l6 12M14 30v8M34 30v8" /><path d="M18 18l3-8h6l3 8"/></svg>
-      <h3>Direct drive, nothing to wear</h3>
-      <p>An iron-core linear motor pushes the carriage directly. There is no ball screw, belt or coupling. So there is no backlash, no wind-up and no screw whip at speed.</p>
-      <p class="pillar__fig"><b>180 N</b> continuous · <b>500 N</b> peak · <b>3 m/s</b></p>
-    </article>
-    <article class="pillar">
-      <svg class="pillar__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 34h36"/><path d="M10 34v-6M16 34v-4M22 34v-6M28 34v-4M34 34v-6M40 34v-4"/><circle cx="24" cy="16" r="6"/><path d="M24 22v6"/></svg>
-      <h3>Sub-micron, absolute</h3>
-      <p>An absolute steel-tape encoder reads the carriage directly, with a 0.1&nbsp;µm step. No homing run at start-up. The position loop sees the carriage, not the motor.</p>
-      <p class="pillar__fig"><b>±0.1 µm</b> repeatability · <b>±5 µm</b> without mapping</p>
-    </article>
-    <article class="pillar">
-      <svg class="pillar__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="18" width="36" height="16" rx="2"/><path d="M6 24h36"/><path d="M18 18v-4h12v4"/></svg>
-      <h3>60 mm high, sealed</h3>
-      <p>A stainless strip closes the slot over the whole travel. Magnets hold it flat, and eight rollers lift it through the carriage. Chips and dust stay out of the guides and the motor.</p>
-      <p class="pillar__fig"><b>210 × 60 mm</b> section · strip seal</p>
-    </article>
-    <article class="pillar">
-      <svg class="pillar__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="26" width="32" height="12" rx="2"/><rect x="18" y="10" width="12" height="28" rx="2"/></svg>
-      <h3>Stacks into XY</h3>
-      <p>The base and the carriage share one 80&nbsp;mm screw grid. Turn a second stage 90° and screw it on: you have a cross table. No adapter plate.</p>
-      <p class="pillar__fig"><b>80 mm</b> grid · M5 · two stages = XY</p>
-    </article>
-    <article class="pillar">
-      <svg class="pillar__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6c6 8 10 13 10 19a10 10 0 0 1-20 0c0-6 4-11 10-19z"/><path d="M19 27a5 5 0 0 0 5 5"/></svg>
-      <h3>Cool and safe by design</h3>
-      <p>Water cools the forcer through the carriage, so the heat stays out of your part. Four hydraulic dampers catch a runaway carriage at full force.</p>
-      <p class="pillar__fig"><b>Water-cooled</b> forcer · <b>18 J</b> end stops</p>
-    </article>
-    <article class="pillar">
-      <svg class="pillar__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M16 14l-10 10 10 10M32 14l10 10-10 10M27 10l-6 28"/></svg>
-      <h3>Open hardware</h3>
-      <p>CAD, requirements and simulations are public under CERN-OHL-S. You can check every number, service the stage yourself and design around it. No lock-in.</p>
-      <p class="pillar__fig"><b>CERN-OHL-S-2.0</b> · FreeCAD · SysML v2</p>
-    </article>
-  </div>
-</section>
-
-<!-- ============================== INSIDE ============================== -->
-<section class="section section--inside" id="inside">
-  <div class="inside">
-    <div class="inside__copy">
-      <p class="eyebrow">Inside the stage</p>
-      <h2>Every part has a <span class="grad">reason.</span></h2>
-      <p class="section__lead">Scroll to take the stage apart. This is the real CAD model, not an illustration.</p>
-      <ol class="parts" id="parts-list">
-        <li data-part="base"><b>Base</b> Black anodised aluminium. Two 40&nbsp;mm contact strips, so it does not rock on a machine table.</li>
-        <li data-part="stator"><b>Magnet track</b> Iron-core linear motor stator, screwed into the base.</li>
-        <li data-part="rails"><b>Profile rails</b> Two 15&nbsp;mm ball rails with four quiet recirculating blocks.</li>
-        <li data-part="encoder"><b>Absolute encoder</b> Steel-tape scale on the base wall, read head on the carriage. 0.1&nbsp;µm step, BiSS&nbsp;C.</li>
-        <li data-part="forcer"><b>Forcer</b> The coil part of the motor: 181&nbsp;N continuous, 512&nbsp;N peak.</li>
-        <li data-part="carriage"><b>Carriage</b> Two halves. The strip runs between them, over eight rollers.</li>
-        <li data-part="strip"><b>Seal strip</b> 0.15&nbsp;mm stainless, held flat by magnets. Closes the slot over the full travel.</li>
-        <li data-part="cooling"><b>Cooling</b> A water channel over the forcer, with push-in fittings for 4&nbsp;mm hose.</li>
-        <li data-part="dampers"><b>End stops</b> Four hydraulic dampers in the carriage, sized for a runaway at full motor force.</li>
-      </ol>
-    </div>
-    <div class="inside__stage">
-      <div class="inside__sticky">
-        <div class="viewer viewer--inside" id="inside-viewer" data-mode="inside">
-          <div class="viewer__loading" aria-hidden="true"><span></span></div>
-          <div class="labels" id="inside-labels" aria-hidden="true"></div>
-        </div>
-        <div class="progress" aria-hidden="true"><span id="explode-progress"></span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================== CONFIGURE ============================== -->
-<section class="section" id="configure">
-  <div class="section__head">
-    <p class="eyebrow">Configure</p>
-    <h2>Pick your travel. <span class="grad">Everything else follows.</span></h2>
-    <p class="section__lead">Six travels from 220 to 600&nbsp;mm. The section, the motor and the accuracy stay the same; only the length changes.</p>
-  </div>
-
-  <div class="config">
-    <div class="config__panel">
-      <label class="config__label" for="travel">Travel</label>
-      <div class="config__value"><span id="cfg-travel" class="num">220</span><span class="unit">mm</span></div>
-      <input type="range" id="travel" min="0" max="5" step="1" value="0" list="travel-ticks" aria-valuetext="220 mm">
-      <div class="ticks" id="travel-ticks-labels" aria-hidden="true"></div>
-
-      <dl class="config__specs" id="cfg-specs"></dl>
-
-      <div class="config__actions">
-        <a class="btn btn--primary" id="cfg-request" href="#early-access">Request CS-220</a>
-        <button class="btn btn--ghost" id="cfg-print" type="button">Print spec sheet</button>
-      </div>
-    </div>
-    <figure class="config__drawing">
-      <svg id="drawing" role="img" aria-labelledby="drawing-title"><title id="drawing-title">Top view of the selected stage with dimensions</title></svg>
-      <figcaption>Top view, to scale. Base holes: M5 clearance on the 80&nbsp;mm grid.</figcaption>
-    </figure>
-  </div>
-</section>
-
-<!-- ============================== SPECS ============================== -->
-<section class="section" id="specs">
-  <div class="section__head">
-    <p class="eyebrow">Specifications</p>
-    <h2>Every number traces to a <span class="grad">requirement.</span></h2>
-    <p class="section__lead">The codes (STG-xx) link each value to its requirement in the open SysML model. <span class="badge">Design targets</span> The first stages are in build; measured values will replace these targets.</p>
-  </div>
-
-  <div class="table-wrap" tabindex="0" role="region" aria-label="Specifications per travel">
-    <table class="spec" id="spec-variants">
-      <caption class="sr-only">Specifications that change with travel</caption>
-    </table>
-  </div>
-
-  <div class="spec-groups" id="spec-common"></div>
-  <p class="footnote">Mass, rail, magnet-track and encoder lengths for travels other than 220&nbsp;mm are scaled from the 220&nbsp;mm CAD model. The 3&nbsp;m/s top speed is the design target; the speed limit set in the drive depends on the payload (end-stop energy, STG-15).</p>
-</section>
-
-<!-- ============================== XY ============================== -->
-<section class="section section--xy" id="xy">
-  <div class="xy">
-    <div class="xy__stage">
-      <div class="viewer viewer--xy" id="xy-viewer" data-mode="xy">
-        <div class="viewer__loading" aria-hidden="true"><span></span></div>
-      </div>
-    </div>
-    <div class="xy__copy">
-      <p class="eyebrow">Cross table</p>
-      <h2>Two stages. <span class="grad">One XY table.</span><br>Zero adapter plates.</h2>
-      <p class="section__lead">The outer rows of the carriage holes sit 200&nbsp;mm apart, exactly like the rows of the base holes. Turn the upper stage 90°, put twelve M5 screws in, done.</p>
-      <ul class="ticks-list">
-        <li>Same 80&nbsp;mm grid on base and carriage</li>
-        <li>120&nbsp;mm total height for X and Y</li>
-        <li>Mix travels: for example CS-440 under CS-280</li>
-        <li>0.5&nbsp;mm relief on both faces: only the screw areas touch</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ============================== COMPARE ============================== -->
-<section class="section" id="compare">
-  <div class="section__head">
-    <p class="eyebrow">Compare</p>
-    <h2>How it stacks up.</h2>
-    <p class="section__lead">Typical values for compact stages of the same size class.</p>
-  </div>
-  <div class="table-wrap" tabindex="0" role="region" aria-label="Comparison with typical stages">
-    <table class="compare">
-      <thead>
-        <tr><th scope="col"></th><th scope="col" class="is-us">AQTUATOR CS</th><th scope="col">Typical ball-screw stage</th><th scope="col">Typical belt stage</th></tr>
-      </thead>
-      <tbody>
-        <tr><th scope="row">Drive</th><td class="is-us">Iron-core linear motor, direct</td><td>Motor, coupling, screw, nut</td><td>Motor, pulleys, toothed belt</td></tr>
-        <tr><th scope="row">Top speed</th><td class="is-us"><b>3 m/s</b></td><td>0.1 – 0.5 m/s (screw whip)</td><td>2 – 5 m/s</td></tr>
-        <tr><th scope="row">Backlash</th><td class="is-us"><b>None</b></td><td>Low with preload</td><td>Belt stretch and play</td></tr>
-        <tr><th scope="row">Feedback</th><td class="is-us"><b>Absolute linear, 0.1 µm, at the carriage</b></td><td>Usually rotary at the motor</td><td>Usually rotary at the motor</td></tr>
-        <tr><th scope="row">Repeatability</th><td class="is-us"><b>±0.1 µm</b></td><td>±1 – 5 µm</td><td>±10 – 50 µm</td></tr>
-        <tr><th scope="row">Wear in the drive</th><td class="is-us"><b>None</b></td><td>Screw and nut</td><td>Belt</td></tr>
-        <tr><th scope="row">Sealed slot</th><td class="is-us"><b>Stainless strip</b></td><td>Sometimes</td><td>Sometimes</td></tr>
-        <tr><th scope="row">XY without adapter</th><td class="is-us"><b>Yes, 80 mm grid</b></td><td>Rarely</td><td>Rarely</td></tr>
-        <tr><th scope="row">Design files</th><td class="is-us"><b>Open (CERN-OHL-S)</b></td><td>Closed</td><td>Closed</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ============================== APPLICATIONS ============================== -->
-<section class="section" id="applications">
-  <div class="section__head">
-    <p class="eyebrow">Applications</p>
-    <h2>Built for machines that <span class="grad">measure, cut and place.</span></h2>
-  </div>
-  <div class="apps">
-    <article class="app"><span class="app__n">01</span><h3>Laser micromachining</h3><p>Fast, smooth scans with no ripple from a screw. Sealed against debris.</p></article>
-    <article class="app"><span class="app__n">02</span><h3>Metrology and inspection</h3><p>Absolute position at the carriage, 0.1&nbsp;µm step, no homing after power-up.</p></article>
-    <article class="app"><span class="app__n">03</span><h3>Photonics and alignment</h3><p>Sub-micron repeatability in a stack low enough for a microscope or a fibre bench.</p></article>
-    <article class="app"><span class="app__n">04</span><h3>Precision machining</h3><p>500&nbsp;N peak force and a stiff, direct drive for light cutting and grinding axes.</p></article>
-    <article class="app"><span class="app__n">05</span><h3>Pick-and-place, test</h3><p>3&nbsp;m/s and high acceleration with no belt to stretch or screw to wear.</p></article>
-    <article class="app"><span class="app__n">06</span><h3>Research labs</h3><p>Open CAD and requirements: change it, mount it, publish with it.</p></article>
-  </div>
-</section>
-
-<!-- ============================== OPEN ============================== -->
-<section class="section section--open" id="open">
-  <div class="open">
-    <div>
-      <p class="eyebrow">Open hardware</p>
-      <h2>Check our work. <span class="grad">All of it.</span></h2>
-      <p class="section__lead">The design of AQTUATOR CS is public. Requirements in SysML&nbsp;v2, parametric parts in FreeCAD, and the simulations behind each design choice. Buy a ready, tested stage from us, or study and adapt the design under the CERN Open Hardware Licence.</p>
-      <div class="hero__cta">
-        <a class="btn btn--ghost" href="https://github.com/refaqt/aqtuator/tree/main/modules/compact-stage" rel="noopener">View the design on GitHub →</a>
-      </div>
-    </div>
-    <ul class="open__list">
-      <li><a href="https://github.com/refaqt/aqtuator/blob/main/modules/compact-stage/architecture/compact-stage.sysml" rel="noopener"><b>Requirements</b><span>STG-01 to STG-15 and every interface, in SysML v2</span></a></li>
-      <li><a href="https://github.com/refaqt/aqtuator/tree/main/modules/compact-stage/cad" rel="noopener"><b>CAD</b><span>FreeCAD parts and assembly, driven by one parameter table</span></a></li>
-      <li><a href="https://github.com/refaqt/aqtuator/tree/main/modules/compact-stage/simulation" rel="noopener"><b>Simulation</b><span>Carriage bending, strip seal fit, strip pull, scraper fit</span></a></li>
-      <li><a href="https://github.com/refaqt/aqtuator/blob/main/modules/compact-stage/bom/bom.csv" rel="noopener"><b>Bill of materials</b><span>Every bought part, with its maker and part number</span></a></li>
-    </ul>
-  </div>
-</section>
-
-<!-- ============================== EARLY ACCESS ============================== -->
-<section class="section section--cta" id="early-access">
-  <div class="cta">
-    <div class="cta__copy">
-      <p class="eyebrow">Early access</p>
-      <h2>Be first on the <span class="grad">first stages.</span></h2>
-      <p class="section__lead">We are building the first series now. Tell us what you want to move, how far and how fast. We reply in person, and early-access customers get first delivery and a say in the final specification.</p>
-      <ul class="ticks-list">
-        <li>No newsletter. One reply from an engineer.</li>
-        <li>Your details stay private and are never shared.</li>
-      </ul>
-    </div>
-    <form class="form" id="lead-form" novalidate>
-      <div class="field">
-        <label for="f-email">Email</label>
-        <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com">
-      </div>
-      <div class="field">
-        <label for="f-variant">Travel</label>
-        <select id="f-variant" name="variant">
-          <option value="">Not sure yet</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="f-message">Message</label>
-        <textarea id="f-message" name="message" rows="5" maxlength="2000" required placeholder="Your application, payload, speed, quantity…"></textarea>
-      </div>
-      <div class="field field--hp" aria-hidden="true">
-        <label for="f-website">Website</label>
-        <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
-      </div>
-      <div class="turnstile" id="turnstile"></div>
-      <button class="btn btn--primary btn--block" type="submit">Join early access</button>
-      <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
-    </form>
-  </div>
-</section>
+  <section class="products" aria-labelledby="products-title">
+    <h2 id="products-title">Products</h2>
+    <a class="card" href="aqtuator/">
+      <span class="card__tag">Linear-motor stage</span>
+      <span class="card__name">AQTUATOR <b>CS</b></span>
+      <span class="card__text">60 mm high and sealed. 0.1 µm absolute feedback, 3 m/s, 500 N peak. Travels from 220 to 600 mm.</span>
+      <span class="card__more">See the stage →</span>
+    </a>
+  </section>
 </main>
 
-<footer class="footer">
-  <div class="footer__inner">
-    <div>
-      <img src="assets/img/refaqt-logo.png" alt="REFAQT" width="112" height="28">
-      <p>Take manufacturing into your own hands.</p>
-    </div>
-    <div class="footer__small">
-      <p>Hardware: CERN-OHL-S-2.0 · Software: GPL-3.0 · Docs and media: CC BY-SA 4.0.</p>
-      <p>REFAQT and AQTUATOR are trademarks of REFAQT. Specifications are design targets and can change.</p>
-      <p>© <span id="year">2026</span> REFAQT</p>
-    </div>
-  </div>
+<footer class="foot">
+  <p>© REFAQT. REFAQT and AQTUATOR are trademarks of REFAQT.</p>
 </footer>
-
-<!-- Printed only: the spec sheet for the selected variant -->
-<section class="sheet" id="sheet" aria-hidden="true"></section>
-
-<script type="module" src="assets/js/main.js"></script>
 </body>
 </html>

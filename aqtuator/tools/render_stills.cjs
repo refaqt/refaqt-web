@@ -1,7 +1,7 @@
 // Render the still images of the site from the real 3D model.
-//   python3 -m http.server 8765   (in the repository root)
-//   node tools/render_stills.cjs
-// Needs Playwright with Chromium. Writes assets/img/hero.png and assets/img/og.png.
+//   python3 -m http.server 8765   (in the root of refaqt-web)
+//   node aqtuator/tools/render_stills.cjs
+// Needs Playwright with Chromium. Writes aqtuator/assets/img/hero.png and og.png.
 const path = require('path');
 const { chromium } = require('playwright');
 
@@ -17,7 +17,7 @@ const URL = process.env.SITE_URL || 'http://localhost:8765';
   ];
   for (const s of shots) {
     const page = await browser.newPage({ viewport: s.viewport, deviceScaleFactor: 1, reducedMotion: 'reduce' });
-    await page.goto(`${URL}/tools/render.html${s.hash}`);
+    await page.goto(`${URL}/aqtuator/tools/render.html${s.hash}`);
     await page.waitForSelector('body[data-ready="1"]', { timeout: 120000 });
     await page.screenshot({ path: path.join(ROOT, 'assets/img', s.file), omitBackground: s.transparent, timeout: 120000 });
     console.log('wrote', s.file);

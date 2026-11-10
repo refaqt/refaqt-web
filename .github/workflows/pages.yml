@@ -24,8 +24,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Collect the site files
         run: |
-          mkdir _site
+          # Only the public pages. aqtuator/tools and aqtuator/worker stay out.
+          mkdir -p _site/aqtuator
           cp -r index.html assets _site/
+          cp -r aqtuator/index.html aqtuator/assets _site/aqtuator/
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

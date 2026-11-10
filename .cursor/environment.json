@@ -1,0 +1,4 @@
+{
+  "name": "refaqt-web",
+  "install": "bash .claude/hooks/session-start.sh"
+}
