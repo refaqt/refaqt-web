@@ -105,18 +105,13 @@ export function viewBoxFor(v, maxL) {
 }
 
 function variantRows(v) {
-  const segs = Object.entries(v.magnet_track_segments).map(([len, n]) => `${n}×${len}`).join(' + ');
   return [
     ['Travel', u(v.travel_mm, 'mm')],
-    ['Positioning accuracy, no mapping', u(`±${fmt(v.accuracy_um, 1)}`, 'µm')],
     ['Overall length', u(v.length_mm, 'mm')],
     ['Width × height', u('210 × 60', 'mm')],
     ['Total mass (est.)', u(fmt(v.total_mass_kg, 1), 'kg')],
     ['Moving mass (est.)', u(fmt(v.moving_mass_kg, 1), 'kg')],
     ['Base screws (M5)', `${v.base_screws}`],
-    ['Guide rail length', u(v.rail_length_mm, 'mm')],
-    ['Magnet track', `${u(v.magnet_track_mm, 'mm')}<br><small style="color:var(--faint)">${segs}</small>`],
-    ['Encoder measuring length', u(v.encoder_measuring_length_mm, 'mm')],
   ];
 }
 
@@ -160,11 +155,10 @@ export function initConfigurator(data, { onSelect } = {}) {
     specsEl.innerHTML = [
       ['Model', v.model],
       ['Length', u(v.length_mm, 'mm')],
-      ['Accuracy, no mapping', u(`±${fmt(v.accuracy_um, 1)}`, 'µm')],
+      ['Accuracy, no mapping', u(`±${fmt(v.accuracy_um)}`, 'µm')],
       ['Mass (est.)', u(fmt(v.total_mass_kg, 1), 'kg')],
+      ['Stationary mass (est.)', u(fmt(v.stationary_mass_kg, 1), 'kg')],
       ['Base screws', `${v.base_screws} × M5`],
-      ['Rail length', u(v.rail_length_mm, 'mm')],
-      ['Encoder length', u(v.encoder_measuring_length_mm, 'mm')],
     ].map(([k, val]) => `<div><dt>${k}</dt><dd class="${first ? '' : 'flash'}">${val}</dd></div>`).join('');
     svg.setAttribute('viewBox', viewBoxFor(v, maxL));
     svg.innerHTML = `<title id="drawing-title">Top view of ${v.model}: ${v.length_mm} mm long, ${v.travel_mm} mm travel</title>` + drawingMarkup(v, { carriageId: 'dwg-carriage', maxL });
@@ -213,5 +207,5 @@ function buildSheet(v, data) {
     <table><tbody>${rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join('')}</tbody></table>
     <h2>All models</h2>
     <table><tbody>${data.common.map(c => `<tr><th>${c.label}</th><td>${c.value} ${c.unit}</td></tr>`).join('')}</tbody></table>
-    <p class="sheet__note">${data.status} Positioning accuracy without mapping: ±15 µm per metre of travel, but never better than ±5 µm. Mass, rail, magnet-track and encoder lengths for travels other than 220 mm are estimates, scaled from the 220 mm design. Open design files: github.com/refaqt/aqtuator · ${location.href.split('#')[0]}</p>`;
+    <p class="sheet__note">${data.status} Positioning accuracy without mapping: ±15 µm for every travel. Masses for travels other than 220 mm are estimates, scaled from the 220 mm design. Open design files: github.com/refaqt/aqtuator · ${location.href.split('#')[0]}</p>`;
 }

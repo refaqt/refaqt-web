@@ -72,14 +72,12 @@ screws are left out; that is fine for the site.
   says 3 m/s.
 - Force: the MAXWELL MK21 forcer in the `stoq` parts library: 181 N
   continuous, 512 N peak for 1 s.
-- Positioning accuracy without mapping: ±15 µm per metre of travel, from
-  RSF, the encoder maker, but never better than ±5 µm. `tools/variants.py`
-  works it out per travel.
+- Positioning accuracy without mapping: ±15 µm, the same for every travel.
 - End stops: four ACE TUBUS TA17-7 elastomer dampers, 9 J each in an
   emergency stop, so 18 J per end.
 - Length per travel: `STG-03` (length = travel + 340 mm − 2 × height), which
   gives 440 mm for the 220 mm build in the CAD.
-- Rail length, magnet track, encoder length, base screws and mass: scaled from
+- Base screws and mass: scaled from
   the 220 mm CAD model by `tools/variants.py`. Check them when a longer stage is
   drawn.
 
