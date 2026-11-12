@@ -68,6 +68,16 @@ Do this only when the site is ready.
 
 ## Licences
 
-Site code: see [`LICENSE`](LICENSE). The AQTUATOR model and renders come from the
-AQTUATOR hardware design (CERN-OHL-S-2.0). REFAQT and AQTUATOR are trademarks
-of REFAQT.
+Copyright © 2025–2026 Refaqt (BE 0804.145.539) and contributors. Contributions are accepted
+under the [Refaqt Contributor Licence Agreement](https://github.com/refaqt/.github/blob/main/CLA.md).
+
+The site (code, text and images) is licensed under the Creative Commons
+Attribution-ShareAlike 4.0 International licence (CC BY-SA 4.0). See [`LICENSE`](LICENSE).
+Until 10 November 2026 the site was published under CC0 1.0. Copies taken before that date
+stay under CC0.
+
+The AQTUATOR model and renders come from the AQTUATOR hardware design (CERN-OHL-S-2.0).
+Third-party code in `aqtuator/assets/vendor/` keeps its own licence.
+
+"Refaqt" and "AQTUATOR", and their logos, are trademarks of Refaqt (BE 0804.145.539). The
+licences above do not cover them.
