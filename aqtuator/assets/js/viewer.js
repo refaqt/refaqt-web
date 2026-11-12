@@ -40,7 +40,10 @@ function categoryOf(name) {
 }
 
 // Anodised finish of the aluminium parts.
-const FINISH = [['base', 'alu_black'], ['carriage_top', 'alu_black'], ['carriage_bottom', 'alu_black']];
+const FINISH = [['base', 'alu_black'], ['carriage_top', 'alu_black'], ['carriage_bottom', 'alu_black'],
+  ['TA17', 'rubber']];                      // end stops: black elastomer
+// Highlight colour in the inside view: REFAQT blue.
+const HIGHLIGHT = 0x0094c6;
 
 // Better-looking materials than the plain PBR values in the GLB.
 function upgradeMaterial(m) {
@@ -53,6 +56,7 @@ function upgradeMaterial(m) {
   if (n === 'strip') { mat.color.setHex(0xd8dbde); mat.metalness = 1.0; mat.roughness = 0.12; }
   if (n === 'steel') { mat.color.setHex(0xc4c8cc); mat.metalness = 1.0; mat.roughness = 0.2; }
   if (n === 'accent') { mat.color.setHex(0x00ac99); mat.metalness = 0.3; mat.roughness = 0.35; }
+  if (n === 'rubber') { mat.color.setHex(0x0a0a0a); mat.metalness = 0; mat.roughness = 0.8; }
   if (n === 'forcer') { mat.color.setHex(0x16181a); mat.roughness = 0.6; }
   mat.name = n;
   return mat;
@@ -163,8 +167,8 @@ export class Stage {
   highlight(cat) {
     for (const m of this.meshes) {
       const on = cat && m.userData.cat === cat;
-      m.material.emissive?.setHex(on ? 0x00ac99 : 0x000000);
-      m.material.emissiveIntensity = on ? 0.35 : 0;
+      m.material.emissive?.setHex(on ? HIGHLIGHT : 0x000000);
+      m.material.emissiveIntensity = on ? 0.8 : 0;
     }
   }
   update() {

@@ -63,9 +63,20 @@ screws are left out; that is fine for the site.
 
 ## Where the numbers come from
 
-- Accuracy, speed, force and load: requirements `STG-01` to `STG-15` in
-  `modules/compact-stage/architecture/compact-stage.sysml`. They are **design
-  targets**, and the site says so.
+- Repeatability, straightness, side load and the screw grid: requirements
+  `STG-01` to `STG-15` in `modules/compact-stage/architecture/compact-stage.sysml`.
+  They are **design targets**, and the site says so. The site does not show
+  the requirement codes.
+- Speed: 2 m/s, the speed limit set in the drive (the end-stop crash study
+  in `refaqt/aqtuator` uses the same value). The requirement `STG-09` still
+  says 3 m/s.
+- Force: the MAXWELL MK21 forcer in the `stoq` parts library: 181 N
+  continuous, 512 N peak for 1 s.
+- Positioning accuracy without mapping: ±15 µm per metre of travel, from
+  RSF, the encoder maker, but never better than ±5 µm. `tools/variants.py`
+  works it out per travel.
+- End stops: four ACE TUBUS TA17-7 elastomer dampers, 9 J each in an
+  emergency stop, so 18 J per end.
 - Length per travel: `STG-03` (length = travel + 340 mm − 2 × height), which
   gives 440 mm for the 220 mm build in the CAD.
 - Rail length, magnet track, encoder length, base screws and mass: scaled from

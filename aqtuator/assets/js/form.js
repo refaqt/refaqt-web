@@ -11,6 +11,10 @@ export function initForm(variants) {
   const btn = form.querySelector('button[type=submit]');
   for (const v of variants) sel.insertAdjacentHTML('beforeend', `<option value="${v.model}">${v.model} · ${v.travel_mm} mm travel</option>`);
 
+  // Buttons elsewhere on the page can preselect what the visitor wants.
+  const interest = document.getElementById('f-interest');
+  document.querySelectorAll('a[data-interest]').forEach(a => a.addEventListener('click', () => { interest.value = a.dataset.interest; }));
+
   let widget = null;
   if (CONFIG.turnstileSiteKey) {
     window.onTurnstileLoad = () => {
@@ -43,7 +47,7 @@ export function initForm(variants) {
       const res = await fetch(CONFIG.formEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, variant: form.variant.value, message, website: form.website.value, token }),
+        body: JSON.stringify({ email, interest: form.interest.value, variant: form.variant.value, message, website: form.website.value, token }),
       });
       const out = await res.json().catch(() => ({}));
       if (!res.ok || !out.ok) throw new Error(out.error || `HTTP ${res.status}`);

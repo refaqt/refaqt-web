@@ -2,6 +2,10 @@
 
 Sources (refaqt/aqtuator, modules/compact-stage):
 - architecture/compact-stage.sysml   requirements STG-01..STG-15 (design targets)
+- stoq maxwell/mk2-mover             MK21 forcer: 181 N continuous, 512 N peak for 1 s
+- stoq ace/ta-damper                 TA17-7 elastomer damper, 9 J each in an emergency stop
+- RSF (the encoder maker)            scale accuracy +/-15 um per metre; we state
+                                     at least +/-5 um for short stages
 - cad/assemblies/compact-stage        the 220 mm travel build (base 440 mm)
 - tools/stage-info.json               volumes from tools/export_glb.py
 - stoq parts library                  MK2 magnet track 4.58 kg/m, MK21 mover 1.1 kg
@@ -27,6 +31,8 @@ HOLE_PITCH = 80      # STG-14
 MOVING_MASS = 4.2    # kg, STG-15 estimate from the CAD
 STATOR_STOCK = [120, 180, 300]   # MAXWELL MK2 magnet track lengths, mm
 STATOR_KG_PER_M = 4.58
+ACCURACY_UM_PER_M = 15           # positioning accuracy without mapping, per metre of travel
+ACCURACY_MIN_UM = 5              # but never stated better than this
 
 ALU, STEEL = 2.70e-6, 7.85e-6    # kg/mm3
 
@@ -52,6 +58,11 @@ def magnet_track(travel):
     return total, combo
 
 
+def accuracy(travel):
+    """Positioning accuracy without mapping, +/- um: 15 um per metre of travel, at least 5 um."""
+    return round(max(ACCURACY_MIN_UM, ACCURACY_UM_PER_M * travel / 1000), 1)
+
+
 def variant(travel):
     length = travel + 340 - 2 * HEIGHT          # STG-03, equals 440 at 220
     rail = length - 22
@@ -72,38 +83,38 @@ def variant(travel):
         "base_holes_per_row": holes,
         "base_screws": 2 * holes,
         "base_hole_span_mm": (holes - 1) * HOLE_PITCH,
+        "accuracy_um": accuracy(travel),
         "moving_mass_kg": MOVING_MASS,
         "total_mass_kg": round(MOVING_MASS + fixed, 1),
     }
 
 
 COMMON = [
-    # id, label, value, unit, group
-    ("STG-04", "Positioning accuracy (no mapping)", "±5", "µm", "Accuracy"),
-    ("STG-07", "Unidirectional repeatability", "±0.1", "µm", "Accuracy"),
-    ("STG-08", "Bidirectional repeatability", "±0.3", "µm", "Accuracy"),
-    ("STG-05", "Straightness / flatness", "±2", "µm", "Accuracy"),
-    ("STG-06", "Pitch / yaw / roll", "±20", "µrad", "Accuracy"),
-    ("ENC", "Encoder", "Absolute, 0.1 µm step, BiSS C", "", "Accuracy"),
-    ("STG-09", "Maximum speed", "3", "m/s", "Dynamics"),
-    ("STG-10", "Continuous force", "180", "N", "Dynamics"),
-    ("STG-11", "Peak force", "500", "N", "Dynamics"),
-    ("STG-12", "Mechanical output power", "≥100", "W", "Dynamics"),
-    ("ACC", "Acceleration, no payload", "≈120", "m/s²", "Dynamics"),
-    ("STG-13", "Lateral load at carriage centre", "500", "N", "Load"),
-    ("STG-14", "Mounting grid (base and carriage)", "80", "mm", "Load"),
-    ("STG-15", "End stops", "4 hydraulic dampers, 18 J emergency", "", "Load"),
-    ("MOT", "Motor", "Iron-core linear motor, water cooled", "", "Drive"),
-    ("GUI", "Guides", "2 profile rails, 4 recirculating ball blocks", "", "Drive"),
-    ("SEAL", "Slot seal", "Stainless strip, magnetic hold-down, 8 rollers", "", "Drive"),
+    # label, value, unit, group
+    ("Positioning accuracy, no mapping", "±5 to ±9", "µm", "Accuracy"),
+    ("Repeatability, same direction", "±0.1", "µm", "Accuracy"),
+    ("Repeatability, both directions", "±0.3", "µm", "Accuracy"),
+    ("Straightness and flatness", "±2", "µm", "Accuracy"),
+    ("Pitch, yaw and roll", "±20", "µrad", "Accuracy"),
+    ("Encoder", "Absolute, 0.1 µm step, BiSS C", "", "Accuracy"),
+    ("Maximum speed", "2", "m/s", "Dynamics"),
+    ("Continuous force", "181", "N", "Dynamics"),
+    ("Peak force (1 s)", "512", "N", "Dynamics"),
+    ("Acceleration, no payload", "≈120", "m/s²", "Dynamics"),
+    ("Side load at carriage centre", "500", "N", "Load"),
+    ("Screw grid (base and carriage)", "80 mm, M5", "", "Load"),
+    ("End stops", "4 elastomer dampers, 18 J per end in an emergency", "", "Load"),
+    ("Motor", "Iron-core linear motor, water-cooled", "", "Drive"),
+    ("Guides", "2 profile rails, 4 ball blocks", "", "Drive"),
+    ("Base", "One-piece aluminium block, black anodised", "", "Drive"),
 ]
 
 
 def main():
     out = {
-        "status": "Design targets from the SysML requirements. Not yet measured.",
+        "status": "All values are design targets. They are not measured yet.",
         "variants": [variant(t) for t in TRAVELS],
-        "common": [dict(zip(("id", "label", "value", "unit", "group"), c)) for c in COMMON],
+        "common": [dict(zip(("label", "value", "unit", "group"), c)) for c in COMMON],
     }
     path = ROOT / "assets" / "data" / "variants.json"
     path.parent.mkdir(parents=True, exist_ok=True)

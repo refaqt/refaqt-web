@@ -23,10 +23,10 @@ globalThis.fetch = async (url, init = {}) => {
 const post = (data, origin = 'https://refaqt.github.io') => worker.fetch(new Request('https://w.example/', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify(data) }), env);
 
 // creates the file with a header
-let r = await post({ email: 'a@b.co', variant: 'CS-360', message: 'Hello "world"\nline 2' });
+let r = await post({ email: 'a@b.co', interest: 'licence', variant: 'CS-360', message: 'Hello "world"\nline 2' });
 assert.equal(r.status, 200);
-assert.match(file, /^timestamp,email,variant,message,country,user_agent\n/);
-assert.match(file, /"a@b\.co","CS-360","Hello ""world""\nline 2"/);
+assert.match(file, /^timestamp,email,interest,variant,message,country,user_agent\n/);
+assert.match(file, /"a@b\.co","licence","CS-360","Hello ""world""\nline 2"/);
 assert.ok(!puts[0].message.includes('a@b.co'), 'email must not be in the commit message');
 
 // appends, and survives a conflict
@@ -41,6 +41,7 @@ assert.equal((await post({ email: 'nope', message: 'x' })).status, 400);
 assert.equal((await post({ email: 'a@b.co', message: '' })).status, 400);
 assert.equal((await post({ email: 'a@b.co', message: 'x'.repeat(2001) })).status, 400);
 assert.equal((await post({ email: 'a@b.co', variant: 'CS-999', message: 'x' })).status, 400);
+assert.equal((await post({ email: 'a@b.co', interest: 'other', message: 'x' })).status, 400);
 assert.equal((await post({ email: 'a@b.co', message: 'x' }, 'https://evil.example')).status, 403);
 
 // honeypot: says ok, stores nothing

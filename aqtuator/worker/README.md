@@ -7,7 +7,9 @@ input, checks the Turnstile spam token, and appends one row to
 
 The site repository is public, so it never holds a token or a lead.
 
-CSV columns: `timestamp,email,variant,message,country,user_agent`.
+CSV columns: `timestamp,email,interest,variant,message,country,user_agent`.
+`interest` is what the visitor wants: `buy` (stages or parts), `diy` (build it
+themselves) or `licence` (a commercial licence).
 
 ## Set up (once, about 15 minutes)
 
