@@ -1,7 +1,7 @@
 // Render the still images of the site from the real 3D model.
 //   python3 -m http.server 8765   (in the root of refaqt-web)
 //   node aqtuator/tools/render_stills.cjs
-// Needs Playwright with Chromium. Writes aqtuator/assets/img/hero.png and og.png.
+// Needs Playwright with Chromium. Writes aqtuator/assets/img/hero.png (also the 3D view on the printed spec sheet) and og.png.
 const path = require('path');
 const { chromium } = require('playwright');
 

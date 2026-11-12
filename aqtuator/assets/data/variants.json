@@ -1,5 +1,5 @@
 {
- "status": "Design targets from the SysML requirements. Not yet measured.",
+ "status": "All values are design targets. They are not measured yet.",
  "variants": [
   {
    "model": "CS-220",
@@ -16,6 +16,7 @@
    "base_holes_per_row": 6,
    "base_screws": 12,
    "base_hole_span_mm": 400,
+   "accuracy_um": 5,
    "moving_mass_kg": 4.2,
    "total_mass_kg": 10.8
   },
@@ -35,6 +36,7 @@
    "base_holes_per_row": 6,
    "base_screws": 12,
    "base_hole_span_mm": 400,
+   "accuracy_um": 5,
    "moving_mass_kg": 4.2,
    "total_mass_kg": 11.7
   },
@@ -53,6 +55,7 @@
    "base_holes_per_row": 7,
    "base_screws": 14,
    "base_hole_span_mm": 480,
+   "accuracy_um": 5.4,
    "moving_mass_kg": 4.2,
    "total_mass_kg": 13.2
   },
@@ -71,6 +74,7 @@
    "base_holes_per_row": 8,
    "base_screws": 16,
    "base_hole_span_mm": 560,
+   "accuracy_um": 6.6,
    "moving_mass_kg": 4.2,
    "total_mass_kg": 14.4
   },
@@ -90,6 +94,7 @@
    "base_holes_per_row": 9,
    "base_screws": 18,
    "base_hole_span_mm": 640,
+   "accuracy_um": 7.8,
    "moving_mass_kg": 4.2,
    "total_mass_kg": 15.5
   },
@@ -109,127 +114,105 @@
    "base_holes_per_row": 10,
    "base_screws": 20,
    "base_hole_span_mm": 720,
+   "accuracy_um": 9.0,
    "moving_mass_kg": 4.2,
    "total_mass_kg": 17.0
   }
  ],
  "common": [
   {
-   "id": "STG-04",
-   "label": "Positioning accuracy (no mapping)",
-   "value": "±5",
+   "label": "Positioning accuracy, no mapping",
+   "value": "±5 to ±9",
    "unit": "µm",
    "group": "Accuracy"
   },
   {
-   "id": "STG-07",
-   "label": "Unidirectional repeatability",
+   "label": "Repeatability, same direction",
    "value": "±0.1",
    "unit": "µm",
    "group": "Accuracy"
   },
   {
-   "id": "STG-08",
-   "label": "Bidirectional repeatability",
+   "label": "Repeatability, both directions",
    "value": "±0.3",
    "unit": "µm",
    "group": "Accuracy"
   },
   {
-   "id": "STG-05",
-   "label": "Straightness / flatness",
+   "label": "Straightness and flatness",
    "value": "±2",
    "unit": "µm",
    "group": "Accuracy"
   },
   {
-   "id": "STG-06",
-   "label": "Pitch / yaw / roll",
+   "label": "Pitch, yaw and roll",
    "value": "±20",
    "unit": "µrad",
    "group": "Accuracy"
   },
   {
-   "id": "ENC",
    "label": "Encoder",
    "value": "Absolute, 0.1 µm step, BiSS C",
    "unit": "",
    "group": "Accuracy"
   },
   {
-   "id": "STG-09",
    "label": "Maximum speed",
-   "value": "3",
+   "value": "2",
    "unit": "m/s",
    "group": "Dynamics"
   },
   {
-   "id": "STG-10",
    "label": "Continuous force",
-   "value": "180",
+   "value": "181",
    "unit": "N",
    "group": "Dynamics"
   },
   {
-   "id": "STG-11",
-   "label": "Peak force",
-   "value": "500",
+   "label": "Peak force (1 s)",
+   "value": "512",
    "unit": "N",
    "group": "Dynamics"
   },
   {
-   "id": "STG-12",
-   "label": "Mechanical output power",
-   "value": "≥100",
-   "unit": "W",
-   "group": "Dynamics"
-  },
-  {
-   "id": "ACC",
    "label": "Acceleration, no payload",
    "value": "≈120",
    "unit": "m/s²",
    "group": "Dynamics"
   },
   {
-   "id": "STG-13",
-   "label": "Lateral load at carriage centre",
+   "label": "Side load at carriage centre",
    "value": "500",
    "unit": "N",
    "group": "Load"
   },
   {
-   "id": "STG-14",
-   "label": "Mounting grid (base and carriage)",
-   "value": "80",
-   "unit": "mm",
+   "label": "Screw grid (base and carriage)",
+   "value": "80 mm, M5",
+   "unit": "",
    "group": "Load"
   },
   {
-   "id": "STG-15",
    "label": "End stops",
-   "value": "4 hydraulic dampers, 18 J emergency",
+   "value": "4 elastomer dampers, 18 J per end in an emergency",
    "unit": "",
    "group": "Load"
   },
   {
-   "id": "MOT",
    "label": "Motor",
-   "value": "Iron-core linear motor, water cooled",
+   "value": "Iron-core linear motor, water-cooled",
    "unit": "",
    "group": "Drive"
   },
   {
-   "id": "GUI",
    "label": "Guides",
-   "value": "2 profile rails, 4 recirculating ball blocks",
+   "value": "2 profile rails, 4 ball blocks",
    "unit": "",
    "group": "Drive"
   },
   {
-   "id": "SEAL",
-   "label": "Slot seal",
-   "value": "Stainless strip, magnetic hold-down, 8 rollers",
+   "label": "Base",
+   "value": "One-piece aluminium block, black anodised",
    "unit": "",
    "group": "Drive"
   }

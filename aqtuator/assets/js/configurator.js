@@ -58,6 +58,47 @@ export function drawingMarkup(v, { carriageId = '', maxL = v.length_mm } = {}) {
   </g>`;
 }
 
+// Side view (looking across the travel), to scale. Base 40 mm high, carriage on top.
+export function sideViewMarkup(v) {
+  const L = v.length_mm, cx = L / 2;
+  return `<svg viewBox="0 0 ${L + 112} 140" class="dwg-side">${ARROW_DEFS}
+  <g transform="translate(56 40)">
+    <rect class="dwg-base" x="0" y="20" width="${L}" height="40"/>
+    <rect class="dwg-carriage" x="${cx - 105}" y="0" width="210" height="19.5"/>
+    ${dimH(0, L, 60, 22, L)}
+    ${dimH(cx - 105, cx + 105, 0, -14, 210)}
+    ${dimV(0, 60, L, 22, 60)}
+    ${dimV(20, 60, 0, -22, 40)}
+  </g></svg>`;
+}
+
+// End view (looking along the travel), to scale.
+export function endViewMarkup() {
+  const W = 210;
+  return `<svg viewBox="0 0 ${W + 112} 140" class="dwg-end">${ARROW_DEFS}
+  <g transform="translate(56 40)">
+    <rect class="dwg-base" x="0" y="20" width="${W}" height="40"/>
+    <rect class="dwg-carriage" x="1" y="0" width="208" height="19.5"/>
+    ${dimH(0, W, 60, 22, W)}
+    ${dimV(0, 60, W, 22, 60)}
+  </g></svg>`;
+}
+
+// Dimension lines: horizontal from x1 to x2 at height y, offset d; vertical likewise.
+function dimH(x1, x2, y, d, label) {
+  const yy = y + d, ty = d > 0 ? yy + 14 : yy - 6;
+  return `<g class="dwg-dimg"><line class="dwg-dim" x1="${x1}" y1="${y}" x2="${x1}" y2="${yy + Math.sign(d) * 4}"/><line class="dwg-dim" x1="${x2}" y1="${y}" x2="${x2}" y2="${yy + Math.sign(d) * 4}"/>
+    <line class="dwg-dim" x1="${x1}" y1="${yy}" x2="${x2}" y2="${yy}" marker-start="url(#arr2)" marker-end="url(#arr2)"/>
+    <text class="dwg-text" x="${(x1 + x2) / 2}" y="${ty}" text-anchor="middle">${label}</text></g>`;
+}
+function dimV(y1, y2, x, d, label) {
+  const xx = x + d, tx = d > 0 ? xx + 6 : xx - 6;
+  return `<g class="dwg-dimg"><line class="dwg-dim" x1="${x}" y1="${y1}" x2="${xx + Math.sign(d) * 4}" y2="${y1}"/><line class="dwg-dim" x1="${x}" y1="${y2}" x2="${xx + Math.sign(d) * 4}" y2="${y2}"/>
+    <line class="dwg-dim" x1="${xx}" y1="${y1}" x2="${xx}" y2="${y2}" marker-start="url(#arr2)" marker-end="url(#arr2)"/>
+    <text class="dwg-text" x="${tx}" y="${(y1 + y2) / 2 + 4}" text-anchor="${d > 0 ? 'start' : 'end'}">${label}</text></g>`;
+}
+const ARROW_DEFS = '<defs><marker id="arr2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>';
+
 export function viewBoxFor(v, maxL) {
   const m = 46;
   return `0 0 ${maxL + 2 * m + 20} ${210 + 2 * m + 50}`;
@@ -67,6 +108,7 @@ function variantRows(v) {
   const segs = Object.entries(v.magnet_track_segments).map(([len, n]) => `${n}×${len}`).join(' + ');
   return [
     ['Travel', u(v.travel_mm, 'mm')],
+    ['Positioning accuracy, no mapping', u(`±${fmt(v.accuracy_um, 1)}`, 'µm')],
     ['Overall length', u(v.length_mm, 'mm')],
     ['Width × height', u('210 × 60', 'mm')],
     ['Total mass (est.)', u(fmt(v.total_mass_kg, 1), 'kg')],
@@ -106,7 +148,7 @@ export function initConfigurator(data, { onSelect } = {}) {
   for (const c of data.common) (groups[c.group] ||= []).push(c);
   common.innerHTML = Object.entries(groups).map(([g, items]) => `
     <div class="spec-group"><h3>${g}</h3>${items.map(c => `
-      <div class="spec-row"><span>${c.label}</span><b>${c.unit ? u(c.value, c.unit) : c.value}</b>${/^STG/.test(c.id) ? `<code>${c.id}</code>` : ''}</div>`).join('')}
+      <div class="spec-row"><span>${c.label}</span><b>${c.unit ? u(c.value, c.unit) : c.value}</b></div>`).join('')}
     </div>`).join('');
 
   function select(i, first = false) {
@@ -118,6 +160,7 @@ export function initConfigurator(data, { onSelect } = {}) {
     specsEl.innerHTML = [
       ['Model', v.model],
       ['Length', u(v.length_mm, 'mm')],
+      ['Accuracy, no mapping', u(`±${fmt(v.accuracy_um, 1)}`, 'µm')],
       ['Mass (est.)', u(fmt(v.total_mass_kg, 1), 'kg')],
       ['Base screws', `${v.base_screws} × M5`],
       ['Rail length', u(v.rail_length_mm, 'mm')],
@@ -144,22 +187,31 @@ export function initConfigurator(data, { onSelect } = {}) {
   req.addEventListener('click', () => {
     const sel = document.getElementById('f-variant');
     if (sel) sel.value = current.model;
+    const interest = document.getElementById('f-interest');
+    if (interest) interest.value = 'buy';
   });
-  printBtn.addEventListener('click', () => { buildSheet(current, data, maxL); window.print(); });
+  printBtn.addEventListener('click', () => { buildSheet(current, data); window.print(); });
   select(0, true);
 }
 
-function buildSheet(v, data, maxL) {
+function buildSheet(v, data) {
   const sheet = document.getElementById('sheet');
   const rows = variantRows(v);
   sheet.innerHTML = `
     <img class="sheet__logo" src="assets/img/refaqt-logo.png" alt="REFAQT">
     <h1>AQTUATOR ${v.model}</h1>
     <p class="sheet__sub">Linear-motor stage · ${v.travel_mm} mm travel · ${v.length_mm} × 210 × 60 mm</p>
-    <svg viewBox="${viewBoxFor(v, v.length_mm)}">${drawingMarkup(v)}</svg>
+    <figure class="sheet__3d"><img src="assets/img/hero.png" alt="3D view of the stage"><figcaption>3D view. The picture shows CS-220. Longer travels have a longer base.</figcaption></figure>
+    <!-- The columns follow the drawing widths, so the three views share one scale. -->
+    <div class="sheet__views" style="grid-template-columns: ${v.length_mm + 112}fr 322fr">
+      <figure class="sheet__top"><svg viewBox="${viewBoxFor(v, v.length_mm)}">${drawingMarkup(v)}</svg><figcaption>Top view. Base holes: M5 clearance on the 80 mm grid.</figcaption></figure>
+      <figure class="sheet__side">${sideViewMarkup(v)}<figcaption>Side view</figcaption></figure>
+      <figure class="sheet__end">${endViewMarkup()}<figcaption>End view</figcaption></figure>
+    </div>
+    <p class="sheet__dims">All dimensions in mm. The views share one scale.</p>
     <h2>This model</h2>
     <table><tbody>${rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join('')}</tbody></table>
     <h2>All models</h2>
-    <table><tbody>${data.common.map(c => `<tr><th>${c.label}${/^STG/.test(c.id) ? ` <small>(${c.id})</small>` : ''}</th><td>${c.value} ${c.unit}</td></tr>`).join('')}</tbody></table>
-    <p class="sheet__note">${data.status} Values for travels other than 220 mm are scaled from the 220 mm CAD model. Open design files: github.com/refaqt/aqtuator · ${location.href.split('#')[0]}</p>`;
+    <table><tbody>${data.common.map(c => `<tr><th>${c.label}</th><td>${c.value} ${c.unit}</td></tr>`).join('')}</tbody></table>
+    <p class="sheet__note">${data.status} Positioning accuracy without mapping: ±15 µm per metre of travel, but never better than ±5 µm. Mass, rail, magnet-track and encoder lengths for travels other than 220 mm are estimates, scaled from the 220 mm design. Open design files: github.com/refaqt/aqtuator · ${location.href.split('#')[0]}</p>`;
 }

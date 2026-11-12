@@ -111,7 +111,7 @@ p { margin: 0; }
   -webkit-mask-image: radial-gradient(ellipse at 65% 45%, #000 0%, transparent 65%);
   opacity: .55;
 }
-.hero h1 { font-size: clamp(44px, 6.4vw, 84px); font-weight: 600; letter-spacing: -0.035em; }
+.hero h1 { font-size: clamp(40px, 5.4vw, 72px); font-weight: 600; letter-spacing: -0.035em; }
 .lead { font-size: clamp(17px, 1.5vw, 20px); color: var(--muted); margin-top: 24px; max-width: 34em; font-weight: 300; }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
 .hero__stage { position: relative; align-self: stretch; min-height: 420px; display: flex; flex-direction: column; }
@@ -160,6 +160,12 @@ p { margin: 0; }
 .pillar p { color: var(--muted); font-size: 16px; font-weight: 300; }
 .pillar .pillar__fig { margin-top: auto; padding-top: 14px; font-size: 14px; color: var(--faint); font-family: var(--mono); }
 .pillar__fig b { color: var(--text); font-weight: 500; }
+.offers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.offer { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 34px 32px 32px; display: flex; flex-direction: column; gap: 14px; }
+.offer h3 { font-size: 26px; }
+.offer p { color: var(--muted); font-weight: 300; }
+.offer__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 12px; }
+@media (max-width: 800px) { .offers { grid-template-columns: 1fr; } .offer { padding: 26px 22px; } }
 @media (max-width: 960px) { .pillars { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 620px) { .pillars { grid-template-columns: 1fr; } }
 
@@ -222,6 +228,7 @@ input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 
 .dwg-hole { fill: var(--bg); stroke: var(--g2); stroke-width: 1.2; }
 .dwg-chole { fill: none; stroke: #c9ced2; stroke-width: 1; }
 .dwg-dim { stroke: var(--muted); stroke-width: 1; fill: none; }
+.dwg-dimg { color: var(--muted); }
 .dwg-dim-travel { stroke: var(--g1); stroke-width: 1.5; fill: none; }
 .dwg-text { fill: var(--muted); font: 500 15px var(--mono); }
 .dwg-text--travel { fill: var(--g1); }
@@ -334,7 +341,19 @@ tbody th { font-weight: 400; color: var(--muted); }
   .sheet th, .sheet td { padding: 2mm 3mm; border-bottom: 0.3mm solid #ddd; white-space: normal; color: #111; }
   .sheet tbody th { color: #444; width: 55%; }
   .sheet h2 { font-size: 12pt; margin: 6mm 0 2mm; color: #00806f; text-transform: uppercase; letter-spacing: .1em; }
-  .sheet svg { width: 100%; height: auto; margin: 4mm 0; }
+  .sheet svg { width: 100%; height: auto; }
+  .sheet__views { display: grid; gap: 2mm 4mm; align-items: end; margin-top: 4mm; }
+  .sheet__top { grid-column: 1; }
+  .sheet__side { grid-column: 1; grid-row: 2; }
+  .sheet__end { grid-column: 2; grid-row: 2; }
+  .sheet__3d { margin: 0; text-align: center; }
+  .sheet__3d img { width: 60%; margin: 0 auto; }
+  .sheet__views figure { margin: 0; }
+  .sheet figcaption, .sheet .sheet__dims { font-size: 8.5pt; color: #666; margin-top: 1mm; }
+  .sheet svg .dwg-dimg { color: #555; }
+  .sheet h2 { break-after: avoid; }
+  .sheet table { break-inside: auto; }
+  .sheet tr { break-inside: avoid; }
   .sheet svg .dwg-base { fill: #f2f2f2; stroke: #999; }
   .sheet svg .dwg-carriage { fill: #e3e6e8; stroke: #555; }
   .sheet svg .dwg-text { fill: #333; }

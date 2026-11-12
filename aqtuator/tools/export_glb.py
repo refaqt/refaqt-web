@@ -58,7 +58,7 @@ def material_for(name):
     if n.startswith("mk21"):
         return "forcer"
     if n.startswith("ta17"):
-        return "accent"
+        return "rubber"                                     # black elastomer end stops
     if n.startswith("ak_mc15") or n.startswith("mb_mc15"):
         return "encoder"
     if n.startswith("roller"):

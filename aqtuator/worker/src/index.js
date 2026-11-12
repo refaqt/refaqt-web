@@ -1,6 +1,6 @@
 // Cloudflare Worker: stores AQTUATOR CS early-access requests.
 //
-// The website posts { email, variant, message, website, token } as JSON.
+// The website posts { email, interest, variant, message, website, token } as JSON.
 // The Worker checks the input and the Turnstile token, then appends one row
 // to a CSV file in a PRIVATE GitHub repository and commits it to main.
 // Email addresses never go into the public site repository or a commit message.
@@ -8,8 +8,10 @@
 // Settings (wrangler.toml [vars]):  GITHUB_REPO, GITHUB_BRANCH, CSV_PATH, ALLOWED_ORIGINS
 // Secrets (wrangler secret put):    GITHUB_TOKEN, TURNSTILE_SECRET (optional)
 
-const HEADER = 'timestamp,email,variant,message,country,user_agent\n';
+const HEADER = 'timestamp,email,interest,variant,message,country,user_agent\n';
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
+// What the visitor wants: buy stages or parts, build it themselves, or a commercial licence.
+const INTERESTS = new Set(['', 'buy', 'diy', 'licence']);
 const VARIANTS = new Set(['', 'CS-220', 'CS-280', 'CS-360', 'CS-440', 'CS-520', 'CS-600']);
 
 export default {
@@ -32,12 +34,14 @@ export default {
     let data;
     try { data = await request.json(); } catch { return reply(400, { ok: false, error: 'bad request' }); }
     const email = String(data.email || '').trim();
+    const interest = String(data.interest || '').trim();
     const variant = String(data.variant || '').trim();
     const message = String(data.message || '').trim();
 
     // Honeypot: bots fill the hidden "website" field. Pretend it worked.
     if (data.website) return reply(200, { ok: true });
     if (!EMAIL.test(email) || email.length > 254) return reply(400, { ok: false, error: 'invalid email' });
+    if (!INTERESTS.has(interest)) return reply(400, { ok: false, error: 'invalid interest' });
     if (!VARIANTS.has(variant)) return reply(400, { ok: false, error: 'invalid variant' });
     if (!message || message.length > 2000) return reply(400, { ok: false, error: 'message missing or too long' });
 
@@ -47,7 +51,7 @@ export default {
     }
 
     const row = [
-      new Date().toISOString(), email, variant, message,
+      new Date().toISOString(), email, interest, variant, message,
       request.cf?.country || '', (request.headers.get('User-Agent') || '').slice(0, 200),
     ].map(csvCell).join(',') + '\n';
 
