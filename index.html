@@ -1,14 +1,18 @@
 <!doctype html>
+<!-- SPDX-FileCopyrightText: 2025-2026 Refaqt (BE 0804.145.539) and contributors -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>REFAQT · Open hardware for machine builders</title>
-<meta name="description" content="REFAQT designs open hardware for precision machines. Our first product is AQTUATOR CS, a sealed linear-motor stage.">
+<title>REFAQT · Open machines for local manufacturing</title>
+<meta name="description" content="REFAQT designs open-source motion modules and the machines built from them, so that good parts can be made close to where they are needed, when they are needed.">
 <meta name="theme-color" content="#1c1d1e">
-<meta property="og:title" content="REFAQT · Open hardware for machine builders">
-<meta property="og:description" content="Open hardware for precision machines. First product: AQTUATOR CS, a sealed linear-motor stage.">
+<meta property="og:title" content="REFAQT · Industrial machines, open to everyone">
+<meta property="og:description" content="Open-source motion modules and machines for local, on-demand manufacturing. A cooperative you can join.">
+<meta property="og:image" content="assets/img/og.png">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,31 +20,223 @@
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<header class="top">
-  <a href="./" aria-label="REFAQT home"><img src="assets/img/refaqt-logo.png" alt="REFAQT" width="128" height="32"></a>
-  <nav aria-label="Main"><a href="aqtuator/">AQTUATOR</a><a href="https://github.com/refaqt" rel="noopener">GitHub</a></nav>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#top" aria-label="REFAQT, back to top"><img src="assets/img/refaqt-logo.png" alt="REFAQT" width="128" height="32"></a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#why">Why</a>
+      <a href="#how">How we work</a>
+      <a href="#plan">Our plan</a>
+      <a href="aqtuator/">AQTUATOR</a>
+    </nav>
+    <a class="btn btn--primary btn--sm" href="#join">Join us</a>
+  </div>
 </header>
 
-<main>
-  <section class="hero">
-    <p class="eyebrow">Open hardware</p>
-    <h1>Precision machine parts,<br><span class="grad">open by design.</span></h1>
-    <p class="lead">REFAQT designs motion hardware for machine builders. Every drawing, model and requirement is public, so you can check it, build it and improve it.</p>
-  </section>
+<main id="main">
 
-  <section class="products" aria-labelledby="products-title">
-    <h2 id="products-title">Products</h2>
-    <a class="card" href="aqtuator/">
-      <span class="card__tag">Linear-motor stage</span>
-      <span class="card__name">AQTUATOR <b>CS</b></span>
-      <span class="card__text">60 mm high and sealed. 0.1 µm absolute feedback, 3 m/s, 500 N peak. Travels from 220 to 600 mm.</span>
-      <span class="card__more">See the stage →</span>
-    </a>
-  </section>
+<!-- ============================== HERO ============================== -->
+<section class="hero" id="top">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="hero__copy">
+    <p class="eyebrow">Open hardware for local manufacturing</p>
+    <h1>Industrial machines,<br><span class="grad">open to everyone.</span></h1>
+    <p class="lead">REFAQT designs open-source motion modules, and the machines built from them: for milling, laser cutting, turning and measuring.</p>
+    <p class="lead lead--why">So that good parts can be made close to where they are needed, when they are needed.</p>
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="#join">Join us</a>
+      <a class="btn btn--ghost" href="aqtuator/">See AQTUATOR CS →</a>
+    </div>
+  </div>
+  <figure class="hero__art">
+    <picture>
+      <source srcset="assets/img/machines.webp" type="image/webp">
+      <img src="assets/img/machines.png" width="1451" height="943" alt="Four machines built from AQTUATOR CS stages: a 5-axis milling machine, a laser cutter, a lathe and a coordinate measuring machine.">
+    </picture>
+  </figure>
+</section>
+
+<!-- ============================== PRODUCT ============================== -->
+<section class="section section--product" aria-labelledby="product-title">
+  <a class="product" href="aqtuator/">
+    <div class="product__copy">
+      <p class="tag"><span class="dot"></span> First product · Early access open</p>
+      <h2 id="product-title">AQTUATOR <b>CS</b></h2>
+      <p>A sealed linear-motor stage, only 60&nbsp;mm high, with 0.1&nbsp;µm absolute feedback, 2&nbsp;m/s and 512&nbsp;N peak force. It is the building block of every REFAQT machine.</p>
+      <span class="product__more">See the stage →</span>
+    </div>
+    <img class="product__img" src="aqtuator/assets/img/hero.png" width="1600" height="1000" alt="Render of the AQTUATOR CS linear stage" loading="lazy">
+  </a>
+</section>
+
+<!-- ============================== WHY ============================== -->
+<section class="section" id="why">
+  <div class="section__head">
+    <p class="eyebrow">Why we exist</p>
+    <h2>Manufacturing is built for mass production. <span class="grad">We build for local.</span></h2>
+  </div>
+  <div class="why">
+    <article class="why__item">
+      <span class="why__n">The problem</span>
+      <p>Today's factories are built for mass production. Big plants need big series, big stock and long transport. The result is waste, CO₂ emissions, and products that nobody can repair.</p>
+    </article>
+    <article class="why__item">
+      <span class="why__n">What is needed</span>
+      <p>Small, modular machines that make good parts locally and on demand. Machines that anyone can buy, build, repair and improve.</p>
+    </article>
+    <article class="why__item why__item--mission">
+      <span class="why__n">Our mission</span>
+      <p>We build small modules and machines that make local, on-demand manufacturing of mechanical parts possible.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================== HOW ============================== -->
+<section class="section" id="how">
+  <div class="section__head">
+    <p class="eyebrow">How we work</p>
+    <h2>Open designs. <span class="grad">A network that builds them.</span></h2>
+  </div>
+  <div class="cards">
+    <article class="card">
+      <span class="card__n">01</span>
+      <h3>Open designs</h3>
+      <p>We publish every module and machine under the CERN-OHL-S licence. Anyone may copy, build and change the design. If you share a changed design, you share it under the same licence, together with the designs it comes from.</p>
+    </article>
+    <article class="card">
+      <span class="card__n">02</span>
+      <h3>Marketplace and partners</h3>
+      <p>We sell machines, modules and parts. Partner members build them and give support to customers. Partners get bulk prices on parts, design and product tracking, build instructions that fit their own workshop, and technical support.</p>
+    </article>
+    <article class="card">
+      <span class="card__n">03</span>
+      <h3>Commercial licences</h3>
+      <p>Do you want to build our design into a closed product? A commercial licence removes the duty to share, so your own design can stay private.</p>
+    </article>
+    <article class="card">
+      <span class="card__n">04</span>
+      <h3>Custom engineering</h3>
+      <p>We help you adapt a module, or design a machine for your process.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================== PLAN ============================== -->
+<section class="section" id="plan">
+  <div class="section__head">
+    <p class="eyebrow">Our plan</p>
+    <h2>From one stage <span class="grad">to local production.</span></h2>
+    <p class="section__lead">We start small and grow step by step. Each step makes the stages better and cheaper, and that makes the next machine possible.</p>
+  </div>
+  <ol class="plan">
+    <li class="plan__step is-now">
+      <span class="plan__badge">We are here</span>
+      <span class="plan__n">1</span>
+      <h3>Linear and rotary stages</h3>
+      <p>We develop the motion modules. Suppliers make the parts for now.</p>
+    </li>
+    <li class="plan__step plan__step--pair">
+      <div>
+        <span class="plan__n">2</span>
+        <h3>A CNC milling machine</h3>
+        <p>A 5-axis machine, built from our stages.</p>
+      </div>
+      <div>
+        <span class="plan__n">3</span>
+        <h3>Other machines</h3>
+        <p>Laser cutting, turning and measuring, on the same modules.</p>
+      </div>
+    </li>
+    <li class="plan__step">
+      <span class="plan__n">4</span>
+      <h3>We make our own parts</h3>
+      <p>Our machines make the parts for our stages and machines. Machines that make machines.</p>
+    </li>
+    <li class="plan__step">
+      <span class="plan__n">5</span>
+      <h3>Local production</h3>
+      <p>Partners make parts and machines in many places, close to their customers.</p>
+    </li>
+  </ol>
+  <p class="plan__loop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>What we learn in every step goes back into better stages.</p>
+</section>
+
+<!-- ============================== JOIN ============================== -->
+<section class="section section--join" id="join">
+  <div class="join">
+    <div class="section__head">
+      <p class="eyebrow">Join us</p>
+      <h2>We are building a cooperative <span class="grad">with a mission.</span></h2>
+    </div>
+    <ul class="join__list">
+      <li><h3>Contributors govern REFAQT</h3><p>The people who do the work decide where REFAQT goes.</p></li>
+      <li><h3>Contributors share the profit</h3><p>Your share follows how much you contribute.</p></li>
+      <li><h3>We are looking for members</h3><p>People who help with our designs, and companies that offer our modules and machines to their customers.</p></li>
+    </ul>
+    <div class="hero__cta"><a class="btn btn--primary" href="#contact">Get in touch</a></div>
+  </div>
+</section>
+
+<!-- ============================== CONTACT ============================== -->
+<section class="section section--cta" id="contact">
+  <div class="cta">
+    <div class="cta__copy">
+      <p class="eyebrow">Get in touch</p>
+      <h2>Tell us what you <span class="grad">want to build.</span></h2>
+      <p class="section__lead">Do you want to contribute, become a partner, or need a machine for your process? Send us a message. A person replies, usually within a few working days.</p>
+      <ul class="ticks-list">
+        <li>No newsletter. One reply from a person.</li>
+        <li>Your details stay private and are never shared.</li>
+      </ul>
+    </div>
+    <form class="form" id="contact-form" novalidate>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com">
+      </div>
+      <div class="field">
+        <label for="f-interest">I want to</label>
+        <select id="f-interest" name="interest">
+          <option value="contribute">Contribute to the designs</option>
+          <option value="partner">Become a partner (build, sell or support)</option>
+          <option value="engineering">Get help with custom engineering</option>
+          <option value="licence">Get a commercial licence</option>
+          <option value="other">Something else</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-message">Message</label>
+        <textarea id="f-message" name="message" rows="5" maxlength="2000" required placeholder="Who you are, and what you have in mind…"></textarea>
+      </div>
+      <div class="field field--hp" aria-hidden="true">
+        <label for="f-website">Website</label>
+        <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="turnstile" id="turnstile"></div>
+      <button class="btn btn--primary btn--block" type="submit">Send message</button>
+      <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
 </main>
 
-<footer class="foot">
-  <p>© REFAQT. REFAQT and AQTUATOR are trademarks of REFAQT.</p>
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <img src="assets/img/refaqt-logo.png" alt="REFAQT" width="112" height="28">
+      <p>Take manufacturing into your own hands.</p>
+      <p class="footer__links"><a href="aqtuator/">AQTUATOR CS</a><a href="https://github.com/refaqt" rel="noopener">GitHub</a></p>
+    </div>
+    <div class="footer__small">
+      <p>Hardware: CERN-OHL-S-2.0 · Software: GPL-3.0 · Website: CC BY-SA 4.0.</p>
+      <p>REFAQT and AQTUATOR are trademarks of REFAQT. The machines in the picture are concepts in development.</p>
+      <p>© <span id="year">2026</span> REFAQT</p>
+    </div>
+  </div>
 </footer>
+
+<script type="module" src="assets/js/main.js"></script>
 </body>
 </html>

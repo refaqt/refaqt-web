@@ -1,0 +1,304 @@
+<!doctype html>
+<!-- SPDX-FileCopyrightText: 2025-2026 Refaqt (BE 0804.145.539) and contributors -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- Render page for the home page image: four machines built from AQTUATOR CS stages.
+     Used by tools/render_machines.cjs, not by the site. Uses the real stage model.
+     The frames, bases, spindles and heads are simple shapes, not real designs. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>REFAQT machines render</title>
+<!-- The import map must come before every module script. -->
+<script type="importmap">
+{ "imports": { "three": "../aqtuator/assets/vendor/three/three.module.min.js", "three/addons/": "../aqtuator/assets/vendor/three/addons/" } }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; background: transparent; }
+  #v { position: relative; width: 1500px; height: 1200px; }
+  body.og { width: 1200px; height: 630px; background: #1b1c1d; overflow: hidden; font-family: Outfit, sans-serif; color: #f0f0f0; }
+  body.og #v { position: absolute; right: -20px; top: -10px; width: 620px; height: 650px; }
+  .og-copy { position: absolute; left: 64px; top: 64px; width: 500px; }
+  .og-copy img { width: 150px; }
+  .og-copy h1 { font-size: 54px; line-height: 1.04; letter-spacing: -0.03em; margin: 64px 0 20px; font-weight: 600; }
+  .og-copy h1 span { background: linear-gradient(100deg,#00c175,#00ac99 40%,#009cb6 75%,#0094c6); -webkit-background-clip: text; color: transparent; }
+  .og-copy p { font-size: 24px; color: #a4a9ad; margin: 0; line-height: 1.4; }
+  body:not(.og) .og-copy { display: none; }
+</style>
+</head>
+<body>
+<div class="og-copy">
+  <img src="../assets/img/refaqt-logo.png" alt="">
+  <h1>Industrial machines,<br><span>open to everyone.</span></h1>
+  <p>Open-source motion modules and machines for local, on-demand manufacturing.</p>
+</div>
+<div id="v"></div>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { loadTemplate, Stage } from '../aqtuator/assets/js/viewer.js';
+
+const og = location.hash === '#og';
+document.body.classList.toggle('og', og);
+const el = document.getElementById('v');
+
+// Stage facts (metres): carriage-top centre in model coordinates.
+const CAR = new THREE.Vector3(0.2096, 0.060, -0.105);
+
+// ---------- materials ----------
+const phys = (o) => new THREE.MeshPhysicalMaterial(o);
+const MAT = {
+  frame: phys({ color: 0xaab0b5, metalness: 1.0, roughness: 0.34 }),          // clear anodised aluminium
+  base: phys({ color: 0x45484c, metalness: 0.0, roughness: 0.85 }),           // mineral cast base
+  granite: phys({ color: 0x5b5e62, metalness: 0.0, roughness: 0.6, clearcoat: 0.3, clearcoatRoughness: 0.5 }),
+  body: phys({ color: 0xe6e8ea, metalness: 0.1, roughness: 0.35, clearcoat: 0.5 }), // spindle and head housings
+  shell: phys({ color: 0x8e9296, metalness: 0.0, roughness: 0.55 }),                // lathe monoblock
+  dark: phys({ color: 0x16181a, metalness: 0.5, roughness: 0.45 }),
+  steel: phys({ color: 0xc4c8cc, metalness: 1.0, roughness: 0.2 }),
+  accent: phys({ color: 0x00ac99, metalness: 0.3, roughness: 0.35 }),
+  copper: phys({ color: 0xc8743c, metalness: 1.0, roughness: 0.3 }),
+  ruby: phys({ color: 0xd0103a, metalness: 0.0, roughness: 0.1, clearcoat: 1 }),
+};
+
+function mesh(geo, mat) { const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.receiveShadow = true; return m; }
+function box(p, w, h, d, mat, x = 0, y = 0, z = 0) {
+  const m = mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); p.add(m); return m;
+}
+// Cylinder along an axis ('x', 'y' or 'z').
+function cyl(p, r, len, mat, axis = 'y', x = 0, y = 0, z = 0, r2 = r, seg = 48) {
+  const m = mesh(new THREE.CylinderGeometry(r2, r, len, seg), mat);
+  if (axis === 'x') m.rotation.z = -Math.PI / 2;
+  if (axis === 'z') m.rotation.x = Math.PI / 2;
+  m.position.set(x, y, z); p.add(m); return m;
+}
+// Triangular rib behind a vertical plate. It points to -Z, with thickness along X.
+function rib(p, depth, height, t, mat, x, y, z) {
+  const s = new THREE.Shape([new THREE.Vector2(0, 0), new THREE.Vector2(depth, 0), new THREE.Vector2(0, height)]);
+  const m = mesh(new THREE.ExtrudeGeometry(s, { depth: t, bevelEnabled: false }), mat);
+  m.rotation.y = Math.PI / 2; m.position.set(x - t / 2, y, z); p.add(m); return m;
+}
+
+let parts;
+// A stage. 'travel', 'up' and 'across' are world directions of the stage axes.
+function stage(p, pos, offset = 0, travel = [1, 0, 0], up = [0, 1, 0]) {
+  const s = new Stage(parts);
+  const tx = new THREE.Vector3(...travel), ny = new THREE.Vector3(...up), cz = new THREE.Vector3().crossVectors(tx, ny);
+  s.root.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(tx, ny, cz));
+  s.root.position.set(...pos);
+  s.setOffset(offset);
+  p.add(s.root);
+  stages.push(s);
+  return s;
+}
+// A group on the carriage top centre. With world = true its axes follow the world.
+function onCarriage(s, world = false) {
+  const g = new THREE.Group(); g.position.copy(CAR); s.carriage.add(g);
+  if (!world) return g;
+  // Undo the full turn of the carriage, also for a stage stacked on another stage.
+  g.updateWorldMatrix(true, false);
+  const w = new THREE.Group(); g.getWorldQuaternion(w.quaternion); w.quaternion.invert(); g.add(w); return w;
+}
+// Second stage turned 90 degrees on a carriage, as in the AQTUATOR XY table.
+function crossStage(s, offset) {
+  const g = onCarriage(s);
+  const b = new Stage(parts);
+  b.root.rotation.y = Math.PI / 2;
+  b.root.position.set(0, 0, 0.04);
+  b.setOffset(offset);
+  g.add(b.root);
+  stages.push(b);
+  return b;
+}
+const stages = [];
+
+// ---------- the four machines (base top at y = 0) ----------
+function mill() {
+  const m = new THREE.Group();
+  box(m, 0.64, 0.08, 0.86, MAT.base, 0, -0.04, -0.02);
+  const x = stage(m, [0, 0, 0.12], 0.04);
+  const y = crossStage(x, 0.11);
+  // Tilting rotary table (4th and 5th axis).
+  const t = onCarriage(y, true);
+  box(t, 0.2, 0.016, 0.2, MAT.frame, 0, 0.008, 0);
+  box(t, 0.026, 0.11, 0.15, MAT.frame, -0.087, 0.07, 0);
+  box(t, 0.026, 0.11, 0.15, MAT.frame, 0.087, 0.07, 0);
+  cyl(t, 0.034, 0.2, MAT.dark, 'x', 0, 0.1, 0);
+  const cradle = new THREE.Group(); cradle.position.set(0, 0.1, 0); cradle.rotation.x = -0.3; t.add(cradle);
+  box(cradle, 0.14, 0.02, 0.12, MAT.frame, 0, 0.035, 0);
+  cyl(cradle, 0.06, 0.022, MAT.dark, 'y', 0, 0.056, 0);
+  cyl(cradle, 0.062, 0.006, MAT.accent, 'y', 0, 0.047, 0);
+  box(cradle, 0.05, 0.04, 0.05, MAT.steel, 0, 0.087, 0);
+  // Column: a plate with ribs behind it, to keep the Z stage stiff.
+  box(m, 0.26, 0.74, 0.035, MAT.frame, 0, 0.37, -0.1175);
+  rib(m, 0.22, 0.6, 0.022, MAT.frame, -0.09, 0, -0.135);
+  rib(m, 0.22, 0.6, 0.022, MAT.frame, 0.09, 0, -0.135);
+  const z = stage(m, [0, 0.47, -0.1], 0.09, [0, 1, 0], [0, 0, 1]);
+  // Spindle.
+  const s = onCarriage(z, true);
+  box(s, 0.13, 0.17, 0.05, MAT.frame, 0, 0, 0.025);
+  cyl(s, 0.048, 0.24, MAT.body, 'y', 0, -0.03, 0.098);
+  cyl(s, 0.05, 0.014, MAT.accent, 'y', 0, 0.075, 0.098);
+  cyl(s, 0.026, 0.045, MAT.steel, 'y', 0, -0.172, 0.098, 0.04);
+  cyl(s, 0.006, 0.06, MAT.steel, 'y', 0, -0.22, 0.098);
+  return m;
+}
+
+function laser() {
+  // Open cutting table with slats. A gantry beam rides on two Y stages on the side walls.
+  // The X stage sits on the front face of the beam (the beam is its frame).
+  const m = new THREE.Group();
+  const W = 0.36, H = 0.16;                       // side wall position and height
+  box(m, 0.94, 0.04, 0.66, MAT.base, 0, -0.02, 0);
+  for (const sx of [-1, 1]) {
+    box(m, 0.21, 0.02, 0.6, MAT.frame, sx * W, H - 0.01, 0);       // top plate
+    box(m, 0.02, H - 0.02, 0.6, MAT.frame, sx * (W + 0.095), (H - 0.02) / 2, 0);
+    box(m, 0.02, H - 0.02, 0.6, MAT.frame, sx * (W - 0.095), (H - 0.02) / 2, 0);
+    stage(m, [sx * W, H, 0], 0.03, [0, 0, 1], [0, 1, 0]);
+  }
+  box(m, 0.5, H - 0.02, 0.02, MAT.frame, 0, (H - 0.02) / 2, -0.29);
+  box(m, 0.5, 0.05, 0.02, MAT.frame, 0, 0.025, 0.29);
+  // Slats and a part-cut sheet.
+  for (let i = -7; i <= 7; i++) box(m, 0.004, 0.09, 0.54, MAT.dark, i * 0.033, 0.045, 0);
+  const sheet = box(m, 0.42, 0.003, 0.4, MAT.steel, 0, 0.0915, 0.02);
+  // Gantry beam on the two carriages (carriage centre z = 0.03 - 0.0104).
+  const BZ = 0.02, BY = H + 0.06;
+  for (const sx of [-1, 1]) box(m, 0.2, 0.03, 0.2, MAT.frame, sx * W, BY + 0.015, BZ);
+  box(m, 0.92, 0.12, 0.1, MAT.frame, 0, BY + 0.09, BZ);
+  const x = stage(m, [0, BY + 0.09, BZ + 0.05], 0.05, [1, 0, 0], [0, 0, 1]);
+  // Cutting head with a short Z slide, a knurled ring and a copper nozzle.
+  const h = onCarriage(x, true);
+  box(h, 0.12, 0.16, 0.03, MAT.dark, 0, -0.02, 0.015);
+  box(h, 0.08, 0.06, 0.06, MAT.body, 0, 0.03, 0.06);
+  cyl(h, 0.026, 0.14, MAT.steel, 'y', 0, -0.07, 0.06);
+  cyl(h, 0.034, 0.03, MAT.dark, 'y', 0, -0.13, 0.06);
+  cyl(h, 0.036, 0.008, MAT.accent, 'y', 0, -0.11, 0.06);
+  cyl(h, 0.006, 0.03, MAT.copper, 'y', 0, -0.16, 0.06, 0.02);
+  return m;
+}
+
+function lathe() {
+  // Compact turning centre: headstock on the left, a slanted back wall that carries
+  // two stages, and a small milling spindle that comes in at an angle.
+  const m = new THREE.Group();
+  const A = 0.3;                                   // spindle axis height
+  const n = new THREE.Vector3(0, 0.5, 0.866);      // wall normal: towards the axis
+  const u = new THREE.Vector3(0, 0.866, -0.5);     // up the wall
+  const P0 = new THREE.Vector3(0.06, A, 0).addScaledVector(n, -0.29);
+  box(m, 0.86, 0.06, 0.62, MAT.shell, 0, -0.03, -0.02);
+  // Headstock tower with ribs behind it.
+  box(m, 0.16, A + 0.11, 0.3, MAT.shell, -0.34, (A + 0.11) / 2, -0.06);
+  rib(m, 0.12, 0.3, 0.02, MAT.shell, -0.3, 0, -0.21);
+  // Slanted back wall with ribs, the frame behind the stages.
+  const wall = box(m, 0.56, 0.03, 0.42, MAT.shell, 0, 0, 0);
+  wall.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(new THREE.Vector3(1, 0, 0), n, new THREE.Vector3().crossVectors(new THREE.Vector3(1, 0, 0), n)));
+  wall.position.copy(P0).addScaledVector(n, -0.015).addScaledVector(u, 0.05).setX(0.06);
+  for (const rx of [-0.17, 0.06, 0.29]) rib(m, 0.2, 0.36, 0.02, MAT.shell, rx, 0, -0.29);
+  // Spindle, chuck and part.
+  cyl(m, 0.06, 0.03, MAT.frame, 'x', -0.245, A, 0);
+  cyl(m, 0.062, 0.008, MAT.accent, 'x', -0.235, A, 0);
+  cyl(m, 0.07, 0.05, MAT.dark, 'x', -0.205, A, 0);
+  for (let i = 0; i < 3; i++) {
+    const a = i * 2 * Math.PI / 3;
+    const j = box(m, 0.02, 0.03, 0.018, MAT.steel, -0.175, A + Math.cos(a) * 0.045, Math.sin(a) * 0.045);
+    j.rotation.x = -a;
+  }
+  cyl(m, 0.022, 0.2, MAT.steel, 'x', -0.07, A, 0);
+  // Stages on the wall: Z along the spindle, cross stage up and down the wall.
+  const z = stage(m, [P0.x, P0.y, P0.z], 0.02, [1, 0, 0], [n.x, n.y, n.z]);
+  const c = crossStage(z, 0.0504);
+  // Tool head on the cross carriage: a small milling spindle aimed at the part.
+  const t = onCarriage(c, true);
+  const g = new THREE.Group();
+  g.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), n);
+  t.add(g);
+  box(g, 0.1, 0.02, 0.12, MAT.frame, 0, 0.01, 0);
+  cyl(g, 0.032, 0.09, MAT.dark, 'y', 0, 0.065, 0);
+  cyl(g, 0.034, 0.008, MAT.accent, 'y', 0, 0.1, 0);
+  cyl(g, 0.016, 0.02, MAT.steel, 'y', 0, 0.12, 0, 0.022);
+  cyl(g, 0.004, 0.03, MAT.steel, 'y', 0, 0.145, 0);
+  return m;
+}
+
+function cmm() {
+  // Gantry measuring machine: Y stages on raised side rails, a bridge beam,
+  // the X stage on the front of the beam and a vertical Z stage with the probe.
+  const m = new THREE.Group();
+  const W = 0.36, RH = 0.34;                       // rail position and height
+  box(m, 0.96, 0.1, 0.7, MAT.granite, 0, -0.05, 0);
+  for (const sx of [-1, 1]) {
+    for (const sz of [-1, 1]) box(m, 0.07, RH, 0.07, MAT.frame, sx * W, RH / 2, sz * 0.24);
+    box(m, 0.21, 0.03, 0.62, MAT.frame, sx * W, RH + 0.015, 0);
+    box(m, 0.02, 0.12, 0.56, MAT.frame, sx * W, RH - 0.06, 0);
+    stage(m, [sx * W, RH + 0.03, 0], 0.0, [0, 0, 1], [0, 1, 0]);
+  }
+  const BY = RH + 0.09, BZ = -0.01;
+  for (const sx of [-1, 1]) box(m, 0.2, 0.03, 0.2, MAT.frame, sx * W, BY + 0.015, BZ);
+  box(m, 0.92, 0.1, 0.12, MAT.frame, 0, BY + 0.08, BZ);
+  const x = stage(m, [0, BY + 0.08, BZ + 0.06], 0.06, [1, 0, 0], [0, 0, 1]);
+  const h = onCarriage(x, true);
+  const z = stage(h, [0, -0.1, 0], -0.06, [0, 1, 0], [0, 0, 1]);
+  const p = onCarriage(z, true);
+  box(p, 0.08, 0.04, 0.05, MAT.frame, 0, -0.1, 0.025);
+  cyl(p, 0.02, 0.09, MAT.body, 'y', 0, -0.165, 0.03);
+  cyl(p, 0.022, 0.008, MAT.accent, 'y', 0, -0.13, 0.03);
+  cyl(p, 0.003, 0.05, MAT.steel, 'y', 0, -0.235, 0.03);
+  const ball = mesh(new THREE.SphereGeometry(0.007, 32, 16), MAT.ruby); ball.position.set(0, -0.262, 0.03); p.add(ball);
+  // A part to measure.
+  box(m, 0.16, 0.05, 0.12, MAT.steel, 0.04, 0.025, 0.12);
+  cyl(m, 0.025, 0.03, MAT.dark, 'y', 0.07, 0.065, 0.12);
+  return m;
+}
+
+// ---------- scene ----------
+const r = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+r.setPixelRatio(og ? 1 : 2);
+r.outputColorSpace = THREE.SRGBColorSpace;
+r.toneMapping = THREE.ACESFilmicToneMapping;
+r.toneMappingExposure = 0.95;
+r.shadowMap.enabled = true;
+r.shadowMap.type = THREE.PCFSoftShadowMap;
+r.localClippingEnabled = true;
+r.setClearColor(0x000000, 0);
+r.setSize(el.clientWidth, el.clientHeight);
+el.appendChild(r.domElement);
+
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(r).fromScene(new RoomEnvironment(r), 0.04).texture;
+const cam = new THREE.PerspectiveCamera(24, el.clientWidth / el.clientHeight, 0.05, 20);
+const key = new THREE.DirectionalLight(0xffffff, 1.6);
+key.position.set(1.2, 3.0, 1.6);
+key.castShadow = true;
+key.shadow.mapSize.set(4096, 4096);
+Object.assign(key.shadow.camera, { left: -1.6, right: 1.6, top: 1.6, bottom: -1.6, near: 0.5, far: 8 });
+key.shadow.bias = -0.0004;
+key.shadow.radius = 6;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0x00c1a0, 0.8); rim.position.set(-2.2, 0.8, -1.8); scene.add(rim);
+const fill = new THREE.DirectionalLight(0x6fb8ff, 0.5); fill.position.set(-1.5, 0.6, 2.0); scene.add(fill);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x101010, 0.35));
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), new THREE.ShadowMaterial({ opacity: 0.45 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+const params = new URLSearchParams(location.search);
+const only = params.get('only');      // render one machine, for checking: ?only=mill
+
+parts = await loadTemplate();
+const layout = [[mill, -0.62, -0.7], [cmm, 0.72, -0.7], [laser, -0.62, 0.62], [lathe, 0.72, 0.62]];
+for (const [make, x, z] of layout) {
+  if (only && make.name !== only) continue;
+  const g = make();
+  g.position.set(only ? 0 : x, 0.1, only ? 0 : z);
+  scene.add(g);
+}
+const camPos = (params.get('cam') || (only ? '1.2,0.9,1.6' : og ? '3.3,2.8,4.4' : '3.3,2.85,4.35')).split(',').map(Number);
+const target = (params.get('target') || (only ? '0,0.3,0' : '0.04,0.16,0.0')).split(',').map(Number);
+cam.position.set(...camPos);
+cam.lookAt(...target);
+cam.updateProjectionMatrix();
+scene.updateMatrixWorld(true);
+for (const s of stages) s.update();
+r.render(scene, cam);
+setTimeout(() => { r.render(scene, cam); document.body.dataset.ready = '1'; }, 500);
+</script>
+</body>
+</html>

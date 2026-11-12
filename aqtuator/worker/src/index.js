@@ -1,18 +1,37 @@
-// Cloudflare Worker: stores AQTUATOR CS early-access requests.
+// Cloudflare Worker: stores AQTUATOR CS early-access requests and REFAQT home page messages.
 //
-// The website posts { email, interest, variant, message, website, token } as JSON.
+// The website posts { form, email, interest, variant, message, website, token } as JSON.
+// "form" is "aqtuator" (the default) or "home". Each form has its own CSV file.
 // The Worker checks the input and the Turnstile token, then appends one row
 // to a CSV file in a PRIVATE GitHub repository and commits it to main.
 // Email addresses never go into the public site repository or a commit message.
 //
-// Settings (wrangler.toml [vars]):  GITHUB_REPO, GITHUB_BRANCH, CSV_PATH, ALLOWED_ORIGINS
+// Settings (wrangler.toml [vars]):  GITHUB_REPO, GITHUB_BRANCH, CSV_PATH, HOME_CSV_PATH, ALLOWED_ORIGINS
 // Secrets (wrangler secret put):    GITHUB_TOKEN, TURNSTILE_SECRET (optional)
 
-const HEADER = 'timestamp,email,interest,variant,message,country,user_agent\n';
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
-// What the visitor wants: buy stages or parts, build it themselves, or a commercial licence.
-const INTERESTS = new Set(['', 'buy', 'diy', 'licence']);
-const VARIANTS = new Set(['', 'CS-220', 'CS-280', 'CS-360', 'CS-440', 'CS-520', 'CS-600']);
+
+// One entry per form on the site.
+const FORMS = {
+  aqtuator: {
+    header: 'timestamp,email,interest,variant,message,country,user_agent\n',
+    // What the visitor wants: buy stages or parts, build it themselves, or a commercial licence.
+    interests: new Set(['', 'buy', 'diy', 'licence']),
+    variants: new Set(['', 'CS-220', 'CS-280', 'CS-360', 'CS-440', 'CS-520', 'CS-600']),
+    path: env => env.CSV_PATH || 'leads/aqtuator-cs.csv',
+    commit: 'Add AQTUATOR CS early-access request',
+    committer: 'AQTUATOR web form',
+  },
+  home: {
+    header: 'timestamp,email,interest,message,country,user_agent\n',
+    // Contribute to the designs, become a partner, custom engineering, a commercial licence, or something else.
+    interests: new Set(['', 'contribute', 'partner', 'engineering', 'licence', 'other']),
+    variants: new Set(['']),
+    path: env => env.HOME_CSV_PATH || 'leads/refaqt-home.csv',
+    commit: 'Add REFAQT home page message',
+    committer: 'REFAQT web form',
+  },
+};
 
 export default {
   async fetch(request, env) {
@@ -33,6 +52,9 @@ export default {
 
     let data;
     try { data = await request.json(); } catch { return reply(400, { ok: false, error: 'bad request' }); }
+    const formName = String(data.form || 'aqtuator').trim();
+    const form = Object.hasOwn(FORMS, formName) ? FORMS[formName] : null;
+    if (!form) return reply(400, { ok: false, error: 'invalid form' });
     const email = String(data.email || '').trim();
     const interest = String(data.interest || '').trim();
     const variant = String(data.variant || '').trim();
@@ -41,8 +63,8 @@ export default {
     // Honeypot: bots fill the hidden "website" field. Pretend it worked.
     if (data.website) return reply(200, { ok: true });
     if (!EMAIL.test(email) || email.length > 254) return reply(400, { ok: false, error: 'invalid email' });
-    if (!INTERESTS.has(interest)) return reply(400, { ok: false, error: 'invalid interest' });
-    if (!VARIANTS.has(variant)) return reply(400, { ok: false, error: 'invalid variant' });
+    if (!form.interests.has(interest)) return reply(400, { ok: false, error: 'invalid interest' });
+    if (!form.variants.has(variant)) return reply(400, { ok: false, error: 'invalid variant' });
     if (!message || message.length > 2000) return reply(400, { ok: false, error: 'message missing or too long' });
 
     if (env.TURNSTILE_SECRET) {
@@ -50,13 +72,14 @@ export default {
       if (!ok) return reply(403, { ok: false, error: 'spam check failed' });
     }
 
-    const row = [
-      new Date().toISOString(), email, interest, variant, message,
-      request.cf?.country || '', (request.headers.get('User-Agent') || '').slice(0, 200),
-    ].map(csvCell).join(',') + '\n';
+    const cells = formName === 'home'
+      ? [new Date().toISOString(), email, interest, message]
+      : [new Date().toISOString(), email, interest, variant, message];
+    cells.push(request.cf?.country || '', (request.headers.get('User-Agent') || '').slice(0, 200));
+    const row = cells.map(csvCell).join(',') + '\n';
 
     try {
-      await appendRow(env, row);
+      await appendRow(env, row, form);
     } catch (err) {
       console.error('append failed', err.message);
       return reply(502, { ok: false, error: 'could not store the request' });
@@ -89,8 +112,9 @@ const b64decode = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/
 
 // Read the file, add the row, write it back. GitHub refuses the write (409)
 // when someone else changed the file in between; then read again and retry.
-export async function appendRow(env, row, attempts = 4) {
-  const repo = env.GITHUB_REPO, branch = env.GITHUB_BRANCH || 'main', file = env.CSV_PATH || 'leads/aqtuator-cs.csv';
+export async function appendRow(env, row, form = FORMS.aqtuator, attempts = 4) {
+  const repo = env.GITHUB_REPO, branch = env.GITHUB_BRANCH || 'main', file = form.path(env);
+  const HEADER = form.header;
   const api = `https://api.github.com/repos/${repo}/contents/${file.split('/').map(encodeURIComponent).join('/')}`;
   const headers = {
     Authorization: `Bearer ${env.GITHUB_TOKEN}`,
@@ -114,11 +138,11 @@ export async function appendRow(env, row, attempts = 4) {
       method: 'PUT',
       headers: { ...headers, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: 'Add AQTUATOR CS early-access request',
+        message: form.commit,
         content: b64encode(text + row),
         branch,
         ...(sha ? { sha } : {}),
-        committer: { name: 'AQTUATOR web form', email: 'noreply@refaqt.com' },
+        committer: { name: form.committer, email: 'noreply@refaqt.com' },
       }),
     });
     if (put.ok) return;

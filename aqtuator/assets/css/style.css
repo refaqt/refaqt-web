@@ -316,6 +316,13 @@ tbody th { font-weight: 400; color: var(--muted); }
 @media (max-width: 900px) { .cta { grid-template-columns: 1fr; gap: 32px; } }
 @media (max-width: 480px) { .form { padding: 20px; } }
 
+/* ---------- join us band (the same on every page) ---------- */
+.section--join { padding-bottom: clamp(80px, 10vw, 140px); }
+.section--cta + .section--join { padding-top: 0; }
+.join-band { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(28px, 5vw, 56px); }
+.join-band h2 { font-size: clamp(28px, 3.6vw, 44px); }
+@media (max-width: 760px) { .join-band { flex-direction: column; align-items: flex-start; } }
+
 /* ---------- footer ---------- */
 .footer { border-top: 1px solid var(--line); }
 .footer__inner { max-width: var(--max); margin: 0 auto; padding: 40px var(--gutter) 56px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 15px; }
