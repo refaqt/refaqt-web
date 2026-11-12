@@ -179,8 +179,8 @@ p { margin: 0; }
 .parts li::before { content: counter(p, decimal-leading-zero); position: absolute; left: 0; top: 24px; font-family: var(--mono); font-size: 12px; color: var(--faint); }
 .parts li b { display: block; font-size: 20px; font-weight: 500; color: var(--muted); margin-bottom: 6px; transition: color .35s; }
 .parts li.is-active { color: var(--muted); }
-.parts li.is-active b { color: var(--text); }
-.parts li.is-active::before { color: var(--g2); }
+.parts li.is-active b { color: var(--g4); }
+.parts li.is-active::before { color: var(--g4); }
 .progress { height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; margin-top: 12px; }
 .progress span { display: block; height: 100%; width: 0; background: var(--grad); }
 .labels { position: absolute; inset: 0; pointer-events: none; }

@@ -16,9 +16,10 @@
    "base_holes_per_row": 6,
    "base_screws": 12,
    "base_hole_span_mm": 400,
-   "accuracy_um": 5,
+   "accuracy_um": 15,
    "moving_mass_kg": 4.2,
-   "total_mass_kg": 10.8
+   "total_mass_kg": 10.8,
+   "stationary_mass_kg": 6.6
   },
   {
    "model": "CS-280",
@@ -36,9 +37,10 @@
    "base_holes_per_row": 6,
    "base_screws": 12,
    "base_hole_span_mm": 400,
-   "accuracy_um": 5,
+   "accuracy_um": 15,
    "moving_mass_kg": 4.2,
-   "total_mass_kg": 11.7
+   "total_mass_kg": 11.7,
+   "stationary_mass_kg": 7.5
   },
   {
    "model": "CS-360",
@@ -55,9 +57,10 @@
    "base_holes_per_row": 7,
    "base_screws": 14,
    "base_hole_span_mm": 480,
-   "accuracy_um": 5.4,
+   "accuracy_um": 15,
    "moving_mass_kg": 4.2,
-   "total_mass_kg": 13.2
+   "total_mass_kg": 13.2,
+   "stationary_mass_kg": 9.0
   },
   {
    "model": "CS-440",
@@ -74,9 +77,10 @@
    "base_holes_per_row": 8,
    "base_screws": 16,
    "base_hole_span_mm": 560,
-   "accuracy_um": 6.6,
+   "accuracy_um": 15,
    "moving_mass_kg": 4.2,
-   "total_mass_kg": 14.4
+   "total_mass_kg": 14.4,
+   "stationary_mass_kg": 10.2
   },
   {
    "model": "CS-520",
@@ -94,9 +98,10 @@
    "base_holes_per_row": 9,
    "base_screws": 18,
    "base_hole_span_mm": 640,
-   "accuracy_um": 7.8,
+   "accuracy_um": 15,
    "moving_mass_kg": 4.2,
-   "total_mass_kg": 15.5
+   "total_mass_kg": 15.5,
+   "stationary_mass_kg": 11.3
   },
   {
    "model": "CS-600",
@@ -114,15 +119,16 @@
    "base_holes_per_row": 10,
    "base_screws": 20,
    "base_hole_span_mm": 720,
-   "accuracy_um": 9.0,
+   "accuracy_um": 15,
    "moving_mass_kg": 4.2,
-   "total_mass_kg": 17.0
+   "total_mass_kg": 17.0,
+   "stationary_mass_kg": 12.8
   }
  ],
  "common": [
   {
    "label": "Positioning accuracy, no mapping",
-   "value": "±5 to ±9",
+   "value": "±15",
    "unit": "µm",
    "group": "Accuracy"
   },

@@ -4,8 +4,7 @@ Sources (refaqt/aqtuator, modules/compact-stage):
 - architecture/compact-stage.sysml   requirements STG-01..STG-15 (design targets)
 - stoq maxwell/mk2-mover             MK21 forcer: 181 N continuous, 512 N peak for 1 s
 - stoq ace/ta-damper                 TA17-7 elastomer damper, 9 J each in an emergency stop
-- RSF (the encoder maker)            scale accuracy +/-15 um per metre; we state
-                                     at least +/-5 um for short stages
+- Positioning accuracy without mapping: +/-15 um for every travel
 - cad/assemblies/compact-stage        the 220 mm travel build (base 440 mm)
 - tools/stage-info.json               volumes from tools/export_glb.py
 - stoq parts library                  MK2 magnet track 4.58 kg/m, MK21 mover 1.1 kg
@@ -31,8 +30,7 @@ HOLE_PITCH = 80      # STG-14
 MOVING_MASS = 4.2    # kg, STG-15 estimate from the CAD
 STATOR_STOCK = [120, 180, 300]   # MAXWELL MK2 magnet track lengths, mm
 STATOR_KG_PER_M = 4.58
-ACCURACY_UM_PER_M = 15           # positioning accuracy without mapping, per metre of travel
-ACCURACY_MIN_UM = 5              # but never stated better than this
+ACCURACY_UM = 15                 # positioning accuracy without mapping, the same for every travel
 
 ALU, STEEL = 2.70e-6, 7.85e-6    # kg/mm3
 
@@ -58,11 +56,6 @@ def magnet_track(travel):
     return total, combo
 
 
-def accuracy(travel):
-    """Positioning accuracy without mapping, +/- um: 15 um per metre of travel, at least 5 um."""
-    return round(max(ACCURACY_MIN_UM, ACCURACY_UM_PER_M * travel / 1000), 1)
-
-
 def variant(travel):
     length = travel + 340 - 2 * HEIGHT          # STG-03, equals 440 at 220
     rail = length - 22
@@ -83,15 +76,16 @@ def variant(travel):
         "base_holes_per_row": holes,
         "base_screws": 2 * holes,
         "base_hole_span_mm": (holes - 1) * HOLE_PITCH,
-        "accuracy_um": accuracy(travel),
+        "accuracy_um": ACCURACY_UM,
         "moving_mass_kg": MOVING_MASS,
         "total_mass_kg": round(MOVING_MASS + fixed, 1),
+        "stationary_mass_kg": round(fixed, 1),
     }
 
 
 COMMON = [
     # label, value, unit, group
-    ("Positioning accuracy, no mapping", "±5 to ±9", "µm", "Accuracy"),
+    ("Positioning accuracy, no mapping", "±15", "µm", "Accuracy"),
     ("Repeatability, same direction", "±0.1", "µm", "Accuracy"),
     ("Repeatability, both directions", "±0.3", "µm", "Accuracy"),
     ("Straightness and flatness", "±2", "µm", "Accuracy"),
