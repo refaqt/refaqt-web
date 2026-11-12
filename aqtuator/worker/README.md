@@ -1,15 +1,24 @@
-# Early-access form backend
+# Form backend (AQTUATOR early access and the home page contact form)
 
-A Cloudflare Worker. The website posts the form to it. The Worker checks the
-input, checks the Turnstile spam token, and appends one row to
-`leads/aqtuator-cs.csv` on `main` of the **private** repository
-`refaqt/refaqt-business`. Each request is one commit.
+A Cloudflare Worker. Both forms on the website post to it. The Worker checks the
+input, checks the Turnstile spam token, and appends one row to a CSV file on
+`main` of the **private** repository `refaqt/refaqt-business`. Each request is
+one commit.
+
+| Form | Sent with | File |
+| --- | --- | --- |
+| AQTUATOR CS early access | `form: "aqtuator"` (or no `form`) | `leads/aqtuator-cs.csv` (`CSV_PATH`) |
+| Home page contact form | `form: "home"` | `leads/refaqt-home.csv` (`HOME_CSV_PATH`) |
 
 The site repository is public, so it never holds a token or a lead.
 
-CSV columns: `timestamp,email,interest,variant,message,country,user_agent`.
+AQTUATOR CSV columns: `timestamp,email,interest,variant,message,country,user_agent`.
 `interest` is what the visitor wants: `buy` (stages or parts), `diy` (build it
 themselves) or `licence` (a commercial licence).
+
+Home page CSV columns: `timestamp,email,interest,message,country,user_agent`.
+`interest` is `contribute` (help with the designs), `partner` (build, sell or
+support), `engineering` (custom engineering), `licence` or `other`.
 
 ## Set up (once, about 15 minutes)
 
@@ -44,7 +53,8 @@ themselves) or `licence` (a commercial licence).
    Wrangler prints the Worker URL, for example
    `https://aqtuator-leads.<subdomain>.workers.dev`.
 4. **Connect the site.** Put the Worker URL and the Turnstile site key in
-   `aqtuator/assets/js/config.js`, commit and push to `main`.
+   `aqtuator/assets/js/config.js` and in `assets/js/config.js` (home page),
+   commit and push to `main`.
 
 ## Test
 

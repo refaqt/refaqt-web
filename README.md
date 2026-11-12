@@ -17,8 +17,9 @@ old Pages address `refaqt.github.io/aqtuator-web/`.
 
 | Path | What |
 | --- | --- |
-| `index.html`, `assets/` | The REFAQT home page. Plain HTML and CSS. No build step. |
-| `aqtuator/` | The AQTUATOR CS product site, with its tools and its form backend. See [`aqtuator/README.md`](aqtuator/README.md). |
+| `index.html`, `assets/` | The REFAQT home page. Plain HTML, CSS and one small script for the contact form. No build step. |
+| `tools/` | Makes the home page images from the AQTUATOR CS model: `node tools/render_machines.cjs` (with the local server running). Not published. |
+| `aqtuator/` | The AQTUATOR CS product site, with its tools and the form backend for both pages. See [`aqtuator/README.md`](aqtuator/README.md). |
 | `.github/workflows/pages.yml` | Deploys the site on every push to `main`. Only the public pages are published. |
 | `docs/` | Activity log, decisions, mistakes and the architecture overview. |
 | `.agents/` | Shared agent rules and skills ([refaqt/refaqt-agents](https://github.com/refaqt/refaqt-agents)), a git submodule. |

@@ -11,3 +11,4 @@ Write entries in B2 English. Follow `.agents/rules/communication.md`.
 | 2026-11-10 | [3D model: new carriage colours, no stray seal strip shadow](2026-11-10_3d-carriage-colours-and-strip-shadow.md) | software, marketing |  |
 | 2026-11-10 | [3D model: carriage bottom now black](2026-11-10_3d-carriage-bottom-black.md) | software, marketing |  |
 | 2026-11-12 | [AQTUATOR CS page: new text, two offers and corrected numbers](2026-11-12_aqtuator-text-offers-and-specs.md) | marketing, sales, software |  |
+| 2026-11-12 | [A real REFAQT home page](2026-11-12_home-page.md) | marketing, software |  |

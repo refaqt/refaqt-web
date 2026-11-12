@@ -8,6 +8,8 @@ compatibility_date = "2025-06-01"
 GITHUB_REPO = "refaqt/refaqt-business"
 GITHUB_BRANCH = "main"
 CSV_PATH = "leads/aqtuator-cs.csv"
+# Messages from the contact form on the REFAQT home page.
+HOME_CSV_PATH = "leads/refaqt-home.csv"
 # Comma-separated. Add http://localhost:8765 while testing locally.
 ALLOWED_ORIGINS = "https://refaqt.github.io"
 
