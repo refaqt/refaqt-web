@@ -15,6 +15,10 @@
 - The specifications table no longer shows guide rail length, magnet track and encoder measuring
   length. The accuracy row moved out of that table, because the value no longer changes with
   travel. It is still in the accuracy group below the table.
+- The "What you can buy" heading is now "Buy the stage. Or the right to keep your design
+  private." The old heading made it sound as if building on the design needs a paid licence.
+- The commercial licence card now says it plainly: under CERN-OHL-S, any machine with the stage
+  built in must have an open design too. The commercial licence removes that duty.
 
 ## Decisions
 
@@ -24,6 +28,8 @@
 
 - The stationary mass for travels other than 220 mm is an estimate, scaled from the 220 mm CAD
   model.
+- The licence card gives a short version of CERN-OHL-S. The licence has exceptions, for example
+  for standard parts that anyone can buy. A lawyer should check the wording.
 - The page was tested in Chromium only.
 
 ## Next Steps
