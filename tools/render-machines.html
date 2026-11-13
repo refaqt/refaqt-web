@@ -63,6 +63,9 @@ const MAT = {
   spark: new THREE.MeshBasicMaterial({ color: 0xffb050 }),
   sheet: phys({ color: 0x8d9296, metalness: 0.9, roughness: 0.45 }),                     // mild steel sheet
   granite_black: phys({ color: 0x101112, metalness: 0.0, roughness: 0.55, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 0.5 }), // polished black granite
+  part: phys({ color: 0xb4b8bc, metalness: 0.55, roughness: 0.45, envMapIntensity: 0.35 }),           // machined steel part, little reflection
+  partInside: phys({ color: 0x8a8e92, metalness: 0.55, roughness: 0.5, envMapIntensity: 0.25, side: THREE.BackSide }),
+  partFloor: phys({ color: 0x6c7074, metalness: 0.5, roughness: 0.55, envMapIntensity: 0.25 }),
   black: phys({ color: 0x141618, metalness: 0.6, roughness: 0.4, clearcoat: 0.35, clearcoatRoughness: 0.4 }), // black anodised aluminium
   tube: phys({ color: 0x141618, metalness: 0.3, roughness: 0.5, clearcoat: 0.3, clearcoatRoughness: 0.5 }),   // black powder-coated steel tube
   cover: phys({ color: 0x1d1f22, metalness: 0.2, roughness: 0.5 }),                                              // black sheet-metal cover plate
@@ -484,10 +487,14 @@ function cmm() {
 
   // A part to measure: a machined steel block with a step and a round pocket.
   const PH = 0.05;
-  box(m, 0.14, PH - 0.02, 0.1, MAT.steel, xX + 0.03, GT + (PH - 0.02) / 2, 0.21);
+  box(m, 0.14, PH - 0.02, 0.1, MAT.part, xX + 0.03, GT + (PH - 0.02) / 2, 0.21);
   // Raised step with a round pocket (32 mm, 20 mm deep) down to the lower block.
   const pocket = Array.from({ length: 64 }, (_, i) => [xX - 0.02 + 0.016 * Math.cos(i * Math.PI / 32), 0.21 + 0.016 * Math.sin(i * Math.PI / 32)]);
-  plate(m, [[xX - 0.04, 0.16], [xX + 0.05, 0.16], [xX + 0.05, 0.26], [xX - 0.04, 0.26]], [pocket], 0.02, MAT.steel, GT + PH);
+  plate(m, [[xX - 0.04, 0.16], [xX + 0.05, 0.16], [xX + 0.05, 0.26], [xX - 0.04, 0.26]], [pocket], 0.02, MAT.part, GT + PH);
+  // Inside of the pocket: the round wall (seen from inside) and a darker floor, so the block reads as solid.
+  const pw = mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.02, 64, 1, true), MAT.partInside);
+  pw.position.set(xX - 0.02, GT + PH - 0.01, 0.21); m.add(pw);
+  cyl(m, 0.016, 0.0006, MAT.partFloor, 'y', xX - 0.02, GT + PH - 0.02 + 0.0003, 0.21, 0.016, 64);
 
   // Green LED strips on the inside of both side walls, right under the Y axes, to light the part.
   for (const sx of [-1, 1]) {

@@ -20,7 +20,9 @@
   bottom), and green LED strips on the inside of both side walls, right under the Y axes,
   light the part.
 
-- The part had a flat dark spot. It is now a real round pocket, 32 mm wide and 20 mm deep.
+- The part had a flat dark spot. It is now a real round pocket, 32 mm wide and 20 mm deep, with
+  its own wall and floor, so the block reads as solid. The part's steel reflects less room light,
+  so its right sides are darker and the shape is easier to see.
 - The first strip light was made of separate point lights, so it showed as round spots. Each
   LED strip, also the one in the mill, is now one flat light as long as the strip. For this,
   the file `RectAreaLightUniformsLib.js` from three.js 0.160.0 (MIT licence) is now stored with
