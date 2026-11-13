@@ -1,12 +1,13 @@
-# 2026-11-13 — AQTUATOR CS page: optional cooling and simpler parts list
+# 2026-11-13 — AQTUATOR CS page: cooling text and simpler parts list
 
 **Role(s):** marketing
 
 ## What happened
 
-- "Thermally stable" now says water cooling is optional: "If required, water can flow through
-  the carriage and take the motor heat away." The short line under it now says "Optional water
-  cooling".
+- "Thermally stable" now says the water channel is always built in, and the customer chooses
+  whether to use it: "The carriage has a built-in water channel. When you need it, connect a water
+  supply, and the water takes the motor heat away." The short line under it now says "Built-in
+  water cooling".
 - "Open hardware" now says "FreeCAD files" instead of "FreeCAD".
 - In "Take a look inside", the base text is now only "One solid block of black anodised
   aluminium." The text about the contact strips and rocking is gone.
