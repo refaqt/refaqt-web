@@ -482,11 +482,12 @@ function cmm() {
   // Black granite block, 180 mm thick, between the walls.
   box(m, 0.556, GT - h(0.02), 0.956, MAT.granite_black, 0, (h(0.02) + GT) / 2, 0);
 
-  // A part to measure: a machined aluminium block with a bore and a step.
+  // A part to measure: a machined steel block with a step and a round pocket.
   const PH = 0.05;
   box(m, 0.14, PH - 0.02, 0.1, MAT.steel, xX + 0.03, GT + (PH - 0.02) / 2, 0.21);
-  box(m, 0.09, 0.02, 0.1, MAT.steel, xX + 0.005, GT + PH - 0.01, 0.21);
-  cyl(m, 0.018, 0.002, MAT.dark, 'y', xX - 0.02, GT + PH + 0.0001, 0.21);
+  // Raised step with a round pocket (32 mm, 20 mm deep) down to the lower block.
+  const pocket = Array.from({ length: 64 }, (_, i) => [xX - 0.02 + 0.016 * Math.cos(i * Math.PI / 32), 0.21 + 0.016 * Math.sin(i * Math.PI / 32)]);
+  plate(m, [[xX - 0.04, 0.16], [xX + 0.05, 0.16], [xX + 0.05, 0.26], [xX - 0.04, 0.26]], [pocket], 0.02, MAT.steel, GT + PH);
 
   // Green LED strips on the inside of both side walls, right under the Y axes, to light the part.
   for (const sx of [-1, 1]) {

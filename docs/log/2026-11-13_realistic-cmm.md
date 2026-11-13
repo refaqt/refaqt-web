@@ -13,13 +13,14 @@
   X axis.
 - A slender arm on the Z carriage carries a touch probe with a ruby ball. At the lowest Z
   position the ball reaches the granite top, and at the highest it reaches the X axis bottom. In
-  the picture the ball touches the top of a machined part.
+  the picture the ball touches the top of a machined steel part with a step and a round pocket.
 
 - After the first render, the founder asked for three changes, and they are done: the granite
   is black, the Z axis has a closed black column like the mill's (the arm slides out of its
   bottom), and green LED strips on the inside of both side walls, right under the Y axes,
   light the part.
 
+- The part had a flat dark spot. It is now a real round pocket, 32 mm wide and 20 mm deep.
 - The first strip light was made of separate point lights, so it showed as round spots. Each
   LED strip, also the one in the mill, is now one flat light as long as the strip. For this,
   the file `RectAreaLightUniformsLib.js` from three.js 0.160.0 (MIT licence) is now stored with
