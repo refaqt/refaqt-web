@@ -36,6 +36,8 @@
 <script type="module">
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
+RectAreaLightUniformsLib.init();   // for the LED strips: one even light per strip
 import { loadTemplate, Stage } from '../aqtuator/assets/js/viewer.js';
 
 const og = location.hash === '#og';
@@ -134,6 +136,12 @@ function crossStage(s, offset) {
 }
 const stages = [];
 
+// Light of a green LED strip: one flat light as long as the strip, so it glows as one band.
+function ledLight(m, len, pos, aim) {
+  const l = new THREE.RectAreaLight(0x00e0a0, 30, len, 0.012);
+  l.position.set(...pos); m.add(l); l.lookAt(...aim);
+  return l;
+}
 // Levelling foot: threaded rod, nut and a round pad.
 function foot(p, x, z, h) {
   cyl(p, 0.03, 0.012, MAT.dark, 'y', x, 0.006, z, 0.026);
@@ -243,9 +251,7 @@ function mill() {
 
   // Green LED strip on the inside of the back plate, right under the Y axis.
   box(m, 0.36, 0.012, 0.004, MAT.led, 0, WT - 0.012, -0.278);
-  for (const x of [-0.12, 0, 0.12]) {
-    const led = new THREE.PointLight(0x00e0a0, 0.12, 0.7, 2); led.position.set(x, WT - 0.03, -0.26); m.add(led);
-  }
+  ledLight(m, 0.36, [0, WT - 0.012, -0.274], [0, WT - 0.25, 0.1]);
 
   // Y stages on their edge on the side walls, flush with the outside. Carriages face inward.
   for (const sx of [-1, 1]) stage(m, [sx * 0.28, Yc, 0], offY, [0, 0, 1], [-sx, 0, 0], 0.74);
@@ -485,9 +491,7 @@ function cmm() {
   // Green LED strips on the inside of both side walls, right under the Y axes, to light the part.
   for (const sx of [-1, 1]) {
     box(m, 0.004, 0.012, 0.95, MAT.led, sx * 0.278, WT - 0.012, 0);
-    for (const z of [-0.36, -0.18, 0, 0.18, 0.36]) {
-      const led = new THREE.PointLight(0x00e0a0, 0.06, 0.8, 2); led.position.set(sx * 0.24, WT - 0.07, z); m.add(led);
-    }
+    ledLight(m, 0.95, [sx * 0.274, WT - 0.012, 0], [0, WT - 0.35, 0]);
   }
 
   // Y stages on their edge on the side walls, flush with the outside. Carriages face inward.
