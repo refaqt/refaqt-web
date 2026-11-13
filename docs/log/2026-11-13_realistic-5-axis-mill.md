@@ -28,7 +28,11 @@
   - The cradle sits at the front, in a cutout of the front wall. The A-axis rotary stage is
     210 mm across, and its edge is 20 mm from the front.
   - The gantry is a 160 mm beam with the X stage bolted to its front.
-  - The work plate sits straight on the cradle bottom, so there is no separate C table now.
+- In a fourth round: the C turning table is back on the cradle. The cradle bottom is 100 mm
+  instead of 180 mm, so the whole machine is 80 mm lower. Slanted walls stiffen the cradle
+  between its sides and its bottom. The front of the bottom part has slanted walls that follow
+  the cradle with 10 mm space. A green LED strip lights the inside from the back plate, right
+  under the Y axis.
 - The 3D model only exists as the CS-220. A longer stage is now made by stretching the fixed
   parts of that model at the middle. The carriage stays the real one.
 
@@ -39,9 +43,8 @@
 
 ## Open Questions
 
-- The stand height (800 mm), the 600 mm wall height and the A-axis height (485 mm) are my
+- The stand height (800 mm), the 560 mm wall height and the A-axis height (445 mm) are my
   choices. The founder has not confirmed them yet.
-- Does the mill still need a C axis (a turning table on the cradle)?
 
 ## Next Steps
 
