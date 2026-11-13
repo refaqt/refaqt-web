@@ -201,29 +201,35 @@ function mill() {
   }
   for (let i = 0; i < 6; i++) box(m, 0.004, 0.012, 0.16, MAT.dark, 0.3 - 0.008, 0.22 + i * 0.025, -0.15);
   // Chip bin inside the stand, under the chip hole.
-  box(m, 0.44, 0.16, 0.5, MAT.shell, 0, CT - 0.2, -0.06);
+  box(m, 0.44, 0.16, 0.4, MAT.shell, 0, CT - 0.2, 0.15);
   for (const sx of [-1, 1]) for (const sz of [-1, 1]) cyl(m, 0.025, 0.02, MAT.dark, 'y', sx * 0.25, CT + 0.01, sz * 0.35);
 
-  // Machine body. Side walls and back wall up to 500 mm. No front wall above the bottom part:
-  // that is the cutout for the cradle.
+  // Machine body. Side walls and back wall up to 500 mm, a 10 mm front plate (see below).
   for (const sx of [-1, 1]) {
-    box(m, 0.1, 0.5, 0.76, K, sx * 0.23, h(0.25), 0);
+    box(m, 0.1, 0.5, 0.75, K, sx * 0.23, h(0.25), -0.005);
     for (const x of [0.19, 0.27]) box(m, 0.002, 0.001, 0.76, MAT.dark, sx * x, WT + 0.0005, 0);   // plate seams
   }
   box(m, 0.36, 0.5, 0.1, K, 0, h(0.25), -0.33);
   for (const z of [-0.29, -0.37]) box(m, 0.36, 0.001, 0.002, MAT.dark, 0, WT + 0.0005, z);
-  // Bottom part: 180 mm, with a chip hole behind the cradle.
-  const hb = 0.18, HZ0 = -0.25, HZ1 = 0.12, HX = 0.07;
-  box(m, 0.36, hb, 0.38 - HZ1, K, 0, h(hb / 2), (0.38 + HZ1) / 2);
-  box(m, 0.36, hb, HZ0 + 0.28, K, 0, h(hb / 2), (HZ0 - 0.28) / 2);
-  for (const sx of [-1, 1]) box(m, 0.18 - HX, hb, HZ1 - HZ0, K, sx * (0.18 + HX) / 2, h(hb / 2), (HZ0 + HZ1) / 2);
-  // Slanted walls in the inner corners, up to the front: the cutout in which the cradle fits.
-  // They follow the cut corners of the cradle with 10 mm space.
-  for (const sx of [-1, 1]) {
-    const s = new THREE.Shape([[0, 0], [0.078, 0], [0, 0.078]].map(([x, y]) => new THREE.Vector2(x, y)));
-    const c = mesh(new THREE.ExtrudeGeometry(s, { depth: 0.66, bevelEnabled: false }), K);
-    c.scale.x = -sx; c.position.set(-sx * 0.18, h(hb), -0.28); m.add(c);
+  // Bottom part: 180 mm. Behind the cradle it is solid. Under the cradle is a large pocket:
+  // four slopes of 10 mm plate lead the chips down to a hole into the chip bin in the stand.
+  const hb = 0.18, P0 = 0.0, P1 = 0.37;            // pocket from z = P0 to the front plate
+  box(m, 0.36, hb, P0 + 0.38, K, 0, h(hb / 2), (P0 - 0.38) / 2);
+  const KD = K.clone(); KD.side = THREE.DoubleSide;
+  const T0 = [[-0.18, P0], [0.18, P0], [0.18, P1], [-0.18, P1]];    // pocket edge at the top
+  const B0 = [[-0.06, 0.13], [0.06, 0.13], [0.06, 0.25], [-0.06, 0.25]]; // hole at the bottom
+  for (let i = 0; i < 4; i++) {
+    const j = (i + 1) % 4, v = [];
+    for (const [x, z, y] of [[...T0[i], hb], [...T0[j], hb], [...B0[j], 0], [...T0[i], hb], [...B0[j], 0], [...B0[i], 0]]) v.push(x, h(y), z);
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); g.computeVertexNormals();
+    m.add(mesh(g, KD));
   }
+  // Front plate, 10 mm: the opposite shape of the cradle, with 10 mm space. The cradle moves
+  // through it, and the plate fills the corners.
+  const fp = new THREE.Shape([[-0.28, 0], [0.28, 0], [0.28, 0.5], [0.188, 0.5], [0.188, 0.2659], [0.1021, 0.18],
+    [-0.1021, 0.18], [-0.188, 0.2659], [-0.188, 0.5], [-0.28, 0.5]].map(([x, y]) => new THREE.Vector2(x, y)));
+  const fm = mesh(new THREE.ExtrudeGeometry(fp, { depth: 0.01, bevelEnabled: false }), K);
+  fm.position.set(0, MB, 0.37); m.add(fm);
 
   // Green LED strip on the inside of the back plate, right under the Y axis.
   box(m, 0.36, 0.012, 0.004, MAT.led, 0, WT - 0.012, -0.278);
@@ -264,6 +270,7 @@ function mill() {
   boltRing(m, 8, 0.06, -0.29, A, ZA, -1);
   // Cradle: 180 mm bottom with cut corners, 20 mm sides with round tops, work plate on top.
   const cr = new THREE.Group(); cr.position.set(0, A, ZA); m.add(cr);
+  cr.rotation.x = Number(new URLSearchParams(location.search).get('tilt') || 0);   // A axis angle, for checking
   const l = (v) => v - 0.385;                      // machine height to cradle coordinates
   const bot = new THREE.Shape([[-0.178, l(0.27)], [-0.098, l(0.19)], [0.098, l(0.19)], [0.178, l(0.27)],
     [0.178, l(0.29)], [-0.178, l(0.29)]].map(([x, y]) => new THREE.Vector2(x, y)));

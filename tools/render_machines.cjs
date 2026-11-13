@@ -18,7 +18,7 @@ const ONLY = process.env.ONLY || '';
   const proxy = process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY, bypass: 'localhost,127.0.0.1' } : undefined;
   const browser = await chromium.launch({ proxy, args: ['--use-gl=angle', '--use-angle=swiftshader', '--ignore-certificate-errors'] });
   const shots = ONLY
-    ? [{ query: `?only=${ONLY}${process.env.CAM ? '&cam=' + process.env.CAM : ''}`, hash: '', file: path.resolve(`check-${ONLY}.png`), viewport: { width: 1500, height: 1200 }, transparent: false }]
+    ? [{ query: `?only=${ONLY}${process.env.CAM ? '&cam=' + process.env.CAM : ''}${process.env.TILT ? '&tilt=' + process.env.TILT : ''}`, hash: '', file: path.resolve(`check-${ONLY}.png`), viewport: { width: 1500, height: 1200 }, transparent: false }]
     : [
         { query: '', hash: '', file: path.join(ROOT, 'assets/img/machines.png'), viewport: { width: 1500, height: 1200 }, transparent: true, trim: 24 },
         { query: '', hash: '#og', file: path.join(ROOT, 'assets/img/og.png'), viewport: { width: 1200, height: 630 }, transparent: false },
