@@ -327,15 +327,16 @@ function laser() {
 
   // Stand without doors, and four rubber mounts.
   standFrame(m, 0.8, 1.2, CT, FT, T, false);
-  box(m, 0.8 - 2 * T, 0.004, 1.2 - 2 * T, MAT.cover, 0, FT + T + 0.002, 0);           // bottom shelf
+  box(m, 0.8 - 2 * T, CT - FT - 2 * T, 0.004, MAT.cover, 0, (FT + CT) / 2, 0.6 - 0.012);  // black front plate
   for (const sx of [-1, 1]) for (const sz of [-1, 1]) cyl(m, 0.025, 0.02, MAT.dark, 'y', sx * 0.35, CT + 0.01, sz * 0.55);
 
-  // Body: bottom plate and four 100 mm walls.
+  // Body: bottom plate and four 100 mm walls. The front and back walls stop at the height of
+  // the slat tops, so a sheet can slide in from the front and from the back.
   box(m, 0.76, 0.02, 1.16, K, 0, h(0.01), 0);
   for (const sx of [-1, 1]) box(m, 0.1, 0.3, 1.16, K, sx * 0.33, h(0.15), 0);
-  for (const sz of [-1, 1]) box(m, 0.56, 0.3, 0.1, K, 0, h(0.15), sz * 0.53);
+  for (const sz of [-1, 1]) box(m, 0.56, WP - MB, 0.1, K, 0, (MB + WP) / 2, sz * 0.53);
   for (const sx of [-1, 1]) for (const x of [0.29, 0.37]) box(m, 0.002, 0.001, 1.16, MAT.dark, sx * x, WT + 0.0005, 0);
-  for (const sz of [-1, 1]) for (const z of [0.49, 0.57]) box(m, 0.56, 0.001, 0.002, MAT.dark, 0, WT + 0.0005, sz * z);
+  for (const sz of [-1, 1]) for (const z of [0.49, 0.57]) box(m, 0.56, 0.001, 0.002, MAT.dark, 0, WP + 0.0005, sz * z);
 
   // Slat bed: steel slats on edge, front to back, on two cross rails. A slag tray under them.
   box(m, 0.55, 0.004, 0.95, MAT.steel, 0, h(0.022), 0);
