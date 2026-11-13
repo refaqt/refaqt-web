@@ -14,3 +14,4 @@ Write entries in B2 English. Follow `.agents/rules/communication.md`.
 | 2026-11-12 | [A real REFAQT home page](2026-11-12_home-page.md) | marketing, software |  |
 | 2026-11-13 | [5-axis milling machine rebuilt from the founder's sketch](2026-11-13_realistic-5-axis-mill.md) | marketing, software |  |
 | 2026-11-13 | [Laser cutter rebuilt from the founder's brief](2026-11-13_realistic-laser-cutter.md) | marketing, software |  |
+| 2026-11-13 | [Measuring machine (CMM) rebuilt from the founder's brief](2026-11-13_realistic-cmm.md) | marketing, software |  |

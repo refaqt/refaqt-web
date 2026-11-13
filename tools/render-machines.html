@@ -444,34 +444,66 @@ function lathe() {
 }
 
 function cmm() {
-  // Gantry measuring machine: Y stages on raised side rails, a bridge beam,
-  // the X stage on the front of the beam and a vertical Z stage with the probe.
-  const m = new THREE.Group();
-  const W = 0.36, RH = 0.34;                       // rail position and height
-  box(m, 0.96, 0.1, 0.7, MAT.granite, 0, -0.05, 0);
-  for (const sx of [-1, 1]) {
-    for (const sz of [-1, 1]) box(m, 0.07, RH, 0.07, MAT.frame, sx * W, RH / 2, sz * 0.24);
-    box(m, 0.21, 0.03, 0.62, MAT.frame, sx * W, RH + 0.015, 0);
-    box(m, 0.02, 0.12, 0.56, MAT.frame, sx * W, RH - 0.06, 0);
-    stage(m, [sx * W, RH + 0.03, 0], 0.0, [0, 0, 1], [0, 1, 0]);
-  }
-  const BY = RH + 0.09, BZ = -0.01;
-  for (const sx of [-1, 1]) box(m, 0.2, 0.03, 0.2, MAT.frame, sx * W, BY + 0.015, BZ);
-  box(m, 0.92, 0.1, 0.12, MAT.frame, 0, BY + 0.08, BZ);
-  const x = stage(m, [0, BY + 0.08, BZ + 0.06], 0.06, [1, 0, 0], [0, 0, 1]);
-  const h = onCarriage(x, true);
-  const z = stage(h, [0, -0.1, 0], -0.06, [0, 1, 0], [0, 0, 1]);
-  const p = onCarriage(z, true);
-  box(p, 0.08, 0.04, 0.05, MAT.frame, 0, -0.1, 0.025);
-  cyl(p, 0.02, 0.09, MAT.body, 'y', 0, -0.165, 0.03);
-  cyl(p, 0.022, 0.008, MAT.accent, 'y', 0, -0.13, 0.03);
-  cyl(p, 0.003, 0.05, MAT.steel, 'y', 0, -0.235, 0.03);
-  const ball = mesh(new THREE.SphereGeometry(0.007, 32, 16), MAT.ruby); ball.position.set(0, -0.262, 0.03); p.add(ball);
-  // A part to measure.
-  box(m, 0.16, 0.05, 0.12, MAT.steel, 0.04, 0.025, 0.12);
-  cyl(m, 0.025, 0.03, MAT.dark, 'y', 0.07, 0.065, 0.12);
+  // Measuring machine (CMM), founder brief 13-11-2026. Units: metres. Front is +z.
+  // The same layout as the laser cutter: stand 800 x 1200, body 760 x 1160 with 100 mm black
+  // anodised walls, two Y stages on their edge (1140 long), a 160 mm beam with the X stage on
+  // its front (640 long). The body is 500 mm high, so the granite top is 300 mm under the gantry.
+  // Z stage 520 long (300 mm travel), its bottom flush with the X axis bottom. A slender arm on
+  // the Z carriage carries a touch probe that reaches the granite top.
+  const m = new THREE.Group(); m.userData.floor = true;
+  const CT = 0.8, FT = 0.045, T = 0.05;            // stand top, foot height, frame tube size
+  const MB = CT + 0.02, h = (v) => MB + v;         // machine bottom, on the rubber mounts
+  const WT = h(0.5), Yc = WT + 0.105;              // wall top (= gantry bottom), Y stage centre
+  const GT = WT - 0.3;                             // granite top: the work plane
+  const Zc = WT + 0.26;                            // Z stage centre: its bottom is flush with the X axis bottom
+  const offY = 0.02, offX = 0.03, offZ = -0.1;
+  const zY = -0.0104 + offY, xX = -0.0104 + offX;  // Y and X carriage centres
+  const cc = Zc - 0.0104 + offZ;                   // Z carriage centre (y)
+  const K = MAT.black;
+
+  // Stand with a black front plate, and four rubber mounts.
+  standFrame(m, 0.8, 1.2, CT, FT, T, false);
+  box(m, 0.8 - 2 * T, CT - FT - 2 * T, 0.004, MAT.cover, 0, (FT + CT) / 2, 0.6 - 0.012);
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) cyl(m, 0.025, 0.02, MAT.dark, 'y', sx * 0.35, CT + 0.01, sz * 0.55);
+
+  // Body: bottom plate and four 100 mm walls. The front and back walls stop at the granite top.
+  box(m, 0.76, 0.02, 1.16, K, 0, h(0.01), 0);
+  for (const sx of [-1, 1]) box(m, 0.1, 0.5, 1.16, K, sx * 0.33, h(0.25), 0);
+  for (const sz of [-1, 1]) box(m, 0.56, GT - MB, 0.1, K, 0, (MB + GT) / 2, sz * 0.53);
+  for (const sx of [-1, 1]) for (const x of [0.29, 0.37]) box(m, 0.002, 0.001, 1.16, MAT.dark, sx * x, WT + 0.0005, 0);
+  for (const sz of [-1, 1]) for (const z of [0.49, 0.57]) box(m, 0.56, 0.001, 0.002, MAT.dark, 0, GT + 0.0005, sz * z);
+  // Granite block, 180 mm thick, between the walls.
+  box(m, 0.556, GT - h(0.02), 0.956, MAT.granite, 0, (h(0.02) + GT) / 2, 0);
+
+  // A part to measure: a machined aluminium block with a bore and a step.
+  const PH = 0.05;
+  box(m, 0.14, PH - 0.02, 0.1, MAT.steel, xX + 0.03, GT + (PH - 0.02) / 2, 0.21);
+  box(m, 0.09, 0.02, 0.1, MAT.steel, xX + 0.005, GT + PH - 0.01, 0.21);
+  cyl(m, 0.018, 0.002, MAT.dark, 'y', xX - 0.02, GT + PH + 0.0001, 0.21);
+
+  // Y stages on their edge on the side walls, flush with the outside. Carriages face inward.
+  for (const sx of [-1, 1]) stage(m, [sx * 0.38, Yc, 0], offY, [0, 0, 1], [-sx, 0, 0], 1.14);
+  // Gantry: a 160 mm beam between the Y carriages, the X stage bolted on its front.
+  const zb = zY + 0.045;
+  box(m, 0.64, 0.21, 0.16, K, 0, Yc, zb - 0.08);
+  stage(m, [0, Yc, zb], offX, [1, 0, 0], [0, 0, 1], 0.64);
+  // Z stage on the X carriage, upright and open. Its bottom is flush with the X axis bottom.
+  stage(m, [xX, Zc, zb + 0.06], offZ, [0, 1, 0], [0, 0, 1], 0.52);
+
+  // Slender arm on the Z carriage, with a touch probe at its end. The probe tip is 399.6 mm
+  // under the carriage centre: at the lowest Z position it reaches the granite top.
+  const zp = zb + 0.12, za = zp + 0.012 + 0.02;    // carriage face, arm axis
+  box(m, 0.09, 0.15, 0.012, MAT.frame, xX, cc, zp + 0.006);
+  box(m, 0.04, 0.4, 0.04, MAT.body, xX, cc - 0.12, za);
+  box(m, 0.042, 0.006, 0.042, MAT.accent, xX, cc + 0.06, za);
+  cyl(m, 0.013, 0.05, K, 'y', xX, cc - 0.345, za);
+  cyl(m, 0.0135, 0.004, MAT.accent, 'y', xX, cc - 0.362, za);
+  cyl(m, 0.006, 0.01, MAT.steel, 'y', xX, cc - 0.375, za);
+  cyl(m, 0.0015, 0.0171, MAT.steel, 'y', xX, cc - 0.38855, za);
+  const ball = mesh(new THREE.SphereGeometry(0.0025, 32, 16), MAT.ruby); ball.position.set(xX, cc - 0.3971, za); m.add(ball);
   return m;
 }
+cmm.view = { cam: '2.1,2.8,4.4', target: '0,0.9,0.05' };
 
 // ---------- scene ----------
 const r = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
