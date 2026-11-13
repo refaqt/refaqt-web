@@ -60,6 +60,7 @@ const MAT = {
   led: new THREE.MeshStandardMaterial({ color: 0x00e0a0, emissive: 0x00e0a0, emissiveIntensity: 2.5 }),
   spark: new THREE.MeshBasicMaterial({ color: 0xffb050 }),
   sheet: phys({ color: 0x8d9296, metalness: 0.9, roughness: 0.45 }),                     // mild steel sheet
+  granite_black: phys({ color: 0x101112, metalness: 0.0, roughness: 0.55, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 0.5 }), // polished black granite
   black: phys({ color: 0x141618, metalness: 0.6, roughness: 0.4, clearcoat: 0.35, clearcoatRoughness: 0.4 }), // black anodised aluminium
   tube: phys({ color: 0x141618, metalness: 0.3, roughness: 0.5, clearcoat: 0.3, clearcoatRoughness: 0.5 }),   // black powder-coated steel tube
   cover: phys({ color: 0x1d1f22, metalness: 0.2, roughness: 0.5 }),                                              // black sheet-metal cover plate
@@ -472,8 +473,8 @@ function cmm() {
   for (const sz of [-1, 1]) box(m, 0.56, GT - MB, 0.1, K, 0, (MB + GT) / 2, sz * 0.53);
   for (const sx of [-1, 1]) for (const x of [0.29, 0.37]) box(m, 0.002, 0.001, 1.16, MAT.dark, sx * x, WT + 0.0005, 0);
   for (const sz of [-1, 1]) for (const z of [0.49, 0.57]) box(m, 0.56, 0.001, 0.002, MAT.dark, 0, GT + 0.0005, sz * z);
-  // Granite block, 180 mm thick, between the walls.
-  box(m, 0.556, GT - h(0.02), 0.956, MAT.granite, 0, (h(0.02) + GT) / 2, 0);
+  // Black granite block, 180 mm thick, between the walls.
+  box(m, 0.556, GT - h(0.02), 0.956, MAT.granite_black, 0, (h(0.02) + GT) / 2, 0);
 
   // A part to measure: a machined aluminium block with a bore and a step.
   const PH = 0.05;
@@ -481,14 +482,30 @@ function cmm() {
   box(m, 0.09, 0.02, 0.1, MAT.steel, xX + 0.005, GT + PH - 0.01, 0.21);
   cyl(m, 0.018, 0.002, MAT.dark, 'y', xX - 0.02, GT + PH + 0.0001, 0.21);
 
+  // Green LED strips on the inside of both side walls, right under the Y axes, to light the part.
+  for (const sx of [-1, 1]) {
+    box(m, 0.004, 0.012, 0.95, MAT.led, sx * 0.278, WT - 0.012, 0);
+    for (const z of [-0.36, -0.18, 0, 0.18, 0.36]) {
+      const led = new THREE.PointLight(0x00e0a0, 0.06, 0.8, 2); led.position.set(sx * 0.24, WT - 0.07, z); m.add(led);
+    }
+  }
+
   // Y stages on their edge on the side walls, flush with the outside. Carriages face inward.
   for (const sx of [-1, 1]) stage(m, [sx * 0.38, Yc, 0], offY, [0, 0, 1], [-sx, 0, 0], 1.14);
   // Gantry: a 160 mm beam between the Y carriages, the X stage bolted on its front.
   const zb = zY + 0.045;
   box(m, 0.64, 0.21, 0.16, K, 0, Yc, zb - 0.08);
   stage(m, [0, Yc, zb], offX, [1, 0, 0], [0, 0, 1], 0.64);
-  // Z stage on the X carriage, upright and open. Its bottom is flush with the X axis bottom.
+  // Z stage on the X carriage, inside a closed column like the mill's. Its bottom is flush with
+  // the X axis bottom. The arm slides out of the bottom of the column.
   stage(m, [xX, Zc, zb + 0.06], offZ, [0, 1, 0], [0, 0, 1], 0.52);
+  {
+    const z0 = zb + 0.06, z1 = zb + 0.2, yB = WT, yT = Zc + 0.265;
+    for (const sx of [-1, 1]) box(m, 0.006, yT - yB, z1 - z0, K, xX + sx * 0.108, (yB + yT) / 2, (z0 + z1) / 2);
+    box(m, 0.222, 0.008, z1 - z0, K, xX, yT, (z0 + z1) / 2);
+    box(m, 0.222, yT - yB, 0.006, K, xX, (yB + yT) / 2, z1);
+    box(m, 0.223, 0.012, 0.005, MAT.accent, xX, yT - 0.04, z1 + 0.003);
+  }
 
   // Slender arm on the Z carriage, with a touch probe at its end. The probe tip is 399.6 mm
   // under the carriage centre: at the lowest Z position it reaches the granite top.
