@@ -20,6 +20,15 @@
   - The stand is a frame of steel tubes with cover plates, not a closed cabinet.
   - The cable chains are gone. Cables run outward and behind the X axis, out of sight.
   - The stand is the chip tray: the base plate has a hole under the cradle.
+- In a third round, the founder gave exact sizes with a front-view sketch:
+  - Width: wall 100 | cradle side 20 | 10 | spindle 80 | X travel 220 | 10 | cradle side 20 |
+    wall 100 = 560 mm.
+  - Height: bottom 180 | 10 | cradle bottom 180 | work plate | cradle | 10 | Y stages.
+  - Walls are 80 mm profiles between two 10 mm plates. The whole machine is black anodised.
+  - The cradle sits at the front, in a cutout of the front wall. The A-axis rotary stage is
+    210 mm across, and its edge is 20 mm from the front.
+  - The gantry is a 160 mm beam with the X stage bolted to its front.
+  - The work plate sits straight on the cradle bottom, so there is no separate C table now.
 - The 3D model only exists as the CS-220. A longer stage is now made by stretching the fixed
   parts of that model at the middle. The carriage stays the real one.
 
@@ -30,8 +39,9 @@
 
 ## Open Questions
 
-- The stand height (800 mm) and the column without a window are my choices. The founder has
-  not confirmed them yet.
+- The stand height (800 mm), the 600 mm wall height and the A-axis height (485 mm) are my
+  choices. The founder has not confirmed them yet.
+- Does the mill still need a C axis (a turning table on the cradle)?
 
 ## Next Steps
 
