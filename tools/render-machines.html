@@ -57,7 +57,8 @@ const MAT = {
   steel: phys({ color: 0xc4c8cc, metalness: 1.0, roughness: 0.2 }),
   accent: phys({ color: 0x00ac99, metalness: 0.3, roughness: 0.35 }),
   copper: phys({ color: 0xc8743c, metalness: 1.0, roughness: 0.3 }),
-  cabinet: phys({ color: 0x4c5055, metalness: 0.0, roughness: 0.55, clearcoat: 0.2, clearcoatRoughness: 0.6 }), // powder-coated sheet steel
+  tube: phys({ color: 0x2b2e31, metalness: 0.2, roughness: 0.5, clearcoat: 0.3, clearcoatRoughness: 0.5 }),   // powder-coated steel tube
+  cover: phys({ color: 0x6a6f74, metalness: 0.0, roughness: 0.6 }),                                            // sheet-metal cover plate
   ruby: phys({ color: 0xd0103a, metalness: 0.0, roughness: 0.1, clearcoat: 1 }),
 };
 
@@ -127,24 +128,6 @@ function crossStage(s, offset) {
 }
 const stages = [];
 
-// Cable chain (drag chain) in the XY plane of group g. X runs along the travel.
-// The fixed end is at x = f on the lower run (y = 0). The moving end is at x = mv on the
-// upper run. The bend sits at (f + mv) / 2 + c, so the chain length stays the same.
-function chain(g, f, mv, w, c, R = 0.03) {
-  const t = 0.014, pitch = 0.02, bx = (f + mv) / 2 + c;
-  const L1 = bx - f, L2 = Math.PI * R, L3 = bx - mv;
-  const at = (s) => {
-    if (s < L1) return [f + s, t / 2, 0];
-    s -= L1;
-    if (s < L2) { const a = -Math.PI / 2 + s / R; return [bx + Math.cos(a) * (R - t / 2), R + Math.sin(a) * (R - t / 2), a + Math.PI / 2]; }
-    s -= L2;
-    return [bx - s, 2 * R - t / 2, Math.PI];
-  };
-  for (let s = pitch / 2; s < L1 + L2 + L3; s += pitch) {
-    const [x, y, a] = at(s);
-    const l = box(g, pitch * 0.92, t, w, MAT.dark, x, y, 0); l.rotation.z = a;
-  }
-}
 // Levelling foot: threaded rod, nut and a round pad.
 function foot(p, x, z, h) {
   cyl(p, 0.03, 0.012, MAT.dark, 'y', x, 0.006, z, 0.026);
@@ -158,98 +141,122 @@ function boltRing(p, n, r, x, y, z, dir = 1) {
     cyl(p, 0.0045, 0.004, MAT.dark, 'x', x + dir * 0.002, y + Math.cos(a) * r, z + Math.sin(a) * r, 0.0045, 16);
   }
 }
+// Flat plate in the XZ plane from a 2D outline (x, z), with optional holes. Top at y.
+function plate(p, outline, holes, t, mat, y) {
+  const v = (pts) => pts.map(([x, z]) => new THREE.Vector2(x, -z));
+  const s = new THREE.Shape(v(outline));
+  for (const h of holes) s.holes.push(new THREE.Path(v(h)));
+  const m = mesh(new THREE.ExtrudeGeometry(s, { depth: t, bevelEnabled: false }), mat);
+  m.rotation.x = -Math.PI / 2; m.position.y = y - t; p.add(m); return m;
+}
+// Rectangle with cut corners, as a list of 2D points.
+function cutRect(cx, cz, hx, hz, c) {
+  return [[cx - hx + c, cz - hz], [cx + hx - c, cz - hz], [cx + hx, cz - hz + c], [cx + hx, cz + hz - c],
+    [cx + hx - c, cz + hz], [cx - hx + c, cz + hz], [cx - hx, cz + hz - c], [cx - hx, cz - hz + c]];
+}
 
 // ---------- the four machines (base top at y = 0) ----------
 function mill() {
-  // 5-axis milling machine on a cabinet (founder sketch, 13-11-2026). Units: metres.
+  // 5-axis milling machine on a stand (founder sketch, 13-11-2026). Units: metres. Front is +z.
   // Gantry: two CS-520 Y stages on their edge on the side walls, a CS-220 X stage as the bridge
   // between the Y carriages, and a CS-220 Z stage inside a column. Cradle with A and C axes.
-  // Front is +z. 60 (Y stage) + 440 (X stage) + 60 (Y stage) = 560 mm machine width.
+  // 60 (Y stage) + 440 (X stage) + 60 (Y stage) = 560 mm machine width.
+  // The stand is the chip tray: chips fall through a hole in the base plate under the cradle.
   const m = new THREE.Group(); m.userData.floor = true;
-  const CT = 0.8, FT = 0.045;                      // cabinet top, foot height
+  const CT = 0.8, FT = 0.045, T = 0.05;            // stand top, foot height, frame tube size
   const B = CT + 0.05;                             // top of the machine base plate
-  const WT = 1.27, Yc = WT + 0.105;                // wall top, Y stage centre height
-  const A = 1.05, ZC = 0.04;                       // A axis height and its z position
-  const Zc = 1.56;                                 // Z stage centre height
-  const offY = -0.1196, offX = 0.03, offZ = -0.1, tilt = -0.32, rotC = 0.5;
+  const A = B + 0.17, ZC = 0.04;                   // A axis height and its z position
+  const SWING = 0.185;                             // largest radius of the cradle around A
+  const WT = A + SWING + 0.01, Yc = WT + 0.105;     // wall top, Y stage centre height
+  const Zc = 1.51;                                 // Z stage centre height
+  const offY = -0.1196, offX = 0.03, offZ = -0.06, tilt = -0.3, rotC = 0.5;
   const zY = -0.0104 + offY;                       // Y carriage centre (z)
   const xX = -0.0104 + offX;                       // X carriage centre (x)
   const cc = Zc - 0.0104 + offZ;                   // Z carriage centre (y)
 
-  // Cabinet 600 x 800, sheet steel, one door with a handle on the left and hinges on the right.
-  for (const sx of [-1, 1]) for (const sz of [-1, 1]) foot(m, sx * 0.25, sz * 0.35, FT);
-  box(m, 0.6, 0.06, 0.78, MAT.dark, 0, FT + 0.03, -0.01);                    // plinth, set back
-  box(m, 0.6, CT - FT - 0.06, 0.8, MAT.cabinet, 0, (CT + FT + 0.06) / 2, 0);
-  const door = box(m, 0.56, 0.6, 0.01, MAT.cabinet, 0, (CT + FT + 0.06) / 2, 0.405);
-  box(m, 0.012, 0.16, 0.012, MAT.steel, -0.245, door.position.y, 0.422);
-  for (const sy of [-0.2, 0.2]) {
-    box(m, 0.012, 0.012, 0.012, MAT.steel, -0.245, door.position.y + sy * 0.3, 0.413);
-    cyl(m, 0.007, 0.05, MAT.steel, 'y', 0.284, door.position.y + sy * 1.2, 0.41);
+  // Stand: a frame of 50 mm steel tubes, 600 x 800, with cover plates set in between.
+  const hx = 0.3 - T / 2, hz = 0.4 - T / 2, H = CT - FT;
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+    foot(m, sx * hx, sz * hz, FT);
+    box(m, T, H, T, MAT.tube, sx * hx, FT + H / 2, sz * hz);
   }
-  for (let i = 0; i < 6; i++) box(m, 0.004, 0.012, 0.16, MAT.dark, 0.301, 0.22 + i * 0.025, -0.2); // vent slots
+  for (const y of [FT + T / 2, CT - T / 2]) {
+    for (const sz of [-1, 1]) box(m, 0.6 - 2 * T, T, T, MAT.tube, 0, y, sz * hz);
+    for (const sx of [-1, 1]) box(m, T, T, 0.8 - 2 * T, MAT.tube, sx * hx, y, 0);
+  }
+  const ph = H - 2 * T, py = (FT + CT) / 2;
+  for (const sx of [-1, 1]) box(m, 0.004, ph, 0.8 - 2 * T, MAT.cover, sx * (0.3 - 0.012), py, 0);
+  box(m, 0.6 - 2 * T, ph, 0.004, MAT.cover, 0, py, -(0.4 - 0.012));
+  // Front door with a handle on the left and two hinges on the right.
+  box(m, 0.6 - 2 * T - 0.006, ph - 0.006, 0.004, MAT.cover, 0, py, 0.4 - 0.008);
+  box(m, 0.012, 0.14, 0.012, MAT.steel, -0.2, py, 0.4 + 0.012);
+  for (const s of [-1, 1]) {
+    box(m, 0.012, 0.012, 0.012, MAT.steel, -0.2, py + s * 0.06, 0.4 + 0.002);
+    cyl(m, 0.007, 0.05, MAT.steel, 'y', 0.247, py + s * 0.22, 0.4);
+  }
+  for (let i = 0; i < 6; i++) box(m, 0.004, 0.012, 0.16, MAT.dark, 0.3 - 0.008, 0.22 + i * 0.025, -0.15);
+  // Chip bin inside the stand, under the hole.
+  box(m, 0.44, 0.16, 0.5, MAT.shell, 0, CT - 0.2, ZC);
 
-  // Four rubber mounts, then the base plate: 560 x 760, 20 mm in from the cabinet edge.
-  for (const sx of [-1, 1]) for (const sz of [-1, 1]) cyl(m, 0.035, 0.02, MAT.dark, 'y', sx * 0.22, CT + 0.01, sz * 0.31);
-  box(m, 0.56, 0.03, 0.76, MAT.frame, 0, B - 0.015, 0);
+  // Four rubber mounts, then the base plate: 560 x 760, with a hole under the cradle.
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) cyl(m, 0.025, 0.02, MAT.dark, 'y', sx * 0.25, CT + 0.01, sz * 0.35);
+  plate(m, [[-0.28, -0.38], [0.28, -0.38], [0.28, 0.38], [-0.28, 0.38]], [cutRect(0, ZC, 0.215, 0.17, 0.05)], 0.03, MAT.frame, B);
 
   // Side walls: 60 mm aluminium plate, the same thickness as a stage on its edge.
   for (const sx of [-1, 1]) {
     box(m, 0.06, WT - B, 0.76, MAT.frame, sx * 0.25, (B + WT) / 2, 0);
-    for (let i = 0; i < 6; i++) cyl(m, 0.0045, 0.004, MAT.dark, 'x', sx * 0.282, B + 0.025, -0.33 + i * 0.132, 0.0045, 16);
+    for (let i = 0; i < 6; i++) cyl(m, 0.0045, 0.004, MAT.dark, 'x', sx * 0.282, B + 0.02, -0.33 + i * 0.132, 0.0045, 16);
     // Y stage on its edge: base on the wall, carriage faces inward.
     stage(m, [sx * 0.28, Yc, 0], offY, [0, 0, 1], [-sx, 0, 0], 0.74);
-    // Cable chain on the top edge of the Y stage.
-    const cg = new THREE.Group(); cg.position.set(sx * 0.25, WT + 0.21, 0); cg.rotation.y = -Math.PI / 2; m.add(cg);
-    chain(cg, 0, zY, 0.04, 0.17);
-    box(m, 0.04, 0.07, 0.02, MAT.frame, sx * 0.235, WT + 0.24, zY);          // chain bracket
   }
 
   // X stage: the bridge between the two Y carriages. On its edge, carriage faces the front.
   stage(m, [0, Yc, zY - 0.03], offX, [1, 0, 0], [0, 0, 1]);
-  const xg = new THREE.Group(); xg.position.set(0, WT + 0.21, zY); m.add(xg);
-  chain(xg, -0.06, xX, 0.04, 0.12, 0.025);
 
   // Z stage on the X carriage, inside a closed column.
   stage(m, [xX, Zc, zY + 0.03], offZ, [0, 1, 0], [0, 0, 1]);
   const z0 = zY + 0.03, z1 = zY + 0.25, yB = Zc - 0.225, yT = Zc + 0.235;
-  for (const sx of [-1, 1]) box(m, 0.004, yT - yB, z1 - z0, MAT.body, xX + sx * 0.107, (yB + yT) / 2, (z0 + z1) / 2);
-  box(m, 0.218, 0.006, z1 - z0, MAT.body, xX, yT, (z0 + z1) / 2);
-  box(m, 0.218, yT - yB, 0.004, MAT.body, xX, (yB + yT) / 2, z1);
-  box(m, 0.219, 0.012, 0.005, MAT.accent, xX, yT - 0.04, z1 + 0.001);
-  // Ram on the Z carriage, head block and spindle.
+  for (const sx of [-1, 1]) box(m, 0.006, yT - yB, z1 - z0, MAT.body, xX + sx * 0.108, (yB + yT) / 2, (z0 + z1) / 2);
+  box(m, 0.222, 0.008, z1 - z0, MAT.body, xX, yT, (z0 + z1) / 2);
+  box(m, 0.222, yT - yB, 0.006, MAT.body, xX, (yB + yT) / 2, z1);
+  box(m, 0.223, 0.012, 0.005, MAT.accent, xX, yT - 0.04, z1 + 0.003);
+  box(m, 0.226, 0.012, z1 - z0 + 0.004, MAT.dark, xX, yB + 0.006, (z0 + z1) / 2);      // wiper at the bottom
+  // Ram: a solid block on the Z carriage that slides out of the column. Spindle bolted under it.
   const zs = zY + 0.17;
-  box(m, 0.12, 0.23, 0.015, MAT.frame, xX, cc - 0.035, zY + 0.0975);
-  box(m, 0.15, 0.09, 0.13, MAT.frame, xX, cc - 0.195, zs);
-  cyl(m, 0.042, 0.12, MAT.body, 'y', xX, cc - 0.3, zs);
-  cyl(m, 0.044, 0.01, MAT.accent, 'y', xX, cc - 0.255, zs);
-  cyl(m, 0.022, 0.025, MAT.steel, 'y', xX, cc - 0.3725, zs, 0.03);
-  cyl(m, 0.004, 0.045, MAT.steel, 'y', xX, cc - 0.4075, zs);
+  box(m, 0.2, 0.34, 0.15, MAT.frame, xX, cc - 0.07, zY + 0.0925 + 0.075);
+  cyl(m, 0.068, 0.014, MAT.frame, 'y', xX, cc - 0.247, zs);
+  cyl(m, 0.05, 0.11, MAT.body, 'y', xX, cc - 0.309, zs);
+  cyl(m, 0.052, 0.008, MAT.accent, 'y', xX, cc - 0.262, zs);
+  cyl(m, 0.024, 0.03, MAT.steel, 'y', xX, cc - 0.379, zs, 0.034);
+  cyl(m, 0.004, 0.035, MAT.steel, 'y', xX, cc - 0.4115, zs);
 
-  // A axis: rotary stage on the right wall (bolted disc), bearing on the left wall.
-  cyl(m, 0.075, 0.014, MAT.dark, 'x', 0.287, A, ZC);
-  cyl(m, 0.077, 0.004, MAT.accent, 'x', 0.282, A, ZC);
-  cyl(m, 0.03, 0.006, MAT.steel, 'x', 0.297, A, ZC);
-  boltRing(m, 8, 0.058, 0.294, A, ZC, 1);
-  cyl(m, 0.05, 0.01, MAT.dark, 'x', -0.285, A, ZC);
-  boltRing(m, 6, 0.038, -0.29, A, ZC, -1);
-  // Cradle: two arms and a floor with cut corners. It turns around X.
+  // A axis: a large rotary stage on the right wall, a bearing housing on the left wall.
+  cyl(m, 0.16, 0.035, MAT.dark, 'x', 0.2775, A, ZC);
+  cyl(m, 0.162, 0.005, MAT.accent, 'x', 0.2625, A, ZC);
+  cyl(m, 0.06, 0.006, MAT.steel, 'x', 0.298, A, ZC);
+  boltRing(m, 12, 0.13, 0.295, A, ZC, 1);
+  cyl(m, 0.1, 0.02, MAT.dark, 'x', -0.29, A, ZC);
+  boltRing(m, 8, 0.08, -0.3, A, ZC, -1);
+  // Cradle: a solid U-shaped trough with cut corners and round hubs. It turns around X.
   const cr = new THREE.Group(); cr.position.set(0, A, ZC); cr.rotation.x = tilt; m.add(cr);
-  const armShape = new THREE.Shape();
-  armShape.moveTo(-0.12, -0.13); armShape.lineTo(0.12, -0.13); armShape.lineTo(0.05, 0);
-  armShape.absarc(0, 0, 0.05, 0, Math.PI, false); armShape.lineTo(-0.12, -0.13);
-  for (const x of [-0.215, 0.19]) {
-    const a = mesh(new THREE.ExtrudeGeometry(armShape, { depth: 0.025, bevelEnabled: false, curveSegments: 24 }), MAT.frame);
-    a.rotation.y = Math.PI / 2; a.position.set(x, 0, 0); cr.add(a);
+  const D = 0.22;
+  const u = new THREE.Shape([[-0.21, 0], [-0.21, -0.09], [-0.155, -0.145], [0.155, -0.145], [0.21, -0.09], [0.21, 0],
+    [0.17, 0], [0.17, -0.075], [0.125, -0.11], [-0.125, -0.11], [-0.17, -0.075], [-0.17, 0]].map(([x, y]) => new THREE.Vector2(x, y)));
+  const tr = mesh(new THREE.ExtrudeGeometry(u, { depth: D, bevelEnabled: false }), MAT.frame);
+  tr.position.z = -D / 2; cr.add(tr);
+  const cap = new THREE.Shape(); cap.moveTo(-D / 2, 0); cap.lineTo(D / 2, 0); cap.absarc(0, 0, D / 2, 0, Math.PI, false);
+  for (const x of [-0.21, 0.17]) {
+    const k = mesh(new THREE.ExtrudeGeometry(cap, { depth: 0.04, bevelEnabled: false, curveSegments: 32 }), MAT.frame);
+    k.rotation.y = Math.PI / 2; k.position.x = x; cr.add(k);
   }
-  for (const sx of [-1, 1]) cyl(cr, 0.03, 0.035, MAT.steel, 'x', sx * 0.2325, 0, 0);
-  const c = 0.04, fx = 0.19, fz = 0.12;
-  const floorShape = new THREE.Shape([[-fx + c, -fz], [fx - c, -fz], [fx, -fz + c], [fx, fz - c], [fx - c, fz], [-fx + c, fz], [-fx, fz - c], [-fx, -fz + c]].map(([x, y]) => new THREE.Vector2(x, y)));
-  const fl = mesh(new THREE.ExtrudeGeometry(floorShape, { depth: 0.025, bevelEnabled: false }), MAT.frame);
-  fl.rotation.x = -Math.PI / 2; fl.position.set(0, -0.13, 0); cr.add(fl);
+  for (const sx of [-1, 1]) {
+    cyl(cr, 0.06, 0.012, MAT.frame, 'x', sx * 0.214, 0, 0);
+    boltRing(cr, 8, 0.045, sx * 0.218, 0, 0, sx);
+  }
   // C axis: rotary table on the cradle floor, with T-slots and a part.
-  cyl(cr, 0.085, 0.04, MAT.dark, 'y', 0, -0.085, 0);
-  cyl(cr, 0.087, 0.004, MAT.accent, 'y', 0, -0.07, 0);
-  const tg = new THREE.Group(); tg.position.set(0, -0.056, 0); tg.rotation.y = rotC; cr.add(tg);
+  cyl(cr, 0.085, 0.04, MAT.dark, 'y', 0, -0.09, 0);
+  cyl(cr, 0.087, 0.004, MAT.accent, 'y', 0, -0.075, 0);
+  const tg = new THREE.Group(); tg.position.set(0, -0.061, 0); tg.rotation.y = rotC; cr.add(tg);
   cyl(tg, 0.1, 0.018, MAT.frame, 'y', 0, 0, 0, 0.1, 64);
   for (const d of [-0.04, 0, 0.04]) box(tg, 0.19, 0.003, 0.012, MAT.dark, 0, 0.008, d);
   box(tg, 0.08, 0.04, 0.06, MAT.steel, 0, 0.029, 0);

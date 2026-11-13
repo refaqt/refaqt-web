@@ -8,10 +8,18 @@
   them one at a time. The founder sends a sketch, I confirm the axes in a table, then I build
   and render the machine.
 - The first machine is the 5-axis milling machine. It now follows the founder's sketch of
-  13-11-2026: a cabinet of 600 x 800 mm, and a machine of 560 x 760 mm on rubber mounts.
+  13-11-2026: a stand of 600 x 800 mm, and a machine of 560 x 760 mm on rubber mounts.
 - Axes: two CS-520 stages stand on their edge as the Y axis. A CS-220 stage is the bridge (X).
   A CS-220 stage stands upright inside a closed column (Z). A cradle turns between the side
   walls (A), with a rotary table on it (C).
+- After the first render, the founder asked for these changes, and they are done:
+  - The cradle is now a solid U-shaped trough with cut corners and round hubs, as in the sketch.
+  - The gap under the Y stages is now just large enough for the cradle to turn. The A-axis
+    rotary stage is large, and its top edge comes almost up to the Y stages.
+  - The spindle is bolted under a solid ram that slides out of the column, so it looks rigid.
+  - The stand is a frame of steel tubes with cover plates, not a closed cabinet.
+  - The cable chains are gone. Cables run outward and behind the X axis, out of sight.
+  - The stand is the chip tray: the base plate has a hole under the cradle.
 - The 3D model only exists as the CS-220. A longer stage is now made by stretching the fixed
   parts of that model at the middle. The carriage stays the real one.
 
@@ -22,8 +30,8 @@
 
 ## Open Questions
 
-- The cabinet height (800 mm), the column without a window, and the cradle shape are my
-  choices. The founder has not confirmed them yet.
+- The stand height (800 mm) and the column without a window are my choices. The founder has
+  not confirmed them yet.
 
 ## Next Steps
 
