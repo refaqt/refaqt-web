@@ -173,7 +173,7 @@ function mill() {
   const WT = h(0.5), Yc = WT + 0.105;             // wall top, Y stage centre height
   const A = h(0.385), ZA = 0.255;                  // A axis: 20 mm + 105 mm from the front
   const Zc = 1.66;                                 // Z stage centre height
-  const offY = 0.0254, offX = 0.03, offZ = -0.0656;
+  const offY = 0.0254, offX = 0.03, offZ = -0.0456;
   const zY = -0.0104 + offY;                       // Y carriage centre (z)
   const xX = -0.0104 + offX;                       // X carriage centre (x)
   const cc = Zc - 0.0104 + offZ;                   // Z carriage centre (y)
@@ -282,9 +282,9 @@ function mill() {
     const w = mesh(new THREE.ExtrudeGeometry(g, { depth: 0.21, bevelEnabled: false }), K);
     w.scale.x = sx; w.position.z = -0.105; cr.add(w);
   }
-  // C axis: turning table set into the cradle bottom, its top flush with the cradle. T-slots, a part.
-  cyl(cr, 0.104, 0.002, MAT.dark, 'y', 0, l(0.29) + 0.0001, 0, 0.104, 64);         // gap around the table
-  const tg = new THREE.Group(); tg.position.set(0, l(0.29) - 0.0095, 0); tg.rotation.y = 0.5; cr.add(tg);
+  // C axis: the drive sits inside the cradle bottom. The table lies on it, its bottom flush
+  // with the top of the cradle. T-slots and a part.
+  const tg = new THREE.Group(); tg.position.set(0, l(0.29) + 0.0101, 0); tg.rotation.y = 0.5; cr.add(tg);
   cyl(tg, 0.1, 0.02, MAT.frame, 'y', 0, 0, 0, 0.1, 64);
   for (const d of [-0.04, 0, 0.04]) box(tg, 0.19, 0.003, 0.012, MAT.dark, 0, 0.0095, d);
   box(tg, 0.08, 0.04, 0.06, MAT.steel, 0, 0.03, 0);

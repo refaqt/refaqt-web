@@ -33,8 +33,8 @@
   between its sides and its bottom. The front of the bottom part has slanted walls that follow
   the cradle with 10 mm space. A green LED strip lights the inside from the back plate, right
   under the Y axis.
-- In a fifth round: the turning table sits inside the cradle bottom, its top flush with the
-  cradle. The cradle sides are 60 mm shorter, and the machine is 60 mm lower again. The stand
+- In a fifth round: the drive of the turning table sits inside the cradle bottom. The table
+  lies on top, with its bottom flush with the top of the cradle. The cradle sides are 60 mm shorter, and the machine is 60 mm lower again. The stand
   (frame, cover plates and door) is now black too.
 - The 3D model only exists as the CS-220. A longer stage is now made by stretching the fixed
   parts of that model at the middle. The carriage stays the real one.
