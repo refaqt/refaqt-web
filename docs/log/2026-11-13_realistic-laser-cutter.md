@@ -1,0 +1,31 @@
+# 2026-11-13 — Laser cutter rebuilt from the founder's brief
+
+**Role(s):** marketing, software
+
+## What happened
+
+- The second machine of the home page picture is a fibre laser cutter. It uses the same gantry
+  as the 5-axis mill (the Qarve concept): two Y stages on their edge on the side walls, and an
+  X stage bolted to the front of a 160 mm beam.
+- The whole machine fits a footprint of 800 mm wide and 1200 mm deep. The stand is 800 × 1200
+  and has no doors. The machine body on it is 760 × 1160, with 100 mm black walls, 300 mm high.
+- Stage lengths: Y 1140 mm (about 920 mm travel), X 640 mm (about 420 mm travel), Z 300 mm
+  (about 80 mm travel). Longer and shorter stages are made from the CS-220 model.
+- A slat bed of steel strips holds a steel sheet. The top of the slats is 100 mm under the
+  gantry. The laser tip reaches from the sheet up to 80 mm above it, so it stays inside that
+  100 mm.
+- The laser head is slim and has no hood, after the layout of the xTool MetalFab (layout only,
+  not its look or brand). Sparks fly from the cut point.
+- The stand is now one shared part of the model, used by the mill and the laser.
+
+## Decisions
+
+- The founder chose: 800 wide and 1200 deep, and the 800 × 1200 is the outside of the stand.
+
+## Open Questions
+
+- None yet. The founder has not commented on the first render.
+
+## Next Steps
+
+- Change the laser cutter after the founder's comments. Then the lathe and the measuring machine.

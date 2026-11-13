@@ -46,6 +46,7 @@
 
 ## Decisions
 
+- The founder confirmed that this mill is the concept of the Qarve machine.
 - The founder chose open machines (no covers), built one at a time from sketches.
 - Width: 60 mm (Y stage on its edge) + 440 mm (X stage) + 60 mm (Y stage) = 560 mm.
 
