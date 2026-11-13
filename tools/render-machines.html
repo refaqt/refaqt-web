@@ -319,8 +319,8 @@ function laser() {
   const MB = CT + 0.02, h = (v) => MB + v;         // machine bottom, on the rubber mounts
   const WT = h(0.3), Yc = WT + 0.105;              // wall top (= gantry bottom), Y stage centre
   const WP = WT - 0.1;                             // work plane: top of the slats
-  const Zc = Yc;                                   // Z stage centre height
-  const offY = 0.05, offX = 0.05, offZ = -0.036;
+  const Zc = WT + 0.15;                            // Z stage centre: its bottom is flush with the X axis bottom
+  const offY = 0.05, offX = 0.05, offZ = -0.041;
   const zY = -0.0104 + offY, xX = -0.0104 + offX;  // Y and X carriage centres
   const cc = Zc - 0.0104 + offZ;                   // Z carriage centre (y)
   const K = MAT.black;
@@ -362,23 +362,25 @@ function laser() {
   const zb = zY + 0.045;
   box(m, 0.64, 0.21, 0.16, K, 0, Yc, zb - 0.08);
   stage(m, [0, Yc, zb], offX, [1, 0, 0], [0, 0, 1], 0.64);
-  // Short Z stage on the X carriage, upright and open (no hood).
+  // Short Z stage on the X carriage, upright and open (no hood). Its bottom is flush with the
+  // bottom of the X axis.
   stage(m, [xX, Zc, zb + 0.06], offZ, [0, 1, 0], [0, 0, 1], 0.3);
 
   // Laser head on the Z carriage: a light plate, a slim head body, the lens tube, a nozzle
-  // holder with a green ring and a copper nozzle. The tip is 154.6 mm under the carriage centre.
+  // holder with a green ring and a copper nozzle. The tip is 194.6 mm under the carriage centre:
+  // at the lowest Z position it sticks out 100 mm under the Z stage and reaches the sheet.
   const zp = zb + 0.12, za = zp + 0.012 + 0.03;    // carriage face, head axis
   box(m, 0.09, 0.13, 0.012, MAT.frame, xX, cc + 0.025, zp + 0.006);
   box(m, 0.055, 0.11, 0.06, K, xX, cc + 0.025, za);
   box(m, 0.012, 0.03, 0.03, MAT.frame, xX + 0.034, cc + 0.04, za);                    // height sensor box
   cyl(m, 0.012, 0.03, MAT.steel, 'y', xX, cc + 0.095, za);                            // fibre connector
-  cyl(m, 0.02, 0.06, K, 'y', xX, cc - 0.06, za);
-  cyl(m, 0.023, 0.004, MAT.accent, 'y', xX, cc - 0.092, za);
-  cyl(m, 0.013, 0.036, K, 'y', xX, cc - 0.112, za, 0.021);
-  cyl(m, 0.003, 0.0246, MAT.copper, 'y', xX, cc - 0.1423, za, 0.01);
+  cyl(m, 0.02, 0.1, K, 'y', xX, cc - 0.08, za);
+  cyl(m, 0.023, 0.004, MAT.accent, 'y', xX, cc - 0.132, za);
+  cyl(m, 0.013, 0.036, K, 'y', xX, cc - 0.152, za, 0.021);
+  cyl(m, 0.003, 0.0246, MAT.copper, 'y', xX, cc - 0.1823, za, 0.01);
   // Fibre cable: from the top of the head up and back over the gantry.
-  const fibre = new THREE.CatmullRomCurve3([[xX, cc + 0.11, za], [xX, cc + 0.2, za], [xX, Yc + 0.17, zb - 0.06],
-    [xX - 0.06, Yc + 0.15, zb - 0.2]].map(v => new THREE.Vector3(...v)));
+  const fibre = new THREE.CatmullRomCurve3([[xX, cc + 0.11, za], [xX, cc + 0.22, za], [xX, WT + 0.36, zb + 0.06],
+    [xX - 0.04, WT + 0.33, zb - 0.1], [xX - 0.08, WT + 0.26, zb - 0.2]].map(v => new THREE.Vector3(...v)));
   m.add(mesh(new THREE.TubeGeometry(fibre, 40, 0.006, 12, false), MAT.dark));
 
   // Sparks: short glowing streaks that fly out from the cut point, and a small orange light.

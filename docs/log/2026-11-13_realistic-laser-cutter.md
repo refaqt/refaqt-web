@@ -12,13 +12,16 @@
 - Stage lengths: Y 1140 mm (about 920 mm travel), X 640 mm (about 420 mm travel), Z 300 mm
   (about 80 mm travel). Longer and shorter stages are made from the CS-220 model.
 - A slat bed of steel strips holds a steel sheet. The top of the slats is 100 mm under the
-  gantry. The laser tip reaches from the sheet up to 80 mm above it, so it stays inside that
-  100 mm.
+  gantry. The laser tip reaches from the sheet up to 80 mm above it.
 - The laser head is slim and has no hood, after the layout of the xTool MetalFab (layout only,
   not its look or brand). Sparks fly from the cut point.
 - After the first render, the founder asked for two changes, and they are done: the stand has a
   black front plate, and the front and back walls stop at the height of the slat tops, so a
   sheet can slide in from the front and from the back.
+- In a third round: the bottom of the Z stage is now flush with the bottom of the X axis. The
+  laser head is 40 mm longer. At the lowest Z position, the nozzle sticks out 100 mm under the
+  Z stage and reaches the sheet. At the highest position it is 20 mm under the gantry.
+- The laser pictures are also stored in `refaqt/refaqt-business`.
 - The stand is now one shared part of the model, used by the mill and the laser.
 
 ## Decisions
