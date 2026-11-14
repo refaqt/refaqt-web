@@ -1,3 +1,6 @@
 node_modules/
 .wrangler/
 __pycache__/
+
+# Built site (tools/build-site.sh)
+_site/

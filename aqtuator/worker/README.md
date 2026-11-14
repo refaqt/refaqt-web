@@ -30,8 +30,9 @@ support), `engineering` (custom engineering), `licence` or `other`.
    - If `main` of `refaqt-business` is protected, allow this token (or its
      user) to push, or the commit fails.
 2. **Turnstile** (free spam check). Cloudflare dashboard → Turnstile → Add
-   widget, domain `refaqt.github.io`. You get a site key (public) and a secret
-   key.
+   widget. Add these domains: `refaqt.com`, `www.refaqt.com`,
+   `test.refaqt.com` and `refaqt.github.io`. You get a site key (public) and a
+   secret key. To add a domain later, edit the widget; the keys stay the same.
 3. **Deploy the Worker.** In this folder:
 
    ```bash
@@ -49,6 +50,9 @@ support), `engineering` (custom engineering), `licence` or `other`.
    ```bash
    npx wrangler deploy
    ```
+
+   Run `npx wrangler deploy` again after every change to `wrangler.toml`, for
+   example a new address in `ALLOWED_ORIGINS`.
 
    Wrangler prints the Worker URL, for example
    `https://aqtuator-leads.<subdomain>.workers.dev`.
