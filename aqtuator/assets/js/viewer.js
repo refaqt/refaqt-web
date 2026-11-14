@@ -22,7 +22,7 @@ const MOVING = ['carriage_', 'MK21', 'QEH', 'TA17', 'AK_MC15', 'roller_', 'cooli
 const CATEGORIES = [
   ['base', ['base'], 0, 'Base'],
   ['stator', ['MK2_'], 0.035, 'Magnet track'],
-  ['rails', ['EGR'], 0.06, 'Profile rails'],
+  ['rails', ['EGR'], 0.06, 'Linear ball bearings'],
   ['encoder', ['MB_MC15', 'AK_MC15'], 0.075, 'Encoder'],
   ['rails', ['QEH'], 0.095, 'Guide blocks'],
   ['forcer', ['MK21'], 0.115, 'Forcer'],

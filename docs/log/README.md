@@ -15,4 +15,6 @@ Write entries in B2 English. Follow `.agents/rules/communication.md`.
 | 2026-11-13 | [5-axis milling machine rebuilt from the founder's sketch](2026-11-13_realistic-5-axis-mill.md) | marketing, software |  |
 | 2026-11-13 | [Laser cutter rebuilt from the founder's brief](2026-11-13_realistic-laser-cutter.md) | marketing, software |  |
 | 2026-11-13 | [Measuring machine (CMM) rebuilt from the founder's brief](2026-11-13_realistic-cmm.md) | marketing, software |  |
+| 2026-11-13 | [Home page: clearer wording](2026-11-13_home-page-wording.md) | marketing |  |
+| 2026-11-13 | [AQTUATOR CS page: cooling text and simpler parts list](2026-11-13_aqtuator-cooling-and-inside-wording.md) | marketing |  |
 | 2026-11-14 | [Home page picture with the three rebuilt machines](2026-11-14_home-page-three-machines.md) | marketing, software |  |
