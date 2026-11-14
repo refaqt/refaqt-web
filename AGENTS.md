@@ -42,7 +42,8 @@ The pull request box starts with the right headings: [`.github/pull_request_temp
 
 ## This repository
 
-The REFAQT website, built as a GitHub Pages site. The home page is at the root. Each product has
+The REFAQT website, a static site on Cloudflare Pages. Every pushed branch gets a draft link;
+after each finished change, push and give that link (rule 7 in the repo profile below). The home page is at the root. Each product has
 its own folder: the AQTUATOR CS site is in [`aqtuator/`](aqtuator/). Repo profile and conventions:
 [`.agents-local/rules/repo.md`](.agents-local/rules/repo.md). Map: [`docs/architecture.md`](docs/architecture.md).
 

@@ -33,3 +33,11 @@ Read `.agents/rules/core.md`, `.agents/rules/communication.md`, and `AGENTS.md`.
 Write every reply and every file in B2 English: short sentences, common words.
 
 Never commit inside `.agents/`. That folder belongs to its own repository.
+
+## Draft links
+
+Every pushed branch gets its own draft site on Cloudflare Pages. After each finished and checked
+change, commit and push your branch, then give the draft link in your reply:
+`https://<branch>.refaqt-web.pages.dev/` (branch name in lower case, every other character than a
+letter or digit becomes `-`). Full rule: rules 6 to 8 in
+[`.agents-local/rules/repo.md`](.agents-local/rules/repo.md).
