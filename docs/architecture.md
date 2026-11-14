@@ -31,7 +31,7 @@ address under the site, for example `/aqtuator/`.
 1. Cloudflare builds every push to every branch with `tools/build-site.sh` and `wrangler.jsonc`. Only the root page
    and `aqtuator/` are published. Branch `main` is `refaqt.com`, branch `test` is
    `test.refaqt.com` (login needed), and every other branch gets a draft link
-   `<branch>-refaqt-web.<account>.workers.dev`. Why and how: [decision of 2026-11-14](decisions/2026-11-14_host-on-cloudflare.md).
+   `<branch>-refaqt-web.refaqt.workers.dev`. Why and how: [decision of 2026-11-14](decisions/2026-11-14_host-on-cloudflare.md).
    Until `refaqt.com` is live, a push to `main` also updates the old GitHub Pages address.
 2. The early-access form on `/aqtuator/` and the contact form on the home page post to the same
    Worker. The Worker adds one row to a CSV file in the private repository `refaqt/refaqt-business`,
