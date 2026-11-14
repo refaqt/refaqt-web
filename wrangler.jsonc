@@ -1,0 +1,26 @@
+// Settings for the website on Cloudflare (Workers with static files).
+// Cloudflare runs "bash tools/build-site.sh" first, then publishes the files in _site/.
+// Production: Worker "refaqt-web", branch main, refaqt.com and www.refaqt.com.
+// Test: Worker "refaqt-web-test" (deploy with --env test), branch test, test.refaqt.com.
+// Domains are added in the Cloudflare dashboard, not here.
+// The form backend is a separate Worker: aqtuator/worker/.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "refaqt-web",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "./_site",
+    // /aqtuator/ serves aqtuator/index.html.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  },
+  // Every pushed branch gets its own draft link on workers.dev.
+  "workers_dev": true,
+  "preview_urls": true,
+  "env": {
+    "test": {
+      "name": "refaqt-web-test",
+      "preview_urls": false
+    }
+  }
+}

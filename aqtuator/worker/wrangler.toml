@@ -11,7 +11,7 @@ CSV_PATH = "leads/aqtuator-cs.csv"
 # Messages from the contact form on the REFAQT home page.
 HOME_CSV_PATH = "leads/refaqt-home.csv"
 # Comma-separated. Add http://localhost:8765 while testing locally.
-# Draft links (*.refaqt-web.pages.dev) are not listed on purpose: test forms on test.refaqt.com.
+# Draft links (*.workers.dev) are not listed on purpose: test forms on test.refaqt.com.
 ALLOWED_ORIGINS = "https://refaqt.com,https://www.refaqt.com,https://test.refaqt.com,https://refaqt.github.io"
 
 # Secrets (not in this file):

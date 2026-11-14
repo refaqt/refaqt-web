@@ -1,7 +1,7 @@
 name: Deploy site to GitHub Pages
 
 # Old address: refaqt.github.io/refaqt-web/. Turn this off when refaqt.com runs on
-# Cloudflare Pages. See docs/decisions/2026-11-14_host-on-cloudflare-pages.md.
+# Cloudflare. See docs/decisions/2026-11-14_host-on-cloudflare.md.
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Collect the site files
-        # Only the public pages. The same script builds the site on Cloudflare Pages.
+        # Only the public pages. The same script builds the site on Cloudflare.
         run: bash tools/build-site.sh
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

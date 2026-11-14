@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Copies the public pages into _site/. Nothing else is published.
-# Used by Cloudflare Pages (build command: bash tools/build-site.sh, output: _site)
+# Used by Cloudflare (build command: bash tools/build-site.sh; settings in wrangler.jsonc)
 # and by .github/workflows/pages.yml.
 # Tools, workers, docs and agent files stay out of the site.
 # A new public folder needs a line here.

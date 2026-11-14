@@ -4,3 +4,4 @@ __pycache__/
 
 # Built site (tools/build-site.sh)
 _site/
+.wrangler/
