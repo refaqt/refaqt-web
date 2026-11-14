@@ -87,8 +87,9 @@ p { margin: 0; }
 .nav.is-scrolled { background: rgba(27, 28, 29, .78); backdrop-filter: blur(14px) saturate(140%); border-bottom-color: var(--line); }
 .nav__inner { max-width: var(--max); margin: 0 auto; padding: 14px var(--gutter); display: flex; align-items: center; gap: 28px; }
 .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; margin-right: auto; }
-.brand img { width: 112px; height: auto; }
-.brand__product { font-size: 14px; letter-spacing: .16em; color: var(--muted); padding-left: 14px; border-left: 1px solid var(--line-2); }
+.brand img { width: 112px; height: auto; display: block; }
+.brand a { text-decoration: none; }
+.brand__product { display: block; font-size: 14px; letter-spacing: .16em; color: var(--muted); padding-left: 14px; border-left: 1px solid var(--line-2); }
 .brand__product b { color: var(--text); font-weight: 600; }
 .nav__links { display: flex; gap: 26px; }
 .nav__links a { text-decoration: none; color: var(--muted); font-size: 15px; transition: color .2s; }
