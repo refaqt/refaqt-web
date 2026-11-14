@@ -18,7 +18,8 @@ address under the site, for example `/aqtuator/`.
 | `aqtuator/assets/vendor/three/` | Copy of three.js 0.160.0, the 3D library. Served from our own site, not from a CDN |
 | `aqtuator/tools/` | Scripts that make the 3D model, the specifications and the images (not published) |
 | `aqtuator/worker/` | Cloudflare Worker for both forms: AQTUATOR early access and the home page contact form (not published) |
-| `tools/build-site.sh` | Copies the public pages to `_site/`. Cloudflare Pages and the GitHub workflow both run it |
+| `tools/build-site.sh` | Copies the public pages to `_site/`. Cloudflare and the GitHub workflow both run it |
+| `wrangler.jsonc` | Cloudflare settings for the website: which folder to publish, and the production and test Workers |
 | `.github/workflows/pages.yml` | Deploys `_site/` to the old address on GitHub Pages. To be turned off when `refaqt.com` is live |
 | `docs/` | Log, decisions, mistakes, this file |
 | `.agents/` | Shared agent kit, git submodule of `refaqt/refaqt-agents` |
@@ -27,10 +28,10 @@ address under the site, for example `/aqtuator/`.
 
 ## Data flow
 
-1. Cloudflare Pages builds every push to every branch with `tools/build-site.sh`. Only the root page
+1. Cloudflare builds every push to every branch with `tools/build-site.sh` and `wrangler.jsonc`. Only the root page
    and `aqtuator/` are published. Branch `main` is `refaqt.com`, branch `test` is
    `test.refaqt.com` (login needed), and every other branch gets a draft link
-   `<branch>.refaqt-web.pages.dev`. Why and how: [decision of 2026-11-14](decisions/2026-11-14_host-on-cloudflare-pages.md).
+   `<branch>-refaqt-web.<account>.workers.dev`. Why and how: [decision of 2026-11-14](decisions/2026-11-14_host-on-cloudflare.md).
    Until `refaqt.com` is live, a push to `main` also updates the old GitHub Pages address.
 2. The early-access form on `/aqtuator/` and the contact form on the home page post to the same
    Worker. The Worker adds one row to a CSV file in the private repository `refaqt/refaqt-business`,

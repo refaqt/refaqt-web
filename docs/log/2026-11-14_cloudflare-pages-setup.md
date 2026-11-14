@@ -11,7 +11,7 @@
 - The form service now accepts messages from `refaqt.com`, `www.refaqt.com` and `test.refaqt.com`.
   This only takes effect after the next `npx wrangler deploy`.
 - The setup steps for the Cloudflare account are in the
-  [decision of 2026-11-14](../decisions/2026-11-14_host-on-cloudflare-pages.md).
+  [decision of 2026-11-14](../decisions/2026-11-14_host-on-cloudflare.md).
 
 ## Decisions
 
