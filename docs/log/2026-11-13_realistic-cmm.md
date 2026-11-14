@@ -25,8 +25,8 @@
   so its right sides are darker and the shape is easier to see.
 - The first strip light was made of separate point lights, so it showed as round spots. Each
   LED strip, also the one in the mill, is now one flat light as long as the strip. For this,
-  the file `RectAreaLightUniformsLib.js` from three.js 0.160.0 (MIT licence) is now stored with
-  the other three.js files in `aqtuator/assets/vendor/three/addons/lights/`.
+  the file `RectAreaLightUniformsLib.js` from three.js 0.160.0 (MIT licence) is stored in
+  `tools/vendor/three/` (moved there on 2026-11-14; only the render tool uses it).
 
 ## Decisions
 
@@ -38,4 +38,4 @@
 
 ## Next Steps
 
-- Change the measuring machine after the founder's comments. Then the lathe.
+- The founder approved the measuring machine on 2026-11-14. Next: the lathe.

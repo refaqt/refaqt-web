@@ -34,4 +34,4 @@
 
 ## Next Steps
 
-- Change the laser cutter after the founder's comments. Then the lathe and the measuring machine.
+- Done. The laser cutter is in the home page picture since 2026-11-14.

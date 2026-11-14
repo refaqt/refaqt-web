@@ -55,7 +55,7 @@ This is not a hardware repository. It has no `doqs/` submodule. Use `bash setup-
 | Why a choice was made | `docs/decisions/YYYY-MM-DD_topic.md` |
 | Something that went wrong | `docs/mistakes/YYYY-MM-DD_topic.md` |
 
-Skills that belong only to this repo: `.agents-local/skills/` (none yet).
+Skills that belong only to this repo: `.agents-local/skills/`. Read `.agents-local/skills/patterns/SKILL.md` before you change the machine pictures in `tools/`.
 
 ## Skills
 

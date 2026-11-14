@@ -52,12 +52,10 @@
 
 ## Open Questions
 
-- The stand height (800 mm), the 500 mm wall height and the A-axis height (385 mm) are my
-  choices. The founder has not confirmed them yet.
+- None at the moment.
 
 ## Next Steps
 
-- Change the mill after the founder's comments.
-- Then the laser cutter, the lathe and the measuring machine, each from a sketch.
-- The home page picture is not rendered again yet. The new mill is much taller than the other
-  machines, so the layout of the picture must change at the end.
+- Done. The founder approved the mill, and it is in the home page picture since 2026-11-14.
+- The stand height (800 mm), the 500 mm wall height and the A-axis height (385 mm) above stay as
+  they are unless the founder asks for a change.

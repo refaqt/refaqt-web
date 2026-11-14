@@ -1,23 +1,27 @@
 <!doctype html>
 <!-- SPDX-FileCopyrightText: 2025-2026 Refaqt (BE 0804.145.539) and contributors -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-<!-- Render page for the home page image: four machines built from AQTUATOR CS stages.
+<!-- Render page for the home page image: machines built from AQTUATOR CS stages. The picture
+     shows the mill (Qarve concept), the laser cutter and the measuring machine. The lathe is
+     not rebuilt yet. How to work on this page: docs/architecture.md, "Machine pictures".
      Used by tools/render_machines.cjs, not by the site. Uses the real stage model.
-     The frames, bases, spindles and heads are simple shapes, not real designs. -->
+     The frames, beds and heads follow the founder's sketches and sizes. They are concepts,
+     not finished designs. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <title>REFAQT machines render</title>
 <!-- The import map must come before every module script. -->
 <script type="importmap">
-{ "imports": { "three": "../aqtuator/assets/vendor/three/three.module.min.js", "three/addons/": "../aqtuator/assets/vendor/three/addons/" } }
+{ "imports": { "three": "../aqtuator/assets/vendor/three/three.module.min.js", "three/addons/": "../aqtuator/assets/vendor/three/addons/",
+  "three/addons/lights/RectAreaLightUniformsLib.js": "./vendor/three/RectAreaLightUniformsLib.js" } }
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
 <style>
   html, body { margin: 0; background: transparent; }
   #v { position: relative; width: 1500px; height: 1200px; }
   body.og { width: 1200px; height: 630px; background: #1b1c1d; overflow: hidden; font-family: Outfit, sans-serif; color: #f0f0f0; }
-  body.og #v { position: absolute; right: -20px; top: -10px; width: 620px; height: 650px; }
+  body.og #v { position: absolute; right: -10px; top: -10px; width: 650px; height: 650px; }
   .og-copy { position: absolute; left: 64px; top: 64px; width: 500px; }
   .og-copy img { width: 150px; }
   .og-copy h1 { font-size: 54px; line-height: 1.04; letter-spacing: -0.03em; margin: 64px 0 20px; font-weight: 600; }
@@ -198,7 +202,7 @@ function standFrame(m, W, D, CT, FT, T, door) {
   }
 }
 
-// ---------- the four machines (base top at y = 0) ----------
+// ---------- the machines (each function returns one machine; floor at y = 0) ----------
 function mill() {
   // 5-axis milling machine on a stand (founder sketches, 13-11-2026). Units: metres. Front is +z.
   // Machine body: 560 x 760, walls of 80 mm profile between two 10 mm plates (100 mm), all
@@ -554,7 +558,7 @@ const key = new THREE.DirectionalLight(0xffffff, 1.6);
 key.position.set(1.2, 3.0, 1.6);
 key.castShadow = true;
 key.shadow.mapSize.set(4096, 4096);
-Object.assign(key.shadow.camera, { left: -1.6, right: 1.6, top: 1.6, bottom: -1.6, near: 0.5, far: 8 });
+Object.assign(key.shadow.camera, { left: -2, right: 2, top: 2, bottom: -2, near: 0.5, far: 8 });
 key.shadow.bias = -0.0004;
 key.shadow.radius = 6;
 scene.add(key);
@@ -568,16 +572,19 @@ const params = new URLSearchParams(location.search);
 const only = params.get('only');      // render one machine, for checking: ?only=mill
 
 parts = await loadTemplate();
-const layout = [[mill, -0.62, -0.7], [cmm, 0.72, -0.7], [laser, -0.62, 0.62], [lathe, 0.72, 0.62]];
-for (const [make, x, z] of layout) {
-  if (only && make.name !== only) continue;
+// The home page picture: the three finished machines in a row. The lathe is not rebuilt yet,
+// so it is left out of the picture; it can still be drawn alone with ?only=lathe.
+const layout = [[laser, -1.08, -0.2], [mill, 0, 0.3], [cmm, 1.08, -0.2]];
+const machines = [mill, laser, cmm, lathe];
+const placed = only ? [[machines.find(f => f.name === only), 0, 0]] : layout;
+for (const [make, x, z] of placed) {
   const g = make();
-  g.position.set(only ? 0 : x, g.userData.floor ? 0 : 0.1, only ? 0 : z);
+  g.position.set(x, g.userData.floor ? 0 : 0.1, z);
   scene.add(g);
 }
-const view = only && layout.find(l => l[0].name === only)?.[0].view;
-const camPos = (params.get('cam') || view?.cam || (only ? '1.2,0.9,1.6' : og ? '3.3,2.8,4.4' : '3.3,2.85,4.35')).split(',').map(Number);
-const target = (params.get('target') || view?.target || (only ? '0,0.3,0' : '0.04,0.16,0.0')).split(',').map(Number);
+const view = only && machines.find(f => f.name === only)?.view;
+const camPos = (params.get('cam') || view?.cam || (only ? '1.2,0.9,1.6' : og ? '3.0,3.5,7.0' : '2.7,3.2,5.9')).split(',').map(Number);
+const target = (params.get('target') || view?.target || (only ? '0,0.3,0' : og ? '0.08,0.85,0' : '0,0.85,0')).split(',').map(Number);
 cam.position.set(...camPos);
 cam.lookAt(...target);
 cam.updateProjectionMatrix();
