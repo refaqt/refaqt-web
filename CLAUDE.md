@@ -38,6 +38,6 @@ Never commit inside `.agents/`. That folder belongs to its own repository.
 
 Every pushed branch gets its own draft site on Cloudflare. After each finished and checked
 change, commit and push your branch, then give the draft link in your reply:
-`https://<branch>-refaqt-web.<account>.workers.dev/` (branch name in lower case, every other character than a
-letter or digit becomes `-`; `<account>` is in rule 7). Full rule: rules 6 to 8 in
+`https://<branch>-refaqt-web.refaqt.workers.dev/` (branch name in lower case, every other character
+than a letter or digit becomes `-`). Full rule: rules 6 to 8 in
 [`.agents-local/rules/repo.md`](.agents-local/rules/repo.md).

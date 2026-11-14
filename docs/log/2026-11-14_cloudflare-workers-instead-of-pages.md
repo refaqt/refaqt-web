@@ -20,7 +20,8 @@
 
 ## Open Questions
 
-- What is the workers.dev name of the REFAQT Cloudflare account? The draft links need it.
+- None. The workers.dev name of the account is now `refaqt` (it was the founder's personal name),
+  so draft links end in `refaqt.workers.dev`.
 
 ## Next Steps
 
@@ -35,7 +36,7 @@
 - Checked with Wrangler 4.162.0: `wrangler deploy --dry-run` passes for both production and
   `--env test` (50 files). `wrangler dev` serves `/` and `/aqtuator/` (200), sends `/aqtuator` to
   `/aqtuator/`, and gives 404 for `tools/` and `aqtuator/worker/`.
-- Draft link form: `<branch>-refaqt-web.<account>.workers.dev`, from the Cloudflare changelog on
+- Draft link form: `<branch>-refaqt-web.refaqt.workers.dev`, from the Cloudflare changelog on
   Workers preview links (2025-07-23 and 2025-08-08).
 - Decision file renamed from `2026-11-14_host-on-cloudflare-pages.md` to
   `2026-11-14_host-on-cloudflare.md`; links updated. `.wrangler/` is in `.gitignore`.

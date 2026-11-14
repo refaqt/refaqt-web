@@ -25,7 +25,7 @@ Workers first. New Cloudflare features go to Workers, so we chose Workers on the
 
 | Version | Branch | Worker | Address | Who can see it |
 | --- | --- | --- | --- | --- |
-| Draft | any work branch | `refaqt-web` (preview) | `<branch>-refaqt-web.<account>.workers.dev` | anyone with the link |
+| Draft | any work branch | `refaqt-web` (preview) | `<branch>-refaqt-web.refaqt.workers.dev` | anyone with the link |
 | Test | `test` | `refaqt-web-test` | `test.refaqt.com` | only people allowed by Cloudflare Access (a login page) |
 | Production | `main` | `refaqt-web` | `refaqt.com` and `www.refaqt.com` | everyone |
 
