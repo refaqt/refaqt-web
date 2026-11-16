@@ -35,8 +35,10 @@
     // Sender and reply address of the thank-you email to the visitor.
     "THANKS_FROM": "REFAQT <contact@refaqt.com>",
     "THANKS_REPLY_TO": "contact@refaqt.com",
-    // Logo in the emails. A PNG, because Gmail and Outlook do not show SVG.
+    // Logos in the emails. PNG, because Gmail and Outlook do not show SVG.
+    // LOGO_URL has light letters, for a dark theme. LOGO_ON_LIGHT_URL has dark letters, for a light theme.
     "LOGO_URL": "https://refaqt.com/assets/img/refaqt-logo.png",
+    "LOGO_ON_LIGHT_URL": "https://refaqt.com/assets/img/refaqt-logo-on-light.png",
     // Limits per visitor. The thank-you email goes to any address someone types in,
     // so these stop one person from sending many emails to a stranger.
     "LIMIT_PER_IP_PER_HOUR": "5",
