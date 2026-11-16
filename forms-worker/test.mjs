@@ -114,7 +114,8 @@ for (const m of [notify, thanks]) {
   assert.ok(!m.text.includes('https://evil.example'), 'the visitor web address is broken up in text');
   assert.ok(!m.html.includes('anna@example.be'), 'the visitor email address is not a mailto link');
   assert.ok(!/<svg/i.test(m.html), 'no SVG');
-  assert.match(m.html, /src="https:\/\/refaqt\.com\/assets\/img\/refaqt-logo\.png"/);
+  assert.match(m.html, /src="https:\/\/refaqt\.com\/assets\/img\/email-header-light\.png"/);
+  assert.match(m.html, /src="https:\/\/refaqt\.com\/assets\/img\/email-header-dark\.png"/);
 }
 
 // ---- AQTUATOR form (also the default), no name ----
