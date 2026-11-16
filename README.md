@@ -2,16 +2,17 @@
 
 The REFAQT website. One repository holds every page of the site.
 
-| Page | Folder | Now (GitHub Pages) | Later |
-| --- | --- | --- | --- |
-| REFAQT home | `/` | <https://refaqt.github.io/refaqt-web/> | <https://refaqt.com/> |
-| AQTUATOR CS | [`aqtuator/`](aqtuator/) | <https://refaqt.github.io/refaqt-web/aqtuator/> | <https://refaqt.com/aqtuator/> |
+| Page | Folder | Address |
+| --- | --- | --- |
+| REFAQT home | `/` | <https://refaqt.com/> |
+| AQTUATOR CS | [`aqtuator/`](aqtuator/) | <https://refaqt.com/aqtuator/> |
 
-The site runs on GitHub Pages first. It moves to `refaqt.com` later (see
-[Move to refaqt.com](#move-to-refaqtcom)).
+The site runs on Cloudflare (Workers with static files). Branch `main` is
+`refaqt.com`, branch `test` is `test.refaqt.com` (login needed), and every other
+branch gets a draft link. Why and how: [decision of 2026-11-14](docs/decisions/2026-11-14_host-on-cloudflare.md).
 
-This repository used to be called `aqtuator-web`. GitHub does not redirect the
-old Pages address `refaqt.github.io/aqtuator-web/`.
+The old copies on GitHub Pages (`refaqt.github.io/refaqt-web/` and, before the
+rename, `refaqt.github.io/aqtuator-web/`) are turned off.
 
 ## What is here
 
@@ -19,8 +20,9 @@ old Pages address `refaqt.github.io/aqtuator-web/`.
 | --- | --- |
 | `index.html`, `assets/` | The REFAQT home page. Plain HTML, CSS and one small script for the contact form. No build step. |
 | `tools/` | Makes the home page images from the AQTUATOR CS model: `node tools/render_machines.cjs` (with the local server running). Not published. |
-| `aqtuator/` | The AQTUATOR CS product site, with its tools and the form backend for both pages. See [`aqtuator/README.md`](aqtuator/README.md). |
-| `.github/workflows/pages.yml` | Deploys the site on every push to `main`. Only the public pages are published. |
+| `aqtuator/` | The AQTUATOR CS product site and its tools. See [`aqtuator/README.md`](aqtuator/README.md). |
+| `forms-worker/` | The backend for both forms (Cloudflare Worker `refaqt-forms`). See [`forms-worker/README.md`](forms-worker/README.md). |
+| `tools/build-site.sh`, `wrangler.jsonc` | Build and Cloudflare settings. Only the public pages are published. |
 | `docs/` | Activity log, decisions, mistakes and the architecture overview. |
 | `.agents/` | Shared agent rules and skills ([refaqt/refaqt-agents](https://github.com/refaqt/refaqt-agents)), a git submodule. |
 | `AGENTS.md`, `CLAUDE.md` | Start page for AI agents. |
@@ -51,20 +53,10 @@ bash setup-agents.sh
 
 Put each product in its own folder, with its own `index.html` and `assets/`.
 Use relative links only (`assets/...`, never `/assets/...`). Then add the folder
-to the copy step in `.github/workflows/pages.yml`.
+to the copy step in `tools/build-site.sh`.
 
-## Move to refaqt.com
-
-Do this only when the site is ready.
-
-1. Settings → Pages → Custom domain: `refaqt.com`. GitHub writes the domain
-   setting for you; with GitHub Actions deploys, no `CNAME` file is needed.
-2. At the domain registrar, point `refaqt.com` to GitHub Pages (four `A`
-   records, and a `CNAME` record for `www` to `refaqt.github.io`). The GitHub
-   Pages documentation lists the current addresses.
-3. Tick **Enforce HTTPS** once the certificate is ready.
-4. The forms only work on the addresses in `ALLOWED_ORIGINS` in
-   `forms-worker/wrangler.jsonc`. See `forms-worker/README.md`.
+The forms only work on the addresses in `ALLOWED_ORIGINS` in
+`forms-worker/wrangler.jsonc`. See `forms-worker/README.md`.
 
 ## Licences
 
