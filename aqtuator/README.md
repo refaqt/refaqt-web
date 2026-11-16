@@ -3,8 +3,7 @@
 Product website for **AQTUATOR CS**, the compact linear-motor stage from
 [`refaqt/aqtuator`](https://github.com/refaqt/aqtuator/tree/main/modules/compact-stage).
 
-Live at <https://refaqt.github.io/refaqt-web/aqtuator/> (GitHub Pages). Later at
-<https://refaqt.com/aqtuator/>. This folder is part of the REFAQT website; see
+Live at <https://refaqt.com/aqtuator/>. This folder is part of the REFAQT website; see
 the [root README](../README.md).
 
 All paths below start in this folder (`aqtuator/`).
