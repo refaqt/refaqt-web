@@ -1,0 +1,45 @@
+// Cloudflare settings for the form Worker "refaqt-forms".
+// Both forms on the website post here: the home page contact form and the AQTUATOR CS
+// early-access form. Read README.md in this folder first.
+//
+// Secrets (never in this file; set them in the Cloudflare dashboard:
+// Workers & Pages → refaqt-forms → Settings → Variables and Secrets):
+//   RESEND_API_KEY    key from resend.com, permission "Sending access", domain refaqt.com
+//   TURNSTILE_SECRET  secret key of the Turnstile widget "REFAQT forms"
+{
+  "$schema": "https://unpkg.com/wrangler@4.163.0/config-schema.json",
+  "name": "refaqt-forms",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  // Address: https://refaqt-forms.refaqt.workers.dev. No preview links: forms only work
+  // from the addresses in ALLOWED_ORIGINS anyway.
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "refaqt-leads",
+      "database_id": "373700fa-5103-485c-9df1-8d3759aad28e",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    // Comma-separated. Add http://localhost:8765 only on your own computer while testing.
+    // Draft links (*.workers.dev) are not listed on purpose: test forms on test.refaqt.com.
+    "ALLOWED_ORIGINS": "https://refaqt.com,https://www.refaqt.com,https://test.refaqt.com",
+    // Who gets each new message.
+    "CONTACT_TO": "contact@refaqt.com",
+    // Sender of the message to CONTACT_TO. The reply address is the visitor.
+    "NOTIFY_FROM": "REFAQT website <website@refaqt.com>",
+    // Sender and reply address of the thank-you email to the visitor.
+    "THANKS_FROM": "REFAQT <contact@refaqt.com>",
+    "THANKS_REPLY_TO": "contact@refaqt.com",
+    // Logo in the emails. A PNG, because Gmail and Outlook do not show SVG.
+    "LOGO_URL": "https://refaqt.com/assets/img/refaqt-logo.png",
+    // Limits per visitor. The thank-you email goes to any address someone types in,
+    // so these stop one person from sending many emails to a stranger.
+    "LIMIT_PER_IP_PER_HOUR": "5",
+    "LIMIT_PER_EMAIL_PER_DAY": "3"
+  }
+}

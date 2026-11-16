@@ -1,8 +1,8 @@
-// Site settings. Fill these in after deploying the Worker (see aqtuator/worker/README.md).
+// Site settings for the AQTUATOR CS page. Use the same values as assets/js/config.js.
+// Both values are public. See forms-worker/README.md.
 export const CONFIG = {
-  // URL of the Cloudflare Worker that stores early-access requests,
-  // for example 'https://aqtuator-leads.<your-subdomain>.workers.dev'.
-  formEndpoint: '',
-  // Cloudflare Turnstile site key (public). Leave empty to skip the widget.
-  turnstileSiteKey: '',
+  // Address of the form Worker refaqt-forms (folder forms-worker/).
+  formEndpoint: 'https://refaqt-forms.refaqt.workers.dev',
+  // Site key (public) of the Cloudflare Turnstile widget "REFAQT forms".
+  turnstileSiteKey: '0x4AAAAAAGDLVuIOMJ3Koqir',
 };
