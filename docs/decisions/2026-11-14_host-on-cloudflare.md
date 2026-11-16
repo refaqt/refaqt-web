@@ -42,8 +42,8 @@ The test version needs its own Worker, because a draft link cannot get its own d
 - The DNS of `refaqt.com` is on Cloudflare. The domain stays with its seller (Register.eu, through
   Easyhost).
 - Forms only work on the addresses in `ALLOWED_ORIGINS`, so not on draft links.
-- Two places publish the site until `refaqt.com` is live. Then the GitHub Pages workflow is turned
-  off.
+- Two places published the site until `refaqt.com` was live. The GitHub Pages workflow was removed
+  on 2026-11-16.
 
 ## Setup in Cloudflare (a person does this once)
 
@@ -71,8 +71,8 @@ not where this list says.
    [decision of 2026-11-16](2026-11-16_forms-in-d1-with-resend.md).
 7. **Check.** Open `refaqt.com`, `refaqt.com/aqtuator/` and `test.refaqt.com`. Send both forms
    once from `test.refaqt.com`.
-8. **Old address.** When all of this works, turn off `.github/workflows/pages.yml` (delete it or
-   remove the `push` trigger) and turn off GitHub Pages in the repository settings.
+8. **Old address.** Done on 2026-11-16: `.github/workflows/pages.yml` is deleted. A person turns
+   off GitHub Pages in the repository settings (Settings → Pages).
 
 If a build fails while it fetches `.agents/`: that folder is a link to the repository
 `refaqt/refaqt-agents`. If that repository is private, Cloudflare cannot fetch it. The site does not

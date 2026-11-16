@@ -1,8 +1,7 @@
 # Repository profile: refaqt-web
 
 The REFAQT website. Static pages on Cloudflare (Workers with static files), at
-`refaqt.com`. GitHub Pages serves the old
-address until `refaqt.com` is live.
+`refaqt.com`.
 
 ## Facts
 
@@ -15,13 +14,12 @@ address until `refaqt.com` is live.
 | Production | Branch `main` → `https://refaqt.com/` |
 | Test (for review) | Branch `test` → `https://test.refaqt.com/` (login needed) |
 | Draft | Any other branch → `https://<branch>-refaqt-web.refaqt.workers.dev/` |
-| Old address | `https://refaqt.github.io/refaqt-web/` (`.github/workflows/pages.yml`), until `refaqt.com` is live |
 | Product pages | One folder per product. `aqtuator/` serves `/aqtuator/`. |
 
 ## Rules
 
-1. Use relative links only (`assets/...`, `../`). The site lives under `/refaqt-web/` today and under
-   `/` later. A link that starts with `/` breaks on one of the two.
+1. Use relative links only (`assets/...`, `../`). Then a page works the same when it is opened from
+   a local server, a draft link or `refaqt.com`.
 2. Every new public folder needs a line in `tools/build-site.sh`. Tools, workers and docs stay out
    of the published site.
 3. Numbers on product pages come from the hardware repository (for AQTUATOR: `refaqt/aqtuator`).

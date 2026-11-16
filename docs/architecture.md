@@ -20,7 +20,6 @@ address under the site, for example `/aqtuator/`.
 | `forms-worker/` | Cloudflare Worker `refaqt-forms` for both forms: the home page contact form and AQTUATOR early access (not published) |
 | `tools/build-site.sh` | Copies the public pages to `_site/`. Cloudflare and the GitHub workflow both run it |
 | `wrangler.jsonc` | Cloudflare settings for the website: which folder to publish, and the production and test Workers |
-| `.github/workflows/pages.yml` | Deploys `_site/` to the old address on GitHub Pages. To be turned off when `refaqt.com` is live |
 | `docs/` | Log, decisions, mistakes, this file |
 | `.agents/` | Shared agent kit, git submodule of `refaqt/refaqt-agents` |
 | `.agents-local/` | Rules that belong only to this repository |
@@ -32,7 +31,6 @@ address under the site, for example `/aqtuator/`.
    and `aqtuator/` are published. Branch `main` is `refaqt.com`, branch `test` is
    `test.refaqt.com` (login needed), and every other branch gets a draft link
    `<branch>-refaqt-web.refaqt.workers.dev`. Why and how: [decision of 2026-11-14](decisions/2026-11-14_host-on-cloudflare.md).
-   Until `refaqt.com` is live, a push to `main` also updates the old GitHub Pages address.
 2. The early-access form on `/aqtuator/` and the contact form on the home page post to the same
    Worker, `refaqt-forms`. The Worker saves each message in the Cloudflare D1 database
    `refaqt-leads` (EU), and sends two emails through Resend: one to `contact@refaqt.com` and a
