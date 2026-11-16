@@ -21,3 +21,4 @@ Write entries in B2 English. Follow `.agents/rules/communication.md`.
 | 2026-11-14 | [The REFAQT logo on the AQTUATOR CS page goes to the home page](2026-11-14_logo-links-home.md) | marketing, software |  |
 | 2026-11-14 | [Repository ready for Cloudflare Pages: draft, test and production](2026-11-14_cloudflare-pages-setup.md) | software, operations |  |
 | 2026-11-14 | [Website moves to Cloudflare Workers instead of Cloudflare Pages](2026-11-14_cloudflare-workers-instead-of-pages.md) | software, operations |  |
+| 2026-11-16 | [Both forms now save leads and send emails](2026-11-16_forms-d1-and-resend.md) | software, sales |  |

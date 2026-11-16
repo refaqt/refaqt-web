@@ -27,7 +27,8 @@ address until `refaqt.com` is live.
 3. Numbers on product pages come from the hardware repository (for AQTUATOR: `refaqt/aqtuator`).
    Say where a number comes from, and mark design targets as targets.
 4. Never put a token, a lead or other private data in this repository. Form data goes to the
-   private `refaqt/refaqt-business` through the Worker in `aqtuator/worker/`.
+   Cloudflare D1 database `refaqt-leads` through the Worker in `forms-worker/`. Public values (the
+   Worker address, the Turnstile site key, the database ID) may be in the repository.
 5. Run `python3 -m http.server 8765` from the root and check the pages before you push.
 6. Work on your own branch. Never push to `main` or `test` yourself. A pull request goes into
    `test`. After review on `test.refaqt.com`, a person merges `test` into `main`.

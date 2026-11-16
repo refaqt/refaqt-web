@@ -63,9 +63,8 @@ Do this only when the site is ready.
    records, and a `CNAME` record for `www` to `refaqt.github.io`). The GitHub
    Pages documentation lists the current addresses.
 3. Tick **Enforce HTTPS** once the certificate is ready.
-4. Add `https://refaqt.com` to `ALLOWED_ORIGINS` in
-   `aqtuator/worker/wrangler.toml`, and add `refaqt.com` to the Turnstile
-   widget. Otherwise the early-access form stops working.
+4. The forms only work on the addresses in `ALLOWED_ORIGINS` in
+   `forms-worker/wrangler.jsonc`. See `forms-worker/README.md`.
 
 ## Licences
 

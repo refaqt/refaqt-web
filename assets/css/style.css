@@ -193,6 +193,9 @@ p { margin: 0; }
 .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--g2); box-shadow: 0 0 0 4px rgba(0, 172, 153, .15); }
 .field [aria-invalid="true"] { border-color: #e0664a; }
 .field--hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.field__opt { color: var(--faint); }
+.form__privacy { margin: 0; font-size: 13px; line-height: 1.5; color: var(--faint); }
+.form.is-done .form__privacy { display: none; }
 .form__status { font-size: 15px; min-height: 1.4em; color: var(--muted); }
 .form__status.is-ok { color: var(--g1); }
 .form__status.is-error { color: #ff8a6e; }
