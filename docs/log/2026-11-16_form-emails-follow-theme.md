@@ -9,6 +9,10 @@
 - Now the emails are light by default. When the mail program uses a dark theme and tells the email
   so, the email turns dark, with the logo for dark backgrounds.
 - A second logo file, with dark letters, is added for the light version.
+- Later the same day: in the Gmail app on a phone in dark mode, the logo had dark letters on a
+  dark background. The Gmail app does not tell the email about dark mode and never changes
+  pictures. Now the logo area keeps a white background in the Gmail app, so the logo stays
+  readable. The rest of the email still turns dark there.
 
 ## Decisions
 
@@ -34,6 +38,9 @@
   Outlook.com dark mode. `color-scheme` meta is now `light dark`.
 - Works with the media query: Apple Mail, iOS Mail, Outlook for Mac and iOS, Thunderbird. Gmail web
   shows light. The Gmail apps change colours themselves in dark mode and keep the light logo.
+- Logo area: white background image `assets/img/email-white.png` (setting `WHITE_BG_URL`). Gmail
+  dark mode recolours background colours but not background images. The dark block removes the
+  image. The Outlook.com logo swap is removed: Outlook.com now also keeps the white logo area.
 - New setting `LOGO_ON_LIGHT_URL` in `forms-worker/wrangler.jsonc`. `LOGO_URL` stays the logo for
   dark backgrounds.
 - `node forms-worker/test.mjs` passes. Previews checked in Chromium with light and dark
