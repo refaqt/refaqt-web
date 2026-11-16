@@ -20,7 +20,11 @@ document.querySelectorAll('.section__head, .pillar, .app, .config, .table-wrap, 
 loadVariants().then(data => {
   initConfigurator(data);
   initForm(data.variants);
-}).catch(err => console.error('variants', err));
+}).catch(err => {
+  console.error('variants', err);
+  // The form must still work when the variant list does not load.
+  initForm([]);
+});
 
 // --- 3D viewers (loaded lazily; the page works without WebGL)
 function webgl() {

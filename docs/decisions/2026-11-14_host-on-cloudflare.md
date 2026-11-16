@@ -67,9 +67,8 @@ not where this list says.
    mail records.
 5. **Login for test.** Zero Trust → Access → Applications → add a self-hosted app for
    `test.refaqt.com`. Allow only the team's email addresses.
-6. **Forms.** Set up the form Worker: see `aqtuator/worker/README.md`. Add `refaqt.com`,
-   `www.refaqt.com` and `test.refaqt.com` to the Turnstile widget. Put the Worker address and the
-   Turnstile site key in the two `config.js` files.
+6. **Forms.** Set up the form Worker `refaqt-forms`: see `forms-worker/README.md` and the
+   [decision of 2026-11-16](2026-11-16_forms-in-d1-with-resend.md).
 7. **Check.** Open `refaqt.com`, `refaqt.com/aqtuator/` and `test.refaqt.com`. Send both forms
    once from `test.refaqt.com`.
 8. **Old address.** When all of this works, turn off `.github/workflows/pages.yml` (delete it or

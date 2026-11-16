@@ -333,6 +333,10 @@
     </div>
     <form class="form" id="lead-form" novalidate>
       <div class="field">
+        <label for="f-name">Name <span class="field__opt">(optional)</span></label>
+        <input id="f-name" name="name" type="text" autocomplete="name" maxlength="100" placeholder="Your name">
+      </div>
+      <div class="field">
         <label for="f-email">Email</label>
         <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com">
       </div>
@@ -359,6 +363,7 @@
         <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
       </div>
       <div class="turnstile" id="turnstile"></div>
+      <p class="form__privacy">We use your name, email address and message only to answer you. We store them in the EU and never sell them.</p>
       <button class="btn btn--primary btn--block" type="submit">Join early access</button>
       <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
     </form>

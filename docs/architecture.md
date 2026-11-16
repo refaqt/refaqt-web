@@ -17,7 +17,7 @@ address under the site, for example `/aqtuator/`.
 | `aqtuator/index.html`, `aqtuator/assets/` | AQTUATOR CS product site (published) |
 | `aqtuator/assets/vendor/three/` | Copy of three.js 0.160.0, the 3D library. Served from our own site, not from a CDN |
 | `aqtuator/tools/` | Scripts that make the 3D model, the specifications and the images (not published) |
-| `aqtuator/worker/` | Cloudflare Worker for both forms: AQTUATOR early access and the home page contact form (not published) |
+| `forms-worker/` | Cloudflare Worker `refaqt-forms` for both forms: the home page contact form and AQTUATOR early access (not published) |
 | `tools/build-site.sh` | Copies the public pages to `_site/`. Cloudflare and the GitHub workflow both run it |
 | `wrangler.jsonc` | Cloudflare settings for the website: which folder to publish, and the production and test Workers |
 | `.github/workflows/pages.yml` | Deploys `_site/` to the old address on GitHub Pages. To be turned off when `refaqt.com` is live |
@@ -34,8 +34,10 @@ address under the site, for example `/aqtuator/`.
    `<branch>-refaqt-web.refaqt.workers.dev`. Why and how: [decision of 2026-11-14](decisions/2026-11-14_host-on-cloudflare.md).
    Until `refaqt.com` is live, a push to `main` also updates the old GitHub Pages address.
 2. The early-access form on `/aqtuator/` and the contact form on the home page post to the same
-   Worker. The Worker adds one row to a CSV file in the private repository `refaqt/refaqt-business`,
-   one file per form.
+   Worker, `refaqt-forms`. The Worker saves each message in the Cloudflare D1 database
+   `refaqt-leads` (EU), and sends two emails through Resend: one to `contact@refaqt.com` and a
+   thank-you email to the visitor. Why: [decision of 2026-11-16](decisions/2026-11-16_forms-in-d1-with-resend.md).
+   How to set it up and read the leads: `forms-worker/README.md`.
 
 ## Machine pictures
 

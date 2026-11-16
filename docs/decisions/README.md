@@ -9,3 +9,4 @@ Write entries in B2 English. Follow `.agents/rules/communication.md`.
 | 2026-11-10 | [Serve three.js from our own site](2026-11-10_self-host-three-js.md) |
 | 2026-11-14 | [Machine pictures are built from the founder's sketches, one machine at a time](2026-11-14_machine-pictures-from-founder-sketches.md) |
 | 2026-11-14 | [Host the website on Cloudflare, with draft, test and production versions](2026-11-14_host-on-cloudflare.md) |
+| 2026-11-16 | [Form messages go to a Cloudflare database and are answered by email](2026-11-16_forms-in-d1-with-resend.md) |

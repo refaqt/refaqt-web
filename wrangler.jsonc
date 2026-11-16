@@ -3,7 +3,7 @@
 // Production: Worker "refaqt-web", branch main, refaqt.com and www.refaqt.com.
 // Test: Worker "refaqt-web-test" (deploy with --env test), branch test, test.refaqt.com.
 // Domains are added in the Cloudflare dashboard, not here.
-// The form backend is a separate Worker: aqtuator/worker/.
+// The form backend is a separate Worker: forms-worker/ (Worker "refaqt-forms").
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "refaqt-web",
