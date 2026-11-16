@@ -13,6 +13,8 @@
   dark background. The Gmail app does not tell the email about dark mode and never changes
   pictures. Now the logo area keeps a white background in the Gmail app, so the logo stays
   readable. The rest of the email still turns dark there.
+- That did not work: the Gmail app also darkened the white background image. Now the logo and its
+  white area are one picture. The Gmail app does not recolour the inside of a picture.
 
 ## Decisions
 
@@ -34,15 +36,13 @@
 
 - `forms-worker/src/email.js`: inline styles use the light colours. A
   `@media (prefers-color-scheme: dark)` block switches classes `c-bg`, `c-sf`, `c-box`, `c-tx`,
-  `c-mu`, `c-fa` and swaps `logo-light` for `logo-dark`. `[data-ogsc]` swaps the logo in
-  Outlook.com dark mode. `color-scheme` meta is now `light dark`.
+  `c-mu`, `c-fa` and swaps `logo-light` for `logo-dark`. `color-scheme` meta is now `light dark`.
 - Works with the media query: Apple Mail, iOS Mail, Outlook for Mac and iOS, Thunderbird. Gmail web
-  shows light. The Gmail apps change colours themselves in dark mode and keep the light logo.
-- Logo area: white background image `assets/img/email-white.png` (setting `WHITE_BG_URL`). Gmail
-  dark mode recolours background colours but not background images. The dark block removes the
-  image. The Outlook.com logo swap is removed: Outlook.com now also keeps the white logo area.
-- New setting `LOGO_ON_LIGHT_URL` in `forms-worker/wrangler.jsonc`. `LOGO_URL` stays the logo for
-  dark backgrounds.
+  shows light. The Gmail apps change colours themselves in dark mode, but not inside the header picture.
+- Header: one picture per theme, `assets/img/email-header-light.png` and
+  `assets/img/email-header-dark.png` (600 x 92, stored at double size). The dark block swaps them.
+  Settings `HEADER_LIGHT_URL` and `HEADER_DARK_URL` replace `LOGO_URL`, `LOGO_ON_LIGHT_URL` and
+  `WHITE_BG_URL`. A white background image did not work: the Gmail app on Android darkened it.
 - `node forms-worker/test.mjs` passes. Previews checked in Chromium with light and dark
   colour scheme.
 

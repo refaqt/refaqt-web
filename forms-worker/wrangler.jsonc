@@ -36,11 +36,10 @@
     "THANKS_FROM": "REFAQT <contact@refaqt.com>",
     "THANKS_REPLY_TO": "contact@refaqt.com",
     // Logos in the emails. PNG, because Gmail and Outlook do not show SVG.
-    // LOGO_URL has light letters, for a dark theme. LOGO_ON_LIGHT_URL has dark letters, for a light theme.
-    "LOGO_URL": "https://refaqt.com/assets/img/refaqt-logo.png",
-    "LOGO_ON_LIGHT_URL": "https://refaqt.com/assets/img/refaqt-logo-on-light.png",
-    // White background image behind the logo. The Gmail apps keep it white in dark mode.
-    "WHITE_BG_URL": "https://refaqt.com/assets/img/email-white.png",
+    // Each is the logo on its own background, in one picture. The Gmail apps do not
+    // recolour the inside of a picture, so the logo stays readable there in dark mode.
+    "HEADER_LIGHT_URL": "https://refaqt.com/assets/img/email-header-light.png",
+    "HEADER_DARK_URL": "https://refaqt.com/assets/img/email-header-dark.png",
     // Limits per visitor. The thank-you email goes to any address someone types in,
     // so these stop one person from sending many emails to a stranger.
     "LIMIT_PER_IP_PER_HOUR": "5",
