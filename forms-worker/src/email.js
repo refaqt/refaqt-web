@@ -6,11 +6,11 @@
 // The HTML works in Gmail and Outlook: tables for layout, inline styles, colours also as
 // bgcolor attributes, no SVG, no web font download.
 // The email follows the reader's theme. The inline colours are the light version. A
-// "prefers-color-scheme: dark" block switches to the dark version and to the logo for dark
-// backgrounds. Mail programs that do not know that block (Gmail web) show the light version.
-// The Gmail apps do not know that block either. In dark mode they darken the colours
-// themselves, but they do not change background images. So the logo area has a white
-// background image: it stays white there, and the logo with dark letters stays readable.
+// "prefers-color-scheme: dark" block switches to the dark version and to the dark header
+// picture. Mail programs that do not know that block (Gmail web) show the light version.
+// The Gmail apps do not know that block either. In dark mode they darken colours and
+// background images themselves, but not the inside of a picture. So the logo and its white
+// area are one picture (the header), and the logo stays readable there.
 // All visitor text is escaped. Visitor text never becomes a link: a zero-width space goes
 // after every ".", "@", ":" and "/" that is followed by more text, so mail programs do not
 // see a web address or an email address in it.
@@ -36,13 +36,12 @@ const DARK = {
 };
 // CSS class for each text colour, so the dark block can change it.
 const TONE = { text: 'c-tx', muted: 'c-mu', faint: 'c-fa' };
-const LOGO_ON_DARK = 'https://refaqt.com/assets/img/refaqt-logo.png';
-const LOGO_ON_LIGHT = 'https://refaqt.com/assets/img/refaqt-logo-on-light.png';
-const WHITE_BG = 'https://refaqt.com/assets/img/email-white.png';
+// Header pictures: 600 x 92 (stored at double size), the logo on a white or a dark area.
+const HEADER_LIGHT = 'https://refaqt.com/assets/img/email-header-light.png';
+const HEADER_DARK = 'https://refaqt.com/assets/img/email-header-dark.png';
 const logos = env => ({
-  logoUrl: env.LOGO_ON_LIGHT_URL || LOGO_ON_LIGHT,
-  logoDarkUrl: env.LOGO_URL || LOGO_ON_DARK,
-  whiteBgUrl: env.WHITE_BG_URL || WHITE_BG,
+  headerUrl: env.HEADER_LIGHT_URL || HEADER_LIGHT,
+  headerDarkUrl: env.HEADER_DARK_URL || HEADER_DARK,
 });
 const FONT = "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
@@ -98,7 +97,7 @@ function choiceRows(lead) {
 }
 
 // One page with the logo, the colour band, the content and a footer.
-function layout({ title, preheader, logoUrl, logoDarkUrl, whiteBgUrl, body, footer }) {
+function layout({ title, preheader, headerUrl, headerDarkUrl, body, footer }) {
   const band = C.band.map(c => `<td width="25%" height="4" bgcolor="${c}" style="background-color:${c};height:4px;font-size:0;line-height:0;">&nbsp;</td>`).join('');
   return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -121,7 +120,6 @@ function layout({ title, preheader, logoUrl, logoDarkUrl, whiteBgUrl, body, foot
   @media (prefers-color-scheme: dark) {
     body, .c-bg { background-color: ${DARK.bg} !important; }
     .c-sf { background-color: ${DARK.surface} !important; }
-    .c-hd { background-image: none !important; }
     .c-box { background-color: ${DARK.box} !important; }
     .c-tx { color: ${DARK.text} !important; }
     .c-mu { color: ${DARK.muted} !important; }
@@ -137,9 +135,9 @@ function layout({ title, preheader, logoUrl, logoDarkUrl, whiteBgUrl, body, foot
 <tr><td align="center" style="padding:24px 12px;">
 <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
-  <tr><td bgcolor="${C.surface}" background="${esc(whiteBgUrl)}" style="background-color:${C.surface};background-image:url('${esc(whiteBgUrl)}');background-repeat:repeat;border-radius:14px 14px 0 0;padding:28px 32px 24px;" class="pad c-sf c-hd">
-    <img class="logo-light c-tx" src="${esc(logoUrl)}" width="160" height="40" alt="REFAQT" style="display:block;width:160px;height:40px;border:0;outline:none;text-decoration:none;color:${C.text};font-family:${FONT};font-size:24px;font-weight:600;">
-    <!--[if !mso]><!--><div class="logo-dark" style="display:none;max-height:0;overflow:hidden;mso-hide:all;"><img src="${esc(logoDarkUrl)}" width="160" height="40" alt="REFAQT" style="display:block;width:160px;height:40px;border:0;outline:none;text-decoration:none;color:${DARK.text};font-family:${FONT};font-size:24px;font-weight:600;"></div><!--<![endif]-->
+  <tr><td style="padding:0;font-size:0;line-height:0;">
+    <img class="logo-light c-tx" src="${esc(headerUrl)}" width="600" alt="REFAQT" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;color:${C.text};font-family:${FONT};font-size:24px;line-height:30px;font-weight:600;">
+    <!--[if !mso]><!--><div class="logo-dark" style="display:none;max-height:0;overflow:hidden;mso-hide:all;"><img src="${esc(headerDarkUrl)}" width="600" alt="REFAQT" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;color:${DARK.text};font-family:${FONT};font-size:24px;line-height:30px;font-weight:600;"></div><!--<![endif]-->
   </td></tr>
   <tr><td bgcolor="${C.surface}" class="c-sf" style="background-color:${C.surface};font-size:0;line-height:0;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>${band}</tr></table>
