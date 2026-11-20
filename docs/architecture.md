@@ -17,6 +17,8 @@ address under the site, for example `/aqtuator/`.
 | `aqtuator/index.html`, `aqtuator/assets/` | AQTUATOR CS product site (published) |
 | `aqtuator/assets/vendor/three/` | Copy of three.js 0.160.0, the 3D library. Served from our own site, not from a CDN |
 | `aqtuator/tools/` | Scripts that make the 3D model, the specifications and the images (not published) |
+| `custom/index.html`, `custom/assets/` | AQTUATOR Custom service page (published). Uses the home page styles and form, and the three.js copy in `aqtuator/`. See [AQTUATOR Custom page](#aqtuator-custom-page) |
+| `custom/tools/` | Script that draws the still pictures of the AQTUATOR Custom page (not published) |
 | `forms-worker/` | Cloudflare Worker `refaqt-forms` for both forms: the home page contact form and AQTUATOR early access (not published) |
 | `tools/build-site.sh` | Copies the public pages to `_site/`. Cloudflare and the GitHub workflow both run it |
 | `wrangler.jsonc` | Cloudflare settings for the website: which folder to publish, and the production and test Workers |
@@ -27,8 +29,8 @@ address under the site, for example `/aqtuator/`.
 
 ## Data flow
 
-1. Cloudflare builds every push to every branch with `tools/build-site.sh` and `wrangler.jsonc`. Only the root page
-   and `aqtuator/` are published. Branch `main` is `refaqt.com`, branch `test` is
+1. Cloudflare builds every push to every branch with `tools/build-site.sh` and `wrangler.jsonc`. Only the root page,
+   `aqtuator/` and `custom/` are published. Branch `main` is `refaqt.com`, branch `test` is
    `test.refaqt.com` (login needed), and every other branch gets a draft link
    `<branch>-refaqt-web.refaqt.workers.dev`. Why and how: [decision of 2026-11-14](decisions/2026-11-14_host-on-cloudflare.md).
 2. The early-access form on `/aqtuator/` and the contact form on the home page post to the same
@@ -36,6 +38,27 @@ address under the site, for example `/aqtuator/`.
    `refaqt-leads` (EU), and sends two emails through Resend: one to `contact@refaqt.com` and a
    thank-you email to the visitor. Why: [decision of 2026-11-16](decisions/2026-11-16_forms-in-d1-with-resend.md).
    How to set it up and read the leads: `forms-worker/README.md`.
+
+## AQTUATOR Custom page
+
+The page at `/custom/` shows one example stage in 3D that changes step by step: linear motor,
+ball screw with a small servo motor, a bigger servo motor, wider guides, a bigger stage. The model
+is in `custom/assets/js/morph.js`. It is built in code from boxes and cylinders, not from the CAD
+model. Each step is one line in `STATES` (sizes in metres). To change a step, change its numbers.
+
+Draw the still pictures again after a change of the model (web server running in the root):
+
+```bash
+node custom/tools/render_still.cjs
+```
+
+```bash
+python3 -c "from PIL import Image; Image.open('custom/assets/img/morph-still.png').save('custom/assets/img/morph-still.webp', quality=86, method=6)"
+```
+
+```bash
+rm custom/assets/img/morph-still.png
+```
 
 ## Machine pictures
 
