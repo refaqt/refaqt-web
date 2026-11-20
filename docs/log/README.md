@@ -24,3 +24,4 @@ Write entries in B2 English. Follow `.agents/rules/communication.md`.
 | 2026-11-16 | [Both forms now save leads and send emails](2026-11-16_forms-d1-and-resend.md) | software, sales |  |
 | 2026-11-16 | [Old GitHub Pages copy of the site turned off](2026-11-16_github-pages-off.md) | software, operations |  |
 | 2026-11-16 | [Form emails follow the light or dark theme of the reader](2026-11-16_form-emails-follow-theme.md) | software, marketing |  |
+| 2026-11-20 | [Proposal: AQTUATOR Custom page](2026-11-20_aqtuator-custom-page.md) | marketing, business-dev, software |  |
