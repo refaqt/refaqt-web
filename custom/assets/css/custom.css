@@ -1,0 +1,62 @@
+/* SPDX-FileCopyrightText: 2025-2026 Refaqt (BE 0804.145.539) and contributors */
+/* SPDX-License-Identifier: CC-BY-SA-4.0 */
+/* AQTUATOR Custom page. Loads after ../assets/css/style.css (the home page styles) and adds
+   only what this page needs: the two-part brand, the 3D view, and a few blocks. */
+
+/* ---------- brand: REFAQT logo + product name (as on the AQTUATOR CS page) ---------- */
+.brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.brand a { text-decoration: none; }
+.brand img { width: 112px; }
+.brand__product { display: block; font-size: 14px; letter-spacing: .16em; color: var(--muted); padding-left: 14px; border-left: 1px solid var(--line-2); white-space: nowrap; }
+.brand__product b { color: var(--text); font-weight: 600; }
+@media (max-width: 420px) { .brand__product { display: none; } }
+
+/* ---------- hero with the 3D view ---------- */
+.hero h1 b { font-weight: inherit; }
+.morph { position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; }
+.morph canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+.morph__still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .8s ease; }
+.morph.is-ready .morph__still { opacity: 0; pointer-events: none; }
+.morph__loading { position: absolute; left: 50%; bottom: 18px; width: 120px; height: 2px; margin-left: -60px; background: var(--line); border-radius: 2px; overflow: hidden; transition: opacity .4s; }
+.morph__loading span { position: absolute; inset: 0; width: 40%; background: var(--grad); animation: morph-load 1.2s ease-in-out infinite; }
+.morph.is-ready .morph__loading, .morph.is-failed .morph__loading { opacity: 0; }
+@keyframes morph-load { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+@media (prefers-reduced-motion: reduce) { .morph__loading span { animation: none; width: 100%; opacity: .5; } }
+.morph__msg { position: absolute; left: 0; right: 0; bottom: 12px; text-align: center; font-size: 14px; color: var(--muted); }
+.morph__msg:empty { display: none; }
+.morph__note { margin-top: 6px; text-align: center; color: var(--faint); font-size: 13px; }
+.steps { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+.steps button {
+  width: 34px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center;
+}
+.steps button::before { content: ""; width: 24px; height: 4px; border-radius: 2px; background: var(--line-2); transition: background .3s, width .3s; }
+.steps button[aria-pressed="true"]::before { background: var(--grad); width: 32px; }
+.steps button:focus-visible { outline: 2px solid var(--g2); outline-offset: 2px; border-radius: 4px; }
+.morph:not(.is-ready) + .morph__below .steps { visibility: hidden; }
+
+/* ---------- what we change: cards follow the 3D view ---------- */
+.changes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.change { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 24px; display: grid; gap: 10px; align-content: start; transition: border-color .4s, background .4s; }
+.change h3 { font-size: 22px; }
+.change p { color: var(--muted); font-weight: 300; font-size: 16px; }
+.change__n { font-size: 14px; font-weight: 600; color: var(--faint); transition: color .4s; }
+.change.is-active { border-color: rgba(0, 172, 153, .55); background: linear-gradient(160deg, rgba(0, 172, 153, .14), var(--surface) 60%); }
+.change.is-active .change__n { color: var(--g2); }
+@media (max-width: 960px) { .changes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .changes { grid-template-columns: 1fr; } }
+
+/* ---------- three levels of work ---------- */
+.levels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.level { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 26px; display: grid; gap: 12px; align-content: start; }
+.level h3 { font-size: 22px; }
+.level p { color: var(--muted); font-weight: 300; }
+.level__n { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--g2); }
+@media (max-width: 900px) { .levels { grid-template-columns: 1fr; } }
+
+/* ---------- offers for end customers (as on the AQTUATOR CS page) ---------- */
+.offers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.offer { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 34px 32px 32px; display: flex; flex-direction: column; gap: 14px; }
+.offer h3 { font-size: 26px; }
+.offer p { color: var(--muted); font-weight: 300; }
+.offer__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 12px; }
+@media (max-width: 800px) { .offers { grid-template-columns: 1fr; } .offer { padding: 26px 22px; } }
