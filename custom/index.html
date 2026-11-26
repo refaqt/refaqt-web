@@ -30,6 +30,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="assets/css/custom.css">
+<link rel="preload" href="../aqtuator/assets/models/aqtuator-cs.glb" as="fetch" type="model/gltf-binary" crossorigin>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -68,16 +69,18 @@
   </div>
   <figure class="hero__art">
     <div class="morph" id="morph">
-      <img class="morph__still" src="assets/img/morph-still.webp" width="1600" height="1200" alt="An example stage built around other parts: a ball screw driven by a rotary servo motor, on two linear guides.">
+      <img class="morph__still" src="assets/img/morph-still.webp" width="1600" height="1200" alt="The AQTUATOR CS stage changed into a ball-screw stage: the screw is driven by a rotary servo motor, and the carriage runs on two guide rails inside the base.">
+      <div class="morph__loading" aria-hidden="true"><span></span></div>
       <p class="morph__msg" role="status"></p>
     </div>
     <div class="morph__below">
       <div class="steps" role="group" aria-label="Example designs">
-        <button type="button" aria-label="Example 1: linear motor" aria-pressed="true"></button>
-        <button type="button" aria-label="Example 2: ball screw with a rotary servo motor" aria-pressed="false"></button>
-        <button type="button" aria-label="Example 3: another servo motor" aria-pressed="false"></button>
-        <button type="button" aria-label="Example 4: other guides" aria-pressed="false"></button>
-        <button type="button" aria-label="Example 5: a bigger stage" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 1: AQTUATOR CS, the linear-motor stage" aria-pressed="true"></button>
+        <button type="button" aria-label="Step 2: the seal strip is removed, so you see the inside" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 3: ball screw with a rotary servo motor" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 4: a bigger servo motor with a brake" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 5: bigger guide rails and blocks" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 6: a longer stage" aria-pressed="false"></button>
       </div>
       <figcaption class="morph__note">Example designs. Sizes show the idea, not product data.</figcaption>
     </div>
@@ -114,22 +117,22 @@
     <p class="section__lead">We start from the AQTUATOR stage designs. The base, the carriage, the seals and the tests are already done. Then we change what your range and your customers need.</p>
   </div>
   <div class="changes">
-    <article class="change" data-step="1">
+    <article class="change" data-step="2">
       <span class="change__n">Drive</span>
       <h3>Linear motor or ball screw</h3>
       <p>Your linear motor for speed and accuracy. Or a ball screw for high force and a lower price.</p>
     </article>
-    <article class="change" data-step="2">
+    <article class="change" data-step="3">
       <span class="change__n">Motor</span>
       <h3>Your servo motor</h3>
       <p>We fit your rotary servo motor, with the right flange, coupling, brake and cable outlet.</p>
     </article>
-    <article class="change" data-step="3">
+    <article class="change" data-step="4">
       <span class="change__n">Guides</span>
       <h3>Your rails and blocks</h3>
       <p>Your guide size, the number of blocks and the preload, for the load and the stiffness the customer needs.</p>
     </article>
-    <article class="change" data-step="4">
+    <article class="change" data-step="5">
       <span class="change__n">Size</span>
       <h3>Travel, width and height</h3>
       <p>The stage grows or shrinks to the application. Hole patterns and the encoder follow.</p>

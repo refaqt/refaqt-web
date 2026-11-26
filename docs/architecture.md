@@ -17,7 +17,7 @@ address under the site, for example `/aqtuator/`.
 | `aqtuator/index.html`, `aqtuator/assets/` | AQTUATOR CS product site (published) |
 | `aqtuator/assets/vendor/three/` | Copy of three.js 0.160.0, the 3D library. Served from our own site, not from a CDN |
 | `aqtuator/tools/` | Scripts that make the 3D model, the specifications and the images (not published) |
-| `custom/index.html`, `custom/assets/` | AQTUATOR Custom service page (published). Uses the home page styles and form, and the three.js copy in `aqtuator/`. See [AQTUATOR Custom page](#aqtuator-custom-page) |
+| `custom/index.html`, `custom/assets/` | AQTUATOR Custom service page (published). Uses the home page styles and form, and the three.js copy and the 3D model in `aqtuator/`. See [AQTUATOR Custom page](#aqtuator-custom-page) |
 | `custom/tools/` | Script that draws the still pictures of the AQTUATOR Custom page (not published) |
 | `forms-worker/` | Cloudflare Worker `refaqt-forms` for both forms: the home page contact form and AQTUATOR early access (not published) |
 | `tools/build-site.sh` | Copies the public pages to `_site/`. Cloudflare and the GitHub workflow both run it |
@@ -41,10 +41,21 @@ address under the site, for example `/aqtuator/`.
 
 ## AQTUATOR Custom page
 
-The page at `/custom/` shows one example stage in 3D that changes step by step: linear motor,
-ball screw with a small servo motor, a bigger servo motor, wider guides, a bigger stage. The model
-is in `custom/assets/js/morph.js`. It is built in code from boxes and cylinders, not from the CAD
-model. Each step is one line in `STATES` (sizes in metres). To change a step, change its numbers.
+The page at `/custom/` shows the real AQTUATOR CS model in 3D, and changes it step by step: the
+seal strip goes, the linear motor becomes a ball screw with servo motor A, motor B comes in, the
+rails and blocks grow from size 15 to size 20, and the stage gets longer. Each step is one line in
+`STATES` in `custom/assets/js/morph.js`.
+
+- The CAD parts come from `aqtuator/assets/models/aqtuator-cs.glb`, loaded with `loadTemplate()`
+  from `aqtuator/assets/js/viewer.js`. They change size by moving vertices past cut planes, never
+  by scaling, so holes and chamfers keep their size. The planes (`CUT` in `morph.js`) sit where the
+  part has no vertices.
+- The guide blocks are scaled as a whole around their rail foot.
+- Parts that are not in the CAD model are built in code in `custom/assets/js/parts.js`: the guide
+  rails with ball grooves and counterbores, cap screws, the ball screw (a real thread groove, so
+  you see it turn), nut, bearing blocks, coupling and two generic servo motors.
+- Check options: `?step=N&still=1` (one step, no motion), `&mix=0.5` (half way from step N-1),
+  `&cam=x,y,z&target=x,y,z` (fixed camera for close views).
 
 Draw the still pictures again after a change of the model (web server running in the root):
 

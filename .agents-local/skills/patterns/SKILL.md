@@ -73,3 +73,21 @@ cyl(m, r, 0.0006, MAT.partFloor, 'y', x, topY - depth + 0.0003, z, r, 64);      
 **Gotchas:** Without the inside wall, the hole looks as if the part is hollow. Use a steel with a
 low `envMapIntensity` for parts, so their faces get different shades and the shape reads well.
 **Last used:** 2026-11-13, CMM part.
+
+## Change the size of a CAD part without scaling it
+**When to use:** A part from a GLB must get longer, wider or higher, but its holes, pockets and
+chamfers must keep their real size.
+**Pattern:**
+```js
+// Keep the original positions once; rewrite them only when a size changes.
+const o = geo.attributes.position.array.slice();
+for (let i = 0; i < o.length; i += 3) {
+  p[i] = o[i] > cut.x ? o[i] + dL : o[i];                                   // longer
+  p[i + 2] = o[i + 2] > cut.zf ? o[i + 2] + dW / 2 : o[i + 2] < cut.zb ? o[i + 2] - dW / 2 : o[i + 2]; // wider
+}
+```
+**Gotchas:** Put each cut plane where the part has no vertices, so it never cuts a hole or a round
+edge. Find those gaps with a small script that lists the empty bands of vertex coordinates. Parts
+that sit on one side (rails, blocks, read head) move as a whole with that side.
+**Last used:** 2026-11-26, AQTUATOR Custom 3D view (`custom/assets/js/morph.js`).
+

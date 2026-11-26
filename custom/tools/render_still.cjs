@@ -22,9 +22,12 @@ const OUT = path.join(__dirname, '..', 'assets', 'img');
     await page.addStyleTag({ content: `body > *:not(main), main > *:not(.hero), .hero > *:not(.hero__art), .morph__below, .morph__still { display: none !important; }
       .hero { display: block; padding: 0; max-width: none; } .morph { position: fixed; inset: 0; aspect-ratio: auto; border-radius: 0; }
       ${css || 'html, body { background: transparent !important; }'}` });
-    await page.waitForFunction(() => window.__morphReady, null, { timeout: 30000 });
+    await page.waitForFunction(() => window.__morphReady, null, { timeout: 120000 });
     await page.waitForTimeout(1500);
-    await page.locator('#morph').screenshot({ path: path.join(OUT, file), omitBackground: !css });
+    // A clipped page screenshot: an element screenshot waits for a still frame, which a slow
+    // software renderer may never give.
+    const clip = await page.locator('#morph').boundingBox();
+    await page.screenshot({ path: path.join(OUT, file), clip, omitBackground: !css, timeout: 300000 });
     await page.close();
     console.log('wrote', file);
   };

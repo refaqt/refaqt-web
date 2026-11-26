@@ -33,11 +33,12 @@ function webgl() {
 if (!webgl()) {
   msg.textContent = 'Your browser cannot show the 3D view. The picture shows one of the example stages.';
 } else {
-  import('./morph.js').then(({ initMorph }) => {
-    const view = initMorph(box, { onStep: showStep });
+  // The 3D model (about 2.4 MB) loads first; the still picture and a loading bar show meanwhile.
+  import('./morph.js').then(({ initMorph }) => initMorph(box, { onStep: showStep })).then(view => {
     dots.forEach((d, i) => d.addEventListener('click', () => view.goTo(i)));
     box.classList.add('is-ready');
   }).catch(err => {
+    box.classList.add('is-failed');
     console.error('3D view', err);
     msg.textContent = 'The 3D view could not load. The picture shows one of the example stages.';
   });

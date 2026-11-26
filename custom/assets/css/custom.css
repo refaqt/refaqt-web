@@ -17,6 +17,11 @@
 .morph canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 .morph__still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .8s ease; }
 .morph.is-ready .morph__still { opacity: 0; pointer-events: none; }
+.morph__loading { position: absolute; left: 50%; bottom: 18px; width: 120px; height: 2px; margin-left: -60px; background: var(--line); border-radius: 2px; overflow: hidden; transition: opacity .4s; }
+.morph__loading span { position: absolute; inset: 0; width: 40%; background: var(--grad); animation: morph-load 1.2s ease-in-out infinite; }
+.morph.is-ready .morph__loading, .morph.is-failed .morph__loading { opacity: 0; }
+@keyframes morph-load { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+@media (prefers-reduced-motion: reduce) { .morph__loading span { animation: none; width: 100%; opacity: .5; } }
 .morph__msg { position: absolute; left: 0; right: 0; bottom: 12px; text-align: center; font-size: 14px; color: var(--muted); }
 .morph__msg:empty { display: none; }
 .morph__note { margin-top: 6px; text-align: center; color: var(--faint); font-size: 13px; }
