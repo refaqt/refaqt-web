@@ -17,6 +17,9 @@
   plate). Motor A is silver with one connector; motor B is black, longer, with a brake and two
   connectors. No brand names.
 - Six steps now instead of five. The still pictures were drawn again.
+- Second round, same day: the seal strip, the magnets, the ball screw and the motor now really fade
+  in and out. Before, they stayed solid and then vanished at once. A new step now starts every
+  3 seconds (1.5 s of change, 1.5 s still).
 
 ## Decisions
 
@@ -47,6 +50,8 @@
 - The shaft is made once for the longest stage and cut at the support bearing with a clipping
   plane (shadows too).
 - Check options: `mix` and `cam`/`target` in the address.
+- Fades: three.js draws a material that is not transparent fully solid, whatever its opacity.
+  Switching `transparent` needs `material.needsUpdate = true`; `setFade()` in `morph.js` does that.
 - Software rendering in the container runs at about 0.6 frames per second; that is the container,
   not the page. The AQTUATOR CS page uses the same model.
 

@@ -22,7 +22,8 @@ import { loadTemplate } from '../../../aqtuator/assets/js/viewer.js';
 import { MAT, Screws, Rail, screwShaftGeometry, ballNut, coupling, ServoMotor, roundedBar, lathe } from './parts.js';
 
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const HOLD = 3.6, MORPH = 1.8, MORPH_BACK = 2.6;   // seconds per step, per change, for the way back to step 0
+// A new step every 3 seconds: 1.5 s of change, then 1.5 s still. The way back to step 0 is as fast.
+const HOLD = 1.5, MORPH = 1.5, MORPH_BACK = 1.5;
 
 // seal: seal strip; lm: linear motor; bs: ball screw with motor; mB: motor A (0) to B (1);
 // s: rail size (1 = 15 mm, 4/3 = 20 mm); dW, dL: extra width and length in metres.
@@ -35,9 +36,11 @@ export const STATES = [
   { ...BASE, seal: 0, lm: 0, bs: 1, mB: 1, s: 4 / 3, dW: 0.03 },
   { ...BASE, seal: 0, lm: 0, bs: 1, mB: 1, s: 4 / 3, dW: 0.03, dL: 0.26 },
 ];
-// Parts that come in wait for the parts that go out: going out uses the first half of a change,
-// coming in the second half. Sizes grow over the whole change, and shrink in the first half.
+// Parts that come in wait a little for the parts that go out: going out uses the first 60 % of a
+// change, coming in the last 60 %. The seal strip goes out over the whole change (nothing else
+// changes then). Sizes grow over the whole change, and shrink in the first 60 %.
 const IN_LATE = new Set(['seal', 'lm', 'bs']);
+const win = (t, a, b) => clamp((t - a) / (b - a));
 
 const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const clamp = t => Math.min(1, Math.max(0, t));
@@ -45,10 +48,19 @@ function lerpState(a, b, t) {
   const out = {};
   for (const k in a) {
     const up = b[k] > a[k];
-    const u = IN_LATE.has(k) ? (up ? clamp(2 * t - 1) : clamp(2 * t)) : (up ? t : clamp(2 * t));
+    const u = IN_LATE.has(k) ? (up ? win(t, 0.4, 1) : k === 'seal' ? t : win(t, 0, 0.6)) : (up ? t : win(t, 0, 0.6));
     out[k] = a[k] + (b[k] - a[k]) * ease(u);
   }
   return out;
+}
+
+// Fade a material. In three.js a material that is not transparent is drawn fully solid, whatever its
+// opacity; switching 'transparent' only works after a recompile, so set needsUpdate when it changes.
+function setFade(m, v) {
+  const tr = v < 0.999;
+  if (m.transparent !== tr) { m.transparent = tr; m.needsUpdate = true; }
+  m.opacity = v;
+  m.depthWrite = v > 0.5;
 }
 
 // Carriage motion: smooth move, short stop, move back (as on the AQTUATOR CS page).
@@ -271,7 +283,7 @@ class MorphStage {
       // The camera makes room for the motor early, so the motor never slides in outside the view.
       const k = Math.min(1, s.bs * 2.5);
       ext = (0.024 + La + this.motor.length) * k * k * (3 - 2 * k);
-      for (const m of this.bsMats) { m.transparent = s.bs < 0.999; m.opacity = s.bs; m.depthWrite = s.bs > 0.5; }
+      for (const m of this.bsMats) setFade(m, s.bs);
     }
 
     // Fading parts: seal strip set and linear motor set.
@@ -279,7 +291,7 @@ class MorphStage {
       for (const it of list) {
         const m = it.mesh;
         m.visible = v > 0.002;
-        m.material.transparent = v < 0.999; m.material.opacity = v; m.material.depthWrite = v > 0.5;
+        setFade(m.material, v);
         if (lift) m.position.y = (1 - v) * lift;
       }
     };
