@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2025-2026 Refaqt (BE 0804.145.539) and contributors
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Fill .agents/ at the start of every session.
 #
-# Copy this file to .claude/hooks/session-start.sh in your repository root and
-# make it executable. The file on its own does nothing: .claude/settings.json is
-# what starts it. .cursor/environment.json can run the same file, so Cursor
+# .agents/scripts/sync_root.py writes this file to .claude/hooks/session-start.sh.
+# Do not edit that copy: change this template. The file on its own does nothing:
+# .claude/settings.json is what starts it. .cursor/environment.json can run the same file, so Cursor
 # cloud agents get the same result from one copy.
 #
 # Use this file only in a repository that does NOT have a doqs submodule. doqs
@@ -96,17 +97,15 @@ remote_status=$?
 # code on its own proves nothing.
 if [ -f ".agents/rules/core.md" ]; then
   kit="$(git -C .agents rev-parse --short HEAD 2>/dev/null || echo unknown)"
-  echo "The agent kit is ready in ${root}: .agents/ (${kit})."
+  echo "The agent kit is ready in ${root}: .agents/ (${kit}). CLAUDE.md and AGENTS.md hold the rules."
   # The folder is usable even when only the first call worked, but then it holds
   # the recorded commit rather than the latest main. Say so, rather than let an
   # old kit pass for a fresh one.
   if [ $remote_status -ne 0 ]; then
-    echo "Could not reach the remote, so the kit sits at its recorded commit, not the latest main."
-    echo "Once you have a network again, run this from ${root}:"
-    echo "  bash setup-agents.sh"
+    echo "Could not reach the remote: the kit is at its recorded commit. Later, run: bash setup-agents.sh"
   fi
-  echo "Read .agents/rules/core.md first, then AGENTS.md."
-  echo "Write every reply and every file in B2 English: .agents/rules/communication.md."
+  # Make the skills visible to Claude Code. Prints one line, never fails.
+  [ -f .agents/scripts/link_skills.sh ] && bash .agents/scripts/link_skills.sh "$root"
   exit 0
 fi
 

@@ -5,3 +5,6 @@ __pycache__/
 # Built site (tools/build-site.sh)
 _site/
 .wrangler/
+
+# Skill links made by .agents/scripts/link_skills.sh at the start of each session.
+/.claude/skills/
