@@ -1,0 +1,321 @@
+<!doctype html>
+<!-- SPDX-FileCopyrightText: 2025-2026 Refaqt (BE 0804.145.539) and contributors -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The import map must come before every module script and every modulepreload link.
+     Firefox ignores an import map that comes later, and then the 3D view cannot load three.js.
+     three.js is the copy on the AQTUATOR CS page, served from our own site. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "../aqtuator/assets/vendor/three/three.module.min.js",
+    "three/addons/": "../aqtuator/assets/vendor/three/addons/"
+  }
+}
+</script>
+<title>AQTUATOR Custom · Your parts, as a complete stage · REFAQT</title>
+<meta name="description" content="REFAQT adapts its proven stage designs to the motors, guides and feedback systems of manufacturers and distributors of motion parts. You offer your customers a tested stage design, and licence codes let them keep their own machines closed.">
+<meta name="theme-color" content="#1c1d1e">
+<meta property="og:title" content="AQTUATOR Custom · Your parts, as a complete stage.">
+<meta property="og:description" content="Tested stage designs, built around the parts of manufacturers and distributors of motion parts. Open designs, with licence codes for closed machines.">
+<meta property="og:image" content="assets/img/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="assets/css/custom.css">
+<link rel="preload" href="../aqtuator/assets/models/aqtuator-cs.glb" as="fetch" type="model/gltf-binary" crossorigin>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <div class="brand">
+      <a href="../" aria-label="REFAQT home page"><img src="../assets/img/refaqt-logo.png" alt="REFAQT" width="128" height="32"></a>
+      <a class="brand__product" href="#top" aria-label="AQTUATOR Custom, back to top">AQTUATOR <b>CUSTOM</b></a>
+    </div>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#why">Why</a>
+      <a href="#change">Customizations</a>
+      <a href="#how">How we work</a>
+      <a href="#customers">Your customers</a>
+      <a href="#open">Licences</a>
+    </nav>
+    <a class="btn btn--primary btn--sm" href="#contact">Talk to us</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================== HERO ============================== -->
+<section class="hero" id="top">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="hero__copy">
+    <p class="eyebrow">For manufacturers and distributors of motion parts</p>
+    <h1>Your parts,<br><span class="grad">as a complete stage.</span></h1>
+    <p class="lead">Your customers require an integrated motion system. We design, test and document a stage around your parts, so you can offer them a complete solution.</p>
+    <p class="lead lead--why">Any drive, motor, guide or feedback system, built around your parts and sized for your customer&rsquo;s machine.</p>
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="#contact">Talk to us</a>
+      <a class="btn btn--ghost" href="#how">How we work →</a>
+    </div>
+  </div>
+  <figure class="hero__art">
+    <div class="morph" id="morph">
+      <img class="morph__still" src="assets/img/morph-still.webp" width="1600" height="1200" alt="The AQTUATOR CS stage changed into a ball-screw stage: the screw is driven by a rotary servo motor, and the carriage runs on two guide rails inside the base.">
+      <div class="morph__loading" aria-hidden="true"><span></span></div>
+      <p class="morph__msg" role="status"></p>
+    </div>
+    <div class="morph__below">
+      <div class="steps" role="group" aria-label="Example designs">
+        <button type="button" aria-label="Step 1: AQTUATOR CS, the linear-motor stage" aria-pressed="true"></button>
+        <button type="button" aria-label="Step 2: the seal strip is removed, so you see the inside" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 3: ball screw with a rotary servo motor" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 4: a bigger servo motor with a brake" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 5: bigger guide rails and blocks" aria-pressed="false"></button>
+        <button type="button" aria-label="Step 6: a longer stage" aria-pressed="false"></button>
+      </div>
+      <figcaption class="morph__note">Example designs. Sizes show the idea, not product data.</figcaption>
+    </div>
+  </figure>
+</section>
+
+<!-- ============================== WHY ============================== -->
+<section class="section" id="why">
+  <div class="section__head">
+    <p class="eyebrow">Why partners work with us</p>
+    <h2>Sell the system, <span class="grad">not only the part.</span></h2>
+  </div>
+  <div class="why">
+    <article class="why__item">
+      <span class="why__n">The need</span>
+      <p>Your customers build machines. They want an integrated motion system that works on day one, not a list of parts.</p>
+    </article>
+    <article class="why__item">
+      <span class="why__n">The problem</span>
+      <p>A proven stage design takes a lot of engineering: design, prototypes, measurements and documents. Few companies can do this for every customer.</p>
+    </article>
+    <article class="why__item why__item--mission">
+      <span class="why__n">Our solution</span>
+      <p>We adapt our proven stage designs to your parts, so the risk and the engineering cost stay low. You offer your customers a tested stage design, and every stage that is built uses your parts.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================== CUSTOMIZATIONS ============================== -->
+<section class="section" id="change">
+  <div class="section__head">
+    <p class="eyebrow">Customizations</p>
+    <h2>One proven stage. <span class="grad">Built around your parts.</span></h2>
+    <p class="section__lead">We start from our proven AQTUATOR stage designs, with the base, the carriage and the tests already done. Then we adapt them to your parts and your customers.</p>
+  </div>
+  <div class="changes">
+    <article class="change" data-step="2">
+      <span class="change__n">Drive</span>
+      <h3>Linear motor or ball screw</h3>
+      <p>Your linear motor for speed and accuracy. Or a ball screw for high force and a lower price.</p>
+    </article>
+    <article class="change" data-step="3">
+      <span class="change__n">Motor</span>
+      <h3>Your servo motor</h3>
+      <p>We fit your rotary servo motor, with the right flange, coupling, brake and cable outlet.</p>
+    </article>
+    <article class="change" data-step="4">
+      <span class="change__n">Guides</span>
+      <h3>Your rails and blocks</h3>
+      <p>Your guide size, the number of blocks and the preload, for the load and the stiffness the customer needs.</p>
+    </article>
+    <article class="change" data-step="5">
+      <span class="change__n">Size</span>
+      <h3>Travel, width and height</h3>
+      <p>The stage grows or shrinks to the application. Hole patterns and the encoder follow.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================== HOW WE WORK ============================== -->
+<section class="section" id="how">
+  <div class="section__head">
+    <p class="eyebrow">How we work with you</p>
+    <h2>Engineering and licences. <span class="grad">You choose what you need.</span></h2>
+    <p class="section__lead">Every project starts with the engineering. The licences come on top.</p>
+  </div>
+  <div class="levels">
+    <article class="level">
+      <span class="level__n">1 · Engineering</span>
+      <h3>A stage design around your parts</h3>
+      <p>We design the stage around the components you choose. We build a prototype and test it. Fixed scope, fixed price. You get the design files, the parts list and the build instructions.</p>
+    </article>
+    <article class="level">
+      <span class="level__n">2 · Licence codes</span>
+      <h3>For your customers</h3>
+      <p>Each code gives one of your customers a commercial licence. Choose code packs, or a yearly flat fee for all your customers.</p>
+    </article>
+    <article class="level">
+      <span class="level__n">3 · Licence for you</span>
+      <h3>Optional</h3>
+      <p>For when you want to use and share the design commercially yourself, for example in your own products. A separate licence with its own fee.</p>
+    </article>
+  </div>
+  <ul class="ticks-list">
+    <li>Every design is built and tested before you get it.</li>
+    <li>We give second-line support: your team helps your customers, we help your team.</li>
+  </ul>
+</section>
+
+<!-- ============================== YOUR CUSTOMERS ============================== -->
+<section class="section" id="customers">
+  <div class="section__head">
+    <p class="eyebrow">What your customers can buy</p>
+    <h2>Buy the stage. <span class="grad">Or the right to keep their design private.</span></h2>
+  </div>
+  <div class="offers">
+    <article class="offer">
+      <h3>A complete stage from REFAQT</h3>
+      <p>Assembled, aligned and tested, ready to bolt on. A standard design, or a design we adapt to their application: travel, load, speed and accuracy. With our support.</p>
+      <div class="offer__cta">
+        <a class="btn btn--primary" href="#contact" data-interest="engineering">Ask for a stage</a>
+      </div>
+    </article>
+    <article class="offer">
+      <h3>A licence code from you</h3>
+      <p>A commercial licence for one customer. With it, your customer can use and change the stage design in their own machine, keep that machine closed, and publish nothing.</p>
+      <div class="offer__cta">
+        <a class="btn btn--ghost" href="#contact" data-interest="licence">Ask about a licence →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============================== LICENCES ============================== -->
+<section class="section" id="open">
+  <div class="section__head">
+    <p class="eyebrow">How the licences work</p>
+    <h2>Open for everyone. <span class="grad">Closed when your customer needs it.</span></h2>
+  </div>
+  <div class="levels">
+    <article class="level">
+      <span class="level__n">Open licence</span>
+      <h3>CERN-OHL-S</h3>
+      <p>Anyone may build and use the design. Who sells a machine with the design inside, changed or not, must publish the design of the whole machine. Bought-in standard parts can stay closed.</p>
+    </article>
+    <article class="level">
+      <span class="level__n">Commercial licence</span>
+      <h3>Through the licence codes</h3>
+      <p>For companies that want to keep their machine design closed. With a licence code, your customer does not have to publish anything.</p>
+    </article>
+    <article class="level">
+      <span class="level__n">Ownership</span>
+      <h3>Stays with REFAQT</h3>
+      <p>We keep ownership of the design and build our next designs on it, so the design keeps getting better. You get licence rights.</p>
+    </article>
+  </div>
+  <ul class="ticks-list">
+    <li>New contacts for you: companies that download the open design and agree to share their details with you.</li>
+    <li>You can put your own name on the stage you sell. The names REFAQT and AQTUATOR need our agreement.</li>
+  </ul>
+</section>
+
+<!-- ============================== HOW A PROJECT GOES ============================== -->
+<section class="section" id="steps">
+  <div class="section__head">
+    <p class="eyebrow">How a project goes</p>
+    <h2>From your parts <span class="grad">to a stage on the market.</span></h2>
+  </div>
+  <ol class="plan">
+    <li class="plan__step is-now">
+      <span class="plan__n">1</span>
+      <h3>We agree the scope</h3>
+      <p>Which components, which stage, and which parts of the offer you need.</p>
+    </li>
+    <li class="plan__step">
+      <span class="plan__n">2</span>
+      <h3>We send a quote</h3>
+      <p>A fixed price for the scope we agreed.</p>
+    </li>
+    <li class="plan__step">
+      <span class="plan__n">3</span>
+      <h3>We design and test</h3>
+      <p>You sign the engineering agreement. We design the stage, build a prototype and test it.</p>
+    </li>
+    <li class="plan__step">
+      <span class="plan__n">4</span>
+      <h3>You offer it</h3>
+      <p>You offer the tested design to your customers, with licence codes for the ones who keep their machines closed.</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ============================== CONTACT ============================== -->
+<section class="section section--cta" id="contact">
+  <div class="cta">
+    <div class="cta__copy">
+      <p class="eyebrow">Talk to us</p>
+      <h2>What do you want <span class="grad">to build?</span></h2>
+      <p class="section__lead">Tell us which parts you make or sell, and what your customers ask for. Or tell us about the stage your machine needs.</p>
+      <ul class="ticks-list">
+        <li>For manufacturers of linear motors, servo motors, guides and ball screws.</li>
+        <li>For distributors of motion parts.</li>
+        <li>For machine builders who need a stage with specific parts.</li>
+      </ul>
+    </div>
+    <form class="form" id="contact-form" novalidate>
+      <div class="field">
+        <label for="f-name">Name <span class="field__opt">(optional)</span></label>
+        <input id="f-name" name="name" type="text" autocomplete="name" maxlength="100" placeholder="Your name">
+      </div>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com">
+      </div>
+      <div class="field">
+        <label for="f-interest">I want to</label>
+        <select id="f-interest" name="interest">
+          <option value="partner">Offer stages with my parts (manufacturer or distributor)</option>
+          <option value="engineering">Buy a stage for my application</option>
+          <option value="licence">Get a commercial licence</option>
+          <option value="other">Something else</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-message">Message</label>
+        <textarea id="f-message" name="message" rows="5" maxlength="2000" required placeholder="Your company, the parts you make or sell, and what your customers ask for…"></textarea>
+      </div>
+      <div class="field field--hp" aria-hidden="true">
+        <label for="f-website">Website</label>
+        <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="turnstile" id="turnstile"></div>
+      <p class="form__privacy">We use your name, email address and message only to answer you. We store them in the EU and never sell them.</p>
+      <button class="btn btn--primary btn--block" type="submit">Send message</button>
+      <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <img src="../assets/img/refaqt-logo.png" alt="REFAQT" width="112" height="28">
+      <p>Take manufacturing into your own hands.</p>
+      <p class="footer__links"><a href="../">REFAQT</a><a href="../aqtuator/">AQTUATOR CS</a><a href="https://github.com/refaqt" rel="noopener">GitHub</a></p>
+    </div>
+    <div class="footer__small">
+      <p>Hardware: CERN-OHL-S-2.0 · Software: GPL-3.0 · Website: CC BY-SA 4.0.</p>
+      <p>REFAQT and AQTUATOR are trademarks of REFAQT. The stages in the 3D view are examples, not products.</p>
+      <p>© <span id="year">2026</span> REFAQT</p>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

@@ -7,8 +7,9 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 rm -rf _site
-mkdir -p _site/aqtuator
+mkdir -p _site/aqtuator _site/custom
 cp -r index.html assets _site/
 cp -r aqtuator/index.html aqtuator/assets _site/aqtuator/
+cp -r custom/index.html custom/assets _site/custom/
 
 echo "Site files are in _site/"

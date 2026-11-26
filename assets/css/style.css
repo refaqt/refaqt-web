@@ -121,6 +121,8 @@ p { margin: 0; }
 .product p:not(.tag) { color: var(--muted); font-weight: 300; margin-top: 16px; max-width: 30em; }
 .product__more { display: inline-block; margin-top: 22px; color: var(--g2); font-weight: 500; }
 .product__img { width: 124%; max-width: none; margin: -9% -12%; }  /* the render has a wide empty border */
+.product--small { margin-top: 20px; }
+.product__img--custom { width: 100%; margin: 0; }
 @media (max-width: 760px) { .product { grid-template-columns: 1fr; } .product__img { order: -1; } }
 
 /* ---------- why ---------- */
