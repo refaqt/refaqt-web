@@ -60,11 +60,3 @@
 .offer p { color: var(--muted); font-weight: 300; }
 .offer__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 12px; }
 @media (max-width: 800px) { .offers { grid-template-columns: 1fr; } .offer { padding: 26px 22px; } }
-
-/* ---------- open by default ---------- */
-.open { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(28px, 5vw, 56px); }
-.open .section__head { margin-bottom: 0; }
-.open .ticks-list { margin-top: 0; }
-@media (max-width: 860px) { .open { grid-template-columns: 1fr; gap: 28px; } }
-
-.plan__note { margin-top: 24px; color: var(--muted); font-weight: 300; }
